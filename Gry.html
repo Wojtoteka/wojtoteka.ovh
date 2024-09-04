@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://img.freepik.com/darmowe-zdjecie/renderowanie-3d-abstrakcyjnego-czarno-bialego-tla-geometrycznego_23-2150853539.jpg?t=st=1725466239~exp=1725469839~hmac=bba623e931ed159f96fccc3219593406fd8968751ff37c3136fda9f2ac583cf1&w=996') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #fff;
+        }
+
+        .games {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .game {
+            border-radius: 8px;
+            margin: 15px;
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.2s;
+            background-color: rgba(0, 0, 0, 0.6); /* Transparentne tło */
+        }
+
+        .game:hover {
+            transform: scale(1.05);
+        }
+
+        .game img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .game h2 {
+            font-size: 1.5em;
+            margin: 15px 0 10px;
+            color: #fff;
+        }
+
+        .game a {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .game a:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: transparent;
+            color: #fff;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Wybierz w jaką grę chcesz zagrać</h1>
+        </div>
+
+        <div class="games">
+            <div class="game">
+                <img src="https://github.com/Wojtoteka/Nightdrive/blob/main/icon192.png?raw=true" alt="Night Drive">
+                <h2>Night Drive</h2>
+                <a href="https://nightdrive.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
+            </div>
+
+            <div class="game">
+                <img src="https://raw.githubusercontent.com/Wojtoteka/4-In-a-Row/main/icon192.png" alt="4 in a Row">
+                <h2>4 in a Row</h2>
+                <a href="https://4-in-a-row.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
+    </div>
+
+    <script>
+        // Ustawia bieżący rok w stopce
+        document.getElementById("current-year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
