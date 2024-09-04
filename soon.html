@@ -11,21 +11,35 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #ff6b6b, #556270);
             font-family: Arial, sans-serif;
+            color: white;
             text-align: center;
         }
         .container {
-            color: #333;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
         .main-text {
-            font-size: 48px;
-            margin: 0;
+            font-size: 56px;
+            margin: 0 0 20px;
+            animation: fadeIn 1.5s ease-in-out;
         }
         .sub-text {
             font-size: 24px;
             margin: 0;
-            color: #777;
+            color: #ddd;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
