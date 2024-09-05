@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Błąd 503 - Usługa niedostępna</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f06, #4a90e2);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            text-align: center;
+            flex-direction: column;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 5em;
+            margin: 0;
+            animation: pulse 1.5s infinite;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        .footer {
+            font-size: 0.75em;
+            color: white;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const yearSpan = document.getElementById('current-year');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>503</h1>
+        <p>Usługa niedostępna</p>
+        <p>Strona jest chwilowo niedostępna lub jest w Budowie. Prosimy o cierpliwość.</p>
+    </div>
+    <div class="footer">
+        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
+    </div>
+</body>
+</html>
