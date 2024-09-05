@@ -5,34 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Błąd 503 - Usługa niedostępna</title>
     <style>
-        body {
-            background: linear-gradient(135deg, #f06, #4a90e2);
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: white;
+            color: #fff;
             text-align: center;
-            flex-direction: column;
+            overflow: hidden;
         }
+
+        /* Background video */
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(50%);
+        }
+
         .container {
+            z-index: 1;
             background: rgba(0, 0, 0, 0.7);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             max-width: 600px;
         }
+
         h1 {
             font-size: 5em;
             margin: 0;
             animation: pulse 1.5s infinite;
         }
+
         p {
             font-size: 1.2em;
             margin: 15px 0;
         }
+
         .footer {
             font-size: 0.75em;
             color: white;
@@ -41,6 +58,7 @@
             width: 100%;
             text-align: center;
         }
+
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -59,13 +77,22 @@
     </script>
 </head>
 <body>
+
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="https://cdn.coverr.co/videos/coverr-cruise-ship-animation-7214/1080p.mp4" type="video/mp4">
+        Twoja przeglądarka nie obsługuje wideo.
+    </video>
+
     <div class="container">
         <h1>503</h1>
         <p>Usługa niedostępna</p>
-        <p>Strona jest chwilowo niedostępna lub jest w Budowie. Prosimy o cierpliwość.</p>
+        <p>Strona jest chwilowo niedostępna lub jest w budowie. Prosimy o cierpliwość.</p>
     </div>
+
     <div class="footer">
         <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
     </div>
+
 </body>
 </html>
