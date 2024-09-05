@@ -5,32 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gry</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('https://astropolis.pl/uploads/post-16913-0-95744300-1362815032.jpg') no-repeat center center fixed;
-            background-size: cover;
+        body, html {
             margin: 0;
             padding: 0;
-            color: #fff;
+            height: 100%;
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Background video */
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(50%);
         }
 
         .container {
+            z-index: 1;
             max-width: 1200px;
-            margin: 0 auto;
             padding: 20px;
-            flex: 1;
+            text-align: center;
+            border-radius: 10px;
         }
 
         .header {
-            text-align: center;
             padding: 20px;
         }
 
         .header h1 {
-            margin: 0;
             font-size: 2.5em;
             color: #fff;
         }
@@ -43,13 +55,13 @@
         }
 
         .game {
-            border-radius: 8px;
             margin: 15px;
             width: 300px;
             text-align: center;
             padding: 20px;
             transition: transform 0.2s;
-            background-color: rgba(0, 0, 0, 0.6); /* Transparentne tło */
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
         }
 
         .game:hover {
@@ -59,7 +71,7 @@
         .game img {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
+            border-radius: 10px;
         }
 
         .game h2 {
@@ -72,26 +84,31 @@
             display: inline-block;
             text-decoration: none;
             color: #fff;
-            background-color: #007bff;
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 10px 15px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            font-weight: bold;
         }
 
         .game a:hover {
-            background-color: #0056b3;
+            background-color: rgba(255, 255, 255, 0.3);
         }
 
         .footer {
             text-align: center;
             padding: 20px;
-            background-color: transparent;
             color: #fff;
-            margin-top: auto;
         }
     </style>
 </head>
 <body>
+
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="https://cdn.coverr.co/videos/coverr-cruise-ship-animation-7214/1080p.mp4" type="video/mp4">
+        Twoja przeglądarka nie obsługuje wideo.
+    </video>
 
     <div class="container">
         <div class="header">
@@ -110,17 +127,5 @@
                 <h2>4 in a Row</h2>
                 <a href="https://4-in-a-row.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
             </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
-    </div>
-
-    <script>
-        // Ustawia bieżący rok w stopce
-        document.getElementById("current-year").textContent = new Date().getFullYear();
-    </script>
-
 </body>
 </html>
