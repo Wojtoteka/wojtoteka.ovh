@@ -3,50 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strona w budowie</title>
+    <title>Błąd 503 - Usługa niedostępna</title>
     <style>
         body {
+            background: linear-gradient(135deg, #f06, #4a90e2);
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #ff6b6b, #556270);
-            font-family: Arial, sans-serif;
             color: white;
             text-align: center;
+            flex-direction: column;
         }
         .container {
             background: rgba(0, 0, 0, 0.7);
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
         }
-        .main-text {
-            font-size: 56px;
-            margin: 0 0 20px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-        .sub-text {
-            font-size: 24px;
+        h1 {
+            font-size: 5em;
             margin: 0;
-            color: #ddd;
-            animation: fadeIn 2s ease-in-out;
+            animation: pulse 1.5s infinite;
         }
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
+        p {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+        .footer {
+            font-size: 0.75em;
+            color: white;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
             }
-            100% {
-                opacity: 1;
+            50% {
+                transform: scale(1.1);
             }
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const yearSpan = document.getElementById('current-year');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        });
+    </script>
 </head>
 <body>
     <div class="container">
-        <p class="main-text">Strona w budowie</p>
-        <p class="sub-text">Przepraszamy za niedogodności</p>
+        <h1>503</h1>
+        <p>Usługa niedostępna</p>
+        <p>Strona jest chwilowo niedostępna lub jest w Budowie. Prosimy o cierpliwość.</p>
+    </div>
+    <div class="footer">
+        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
     </div>
 </body>
 </html>
