@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wojtoteka.ovh</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Background video */
+        #background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover; /* ensures that the entire video is shown within the container */
+            filter: brightness(50%);
+        }
+
+        .container {
+            z-index: 1;
+            max-width: 700px; /* Widen the container */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .profile-pic {
+            width: 120px; /* Make the profile pic smaller */
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.5em; /* Smaller font size */
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 1em; /* Smaller font size */
+            margin: 10px 0;
+            color: #ddd;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: block;
+            text-decoration: none;
+            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 0.9em; /* Slightly smaller font size */
+        }
+
+        .social-links a:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Hover effect with more transparency */
+            color: #fff;
+        }
+
+        .social-links a {
+            width: 80%; /* Make buttons wider */
+            margin: 10px auto; /* Center the buttons */
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="https://cdn.coverr.co/videos/coverr-cruise-ship-animation-7214/1080p.mp4" type="video/mp4">
+        Twoja przeglądarka nie obsługuje wideo.
+    </video>
+
+    <div class="container">
+        <img src="https://cdn.bio.link/uploads/profile_pictures/2024-07-09/Op72QgNtiQxF0ZNE340f8d63e4c7ad3c.gif" alt="Profile Picture" class="profile-pic">
+        <h1>Wojtoteka</h1>
+        <p>ㅤㅤㅤㅤㅤㅤㅤWitaj👋, Na Mojej Stronie Bio Linkㅤㅤㅤㅤㅤㅤㅤ</p>
+
+        <div class="social-links">
+            <a href="https://discord.com/oauth2/authorize?client_id=1160316944818372618&permissions=8&integration_type=0&scope=bot" target="_blank"> Music Bot Discord</a>
+            <a href="https://wojtoteka.ovh/gry" target="_blank">Moje gry</a>
+            <a href="https://www.youtube.com/@xMarisnix" target="_blank">Youtube</a>
+            <a href="https://discord.com/users/836972435550896139" target="_blank">Discord</a>
+        </div>
+    </div>
+</body>
+</html>
+
