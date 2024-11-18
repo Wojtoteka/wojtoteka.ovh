@@ -1,0 +1,42 @@
+apt update
+apt upgrade
+apt install ufw 
+sudo ufw deny from ent-3.icehost.pl
+sudo ufw deny from ent-2.icehost.pl
+sudo ufw deny from ent-1.icehost.pl
+sudo ufw deny from ent free-servers-3.icehost.pl
+sudo ufw deny from ent free-servers-1.icehost.pl
+sudo ufw deny from ent free-servers-2.icehost.pl
+sudo ufw deny from ent free-servers-4.icehost.pl
+sudo ufw deny from nl1.icehost.pl
+sudo ufw deny from nl2.icehost.pl
+sudo ufw deny from nl3.icehost.pl
+sudo ufw deny from nl4.icehost.pl
+sudo ufw deny from nl5.icehost.pl
+sudo ufw deny from nl6.icehost.pl
+sudo ufw deny from nl7.icehost.pl
+sudo ufw deny from nl8.icehost.pl
+sudo ufw deny from nl9.icehost.pl
+sudo ufw deny from nl10.icehost.pl
+sudo ufw deny from nl11.icehost.pl
+sudo ufw deny from nl12.icehost.pl
+sudo ufw deny from nl13.icehost.pl
+sudo ufw deny from nl14.icehost.pl
+sudo ufw deny from nl15.icehost.pl
+sudo ufw deny from nl16.icehost.pl
+sudo ufw deny from nl17.icehost.pl
+sudo ufw deny from nl18.icehost.pl
+sudo ufw deny from nl19.icehost.pl
+sudo ufw deny from nl20.icehost.pl
+sudo ufw deny from nl21.icehost.pl
+sudo ufw deny from nl22.icehost.pl
+sudo ufw deny from nl23.icehost.pl
+sudo ufw deny from nl24.icehost.pl
+sudo ufw deny from nl25.icehost.pl
+sudo ufw deny from nl26.icehost.pl
+sudo ufw deny from nl27.icehost.pl
+sudo ufw deny from nl28.icehost.pl
+sudo ufw deny from nl29.icehost.pl
+sudo ufw deny from nl30.icehost.pl
+sudo ufw deny from nl31.icehost.pl
+sudo ufw deny from nl32.icehost.pl
