@@ -1,8 +1,0 @@
-apt update
-apt upgrade
-cd /root
-wget https://git.io/wireguard -O wireguard-install.sh && bash wireguard-install.sh
-chmod +x wireguard-install.sh
-./wireguard-install.sh
-Enter a name for the first client:
-Name [client]: vpnvpsssd
