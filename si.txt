@@ -1,6 +1,0 @@
-add-apt-repository -y ppa:ondrej/php
-apt -y update
-apt -y install php8.3 php8.3-{cli,gd,mysql,pdo,mbstring,tokenizer,bcmath,xml,fpm,curl,zip}
-composer self-update --2
-sed -i -e 's/php[7|8].[0-9]-fpm.sock/php8.3-fpm.sock/' /etc/nginx/sites-available/pterodactyl.conf
-systemctl reload nginx
