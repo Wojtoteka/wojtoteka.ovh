@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Blooket Cheats Plus
-// @namespace    https://github.com/DannyDan0167/Blooket-Cheats
+// @namespace    https://wojtoteka.ovh/
 // @version      15.3
 // @description  Blooket Cheats Plus
-// @updateURL    https://raw.githubusercontent.com/DannyDan0167/Blooket-Cheats-Plus/main/Update/mobileGUI.meta.js
-// @downloadURL  https://raw.githubusercontent.com/DannyDan0167/Blooket-Cheats-Plus/main/MobileGUI/mobileGui.user.js
+// @updateURL    https://wojtoteka.ovh/vblooket.txt
+// @downloadURL  https://wojtoteka.ovh/vblooket.txt
 // @author       DannyDan0167
 // @match        https://dashboard.blooket.com/*
 // @match        https://play.blooket.com/*
@@ -24,7 +24,7 @@
 // @match        https://blookrush.blooket.com/*
 // @match        https://classic.blooket.com/*
 // @match        https://pirate.blooket.com/*
-// @icon         https://i.ibb.co/sWqBm0K/1024.png
+// @icon         https://wojtoteka.ovh/Blooket.png
 // @grant        none
 // @require     https://unpkg.com/idb-keyval@6.0.3/dist/umd.js
 // ==/UserScript==
