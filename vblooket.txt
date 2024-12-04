@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Blooket Cheats Plus
 // @namespace    https://wojtoteka.ovh/
-// @version      15.5
+// @version      15.3
 // @description  Blooket Cheats Plus
 // @updateURL    https://wojtoteka.ovh/vblooket.txt
 // @downloadURL  https://wojtoteka.ovh/vblooket.txt
