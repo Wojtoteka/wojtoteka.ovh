@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Blooket Cheats Plus
 // @namespace    https://wojtoteka.ovh/
-// @version      15.3
+// @version      15.5
 // @description  Blooket Cheats Plus
 // @updateURL    https://wojtoteka.ovh/vblooket.txt
 // @downloadURL  https://wojtoteka.ovh/vblooket.txt
-// @author       DannyDan0167
+// @author       Wojtoteka
 // @match        https://dashboard.blooket.com/*
 // @match        https://play.blooket.com/*
 // @match        https://towerdefense2.blooket.com/*
