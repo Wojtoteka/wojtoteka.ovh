@@ -125,7 +125,7 @@ javascript: (async () => {
           textAlign: "center",
         }),
         (t.innerHTML =
-          'Blooket Cheats <span style="font-size: 0.75rem">v15.5.0/span>'),
+          'Blooket Cheats <span style="font-size: 0.75rem">v15.5.0</span>'),
         document.createElement("button")),
       l =
         (t.appendChild(l),
