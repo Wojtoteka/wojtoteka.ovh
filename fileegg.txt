@@ -2,7 +2,14 @@
 
 # Aktualizacja i instalacja pakietów
 apt-get update
-apt-get install -y apache2 php libapache2-mod-php
+apt-get install -y apache2 php libapache2-mod-php wget
+
+# Dodanie ServerName do konfiguracji Apache
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Konfiguracja pliku PID dla Apache
+mkdir -p /mnt/server/apache2_run
+echo "PidFile /mnt/server/apache2_run/apache2.pid" >> /etc/apache2/apache2.conf
 
 # Tworzenie folderów
 mkdir -p /mnt/server/web
@@ -11,7 +18,36 @@ mkdir -p /mnt/server/file
 # Tworzenie strony www
 cat << 'EOF' > /mnt/server/web/index.php
 <?php
-echo "Witaj w moim systemie plików!";
+session_start();
+define('PASSWORD', 'superhaslo123');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_POST['password'] === PASSWORD) {
+        $_SESSION['authenticated'] = true;
+        header("Location: /");
+        exit;
+    } else {
+        $error = "Nieprawidłowe hasło!";
+    }
+}
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: /");
+    exit;
+}
+
+if (!isset($_SESSION['authenticated']) || !$_SESSION['authenticated']) {
+    echo "<form method='POST'>";
+    echo "<input type='password' name='password' placeholder='Hasło' required>";
+    echo "<button type='submit'>Zaloguj</button>";
+    echo isset($error) ? "<p>$error</p>" : "";
+    echo "</form>";
+    exit;
+}
+
+echo "<h1>Witaj w systemie plików!</h1>";
+echo "<a href='?logout'>Wyloguj</a>";
 ?>
 EOF
 
