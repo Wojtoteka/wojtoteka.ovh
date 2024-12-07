@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Aktualizacja i instalacja pakietów
+apt-get update
+apt-get install -y apache2 php libapache2-mod-php
+
+# Tworzenie folderów
+mkdir -p /mnt/server/web
+mkdir -p /mnt/server/file
+
+# Tworzenie strony www
+cat << 'EOF' > /mnt/server/web/index.php
+<?php
+echo "Witaj w moim systemie plików!";
+?>
+EOF
+
+# Konfiguracja Apache
+cat << 'EOF' > /etc/apache2/sites-available/000-default.conf
+<VirtualHost *:80>
+    DocumentRoot /mnt/server/web
+    <Directory /mnt/server/web>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+EOF
+
+# Restart Apache
+service apache2 restart
+
+echo "Strona została zainstalowana!"
