@@ -84,9 +84,35 @@
             width: 80%; /* Make buttons wider */
             margin: 10px auto; /* Center the buttons */
         }
+
+        /* Notification bar */
+        .notification-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            z-index: 1000;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        .notification-bar a {
+            color: #FFD700;
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Notification Bar -->
+    <div class="notification-bar">
+        Z powodu zawieszenia mojego konta Discord, proszę o kontakt tymczasowy za pośrednictwem Telegramu: <a href="https://t.me/wojtoteka" target="_blank">t.me/wojtoteka</a>. Dziękuję za zrozumienie!
+    </div>
+
     <!-- Background video -->
     <video autoplay muted loop id="background-video">
         <source src="https://cdn.coverr.co/videos/coverr-cruise-ship-animation-7214/1080p.mp4" type="video/mp4">
@@ -102,7 +128,7 @@
             <a href="https://radio.wojtoteka.ovh/" target="_blank">Moje Radio!</a>
             <a href="https://wojtoteka.ovh/gry" target="_blank">Moje gry</a>
             <a href="https://www.youtube.com/@xMarisnix" target="_blank">Youtube</a>
-            <a href="https://discord.com/users/836972435550896139" target="_blank">Discord</a>
+            <a href="https://wojtoteka.ovh/soon" target="_blank">Discord</a>
         </div>
     </div>
 </body>
