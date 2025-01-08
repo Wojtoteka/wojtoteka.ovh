@@ -12,17 +12,14 @@
             padding: 0;
             height: 100%;
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: #fff;
             text-align: center;
-            overflow: hidden;
+            overflow-x: hidden; /* Tylko poziome przewijanie jest wyłączone */
         }
 
         /* Background video */
         #background-video {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -35,9 +32,8 @@
         .container {
             z-index: 1;
             max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            text-align: center;
-            border-radius: 10px;
         }
 
         .header {
@@ -53,11 +49,11 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 20px;
             margin-top: 20px;
         }
 
         .game {
-            margin: 15px;
             width: 300px;
             text-align: center;
             padding: 20px;
@@ -102,6 +98,27 @@
             padding: 20px;
             color: #fff;
         }
+
+        /* Ustawienia dla małych ekranów */
+        @media (max-width: 768px) {
+            body {
+                display: block; /* Usuń flex na body, aby zawartość była przewijalna */
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .game {
+                width: 90%; /* Gry zajmują całą szerokość na małych ekranach */
+                margin: 0 auto;
+            }
+
+            .games {
+                flex-direction: column; /* Gry ułożone w pionie */
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,21 +138,20 @@
             <div class="game">
                 <img src="https://github.com/Wojtoteka/Nightdrive/blob/main/icon192.png?raw=true" alt="Night Drive">
                 <h2>Night Drive</h2>
-                <a href="https://nightdrive.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
+                <a href="https://nightdrive.wojtoteka.ovh/">Zagraj teraz</a>
             </div>
 
             <div class="game">
                 <img src="https://raw.githubusercontent.com/Wojtoteka/4-In-a-Row/main/icon192.png" alt="4 in a Row">
                 <h2>4 in a Row</h2>
-                <a href="https://4-in-a-row.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
+                <a href="https://4-in-a-row.wojtoteka.ovh/">Zagraj teraz</a>
             </div>
             
             <div class="game">
                 <img src="https://github.com/Wojtoteka/GloomCraft/blob/main/icon192.png?raw=true" alt="GloomCraft">
                 <h2>GloomCraft</h2>
-                <a href="https://gloomcraft.wojtoteka.ovh/" target="_blank">Zagraj teraz</a>
+                <a href="https://gloomcraft.wojtoteka.ovh/">Zagraj teraz</a>
             </div>
-
         </div>
     </div>
 </body>
