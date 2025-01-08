@@ -1,0 +1,2758 @@
+<!DOCTYPE html><html><head><title>4 In a Row </title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Squarewave"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"4inrowicon.png","version":6,"size":2040,"properties":{"frames":1,"fps":5}},{"file":"_o.png","version":3,"size":310,"properties":{"frames":1,"fps":5}},{"file":"_x.png","version":3,"size":312,"properties":{"frames":1,"fps":5}},{"file":"blink_o.png","version":8,"size":5112,"properties":{"frames":2,"fps":8}},{"file":"hakenremovebgpreview.png","version":1,"size":12018,"properties":{}},{"file":"icon.png","version":29,"size":3579,"properties":{"frames":1,"fps":5}},{"file":"l.png","version":1,"size":1826,"properties":{}},{"file":"o.png","version":1,"size":3764,"properties":{}},{"file":"poster.png","version":1,"size":38168,"properties":{"frames":1,"fps":5}},{"file":"x.png","version":1,"size":4048,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '2x1' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+//  1_main
+
+// todo: 
+//    error by column_full: timing OK now
+// future:
+//    mark winnigline 
+//    cpu as conterplayer
+// ------------------
+
+
+  
+init = function()
+// ------------------
+  
+  myBots = [
+    new JS_ONE("Bot 1"),
+    new JS_TWO("Bot 2")
+  ]
+  
+  bots=object
+    
+    x="Gracz"
+    o="Gracz"
+    
+  end
+  
+ testDoc()
+  
+  x_db=new dropbox(-160,40,40,20,"#fff","#fff","Choose Bot",7,"#000","Squarewave",1,"rgb(166,166,166)")
+  o_db=new dropbox(160,40,40,20,"#fff","#fff","Choose Bot",7,"#000","Squarewave",1,"rgb(166,166,166)")
+  
+  x_db.add("Gracz")
+  o_db.add("Gracz")
+  
+  x_db.chosen="Gracz"
+  o_db.chosen="Gracz"
+  
+  for bot in myBots
+    
+    x_db.add(bot.name)
+    o_db.add(bot.name)
+    
+  end
+  
+  
+    
+  randomStartPosition = false // important for testing your bots, otherwise it will always play the same lines
+  
+  
+  bot_thinktime=1000
+  
+  botgame=[false,false] // x played by bot?, o played by bot?
+  
+  started = false
+
+  thread=0
+  ROW_COUNT = 6
+  COL_COUNT = 7
+  current   = 0               // current column
+  
+  gameInit()
+  
+end	// ---------------------- init 
+
+// ------------------
+update = function()
+// ------------------
+    
+  
+    drawGB(gb)
+    local x_prev = x_db.chosen
+    local o_prev = o_db.chosen
+    
+    x_db.update(mouse.left)
+    o_db.update(mouse.left)
+    
+    x_after = x_db.chosen==x_prev
+    o_after = o_db.chosen==o_prev
+    
+    checkDropBox()
+    
+    if started then
+      
+      if game_still_running and next=="x" then
+      
+        if botgame[0]==0 then 
+            getMouse(gb, bs)          // return [mousex,mousey]
+            touchx = mousex
+            current = touchx
+            if touch.press and game_still_running and mouse.x>-64 and mouse.x<74 and mouse.y<69 and mouse.y>-69 then  // until the winner is..
+              drop(current,true)
+            end // touch
+        elsif thread==0 then// overBoard
+          thread=1
+          thread = do
+            local column=bots.x.think(bot_thinktime,gb)
+            drop(column,false)
+            thread=0
+            winning_move(gb,"x")
+          end
+        end   
+        
+        
+      elsif game_still_running and next=="o" then
+          if botgame[1]==false then 
+              getMouse(gb, bs)          // return [mousex,mousey]
+              touchx = mousex
+              current = touchx
+        
+              if touch.press and game_still_running and mouse.x>-64 and mouse.x<74 and mouse.y<69 and mouse.y>-69 then  // until the winner is..
+                drop(current,true)
+              end // touch
+          elsif thread==0 then// overBoard
+            
+            thread=1
+            thread = do
+              local column=bots.o.think(bot_thinktime,gb)
+              drop(column,false)
+              thread=0
+              winning_move(gb,"o")
+            end
+              
+          end
+        
+        
+        end
+    
+    else
+      
+      screen.setAlpha(0.8)
+      screen.fillRect(5,-10,120,100,"#fff")
+      screen.setAlpha(1)
+      screen.drawText("Kliknij",5,20,20,"#000")
+      screen.drawText("Tutaj",5,-5,20,"#000")
+      screen.drawText("by zacząć",5,-30,20,"#000")
+      
+      if mouse.release and mouse.x<5+60 and mouse.x>5-60 and mouse.y<-10+50 and mouse.y>-10-50 then
+        started=true
+        
+        if thread!=0 then
+          thread.stop()
+          thread=0
+        end
+      
+        gameInit()
+      end
+      
+    end
+    
+    
+    
+    //sleep(100)
+    if keyboard.release.SPACE or (botgame[0] and botgame[1] and not game_still_running) then 
+      
+      if thread!=0 then
+        thread.stop()
+        thread=0
+      end
+      
+      gameInit()
+      
+    end     // ** restart **
+    
+    
+  
+end // ---------------------- update
+
+
+// ----------------
+gameInit = function()
+  
+  //sleep(1000)
+  
+  next = 'x'                  // x: blue  o: red
+  bs = 20                     // block size
+  
+  gb = []                     // game board def.
+  lastGB=[]                   // gameboard of the last Position (human played)
+  for r = 0 to ROW_COUNT-1    // 6 row
+    gb[r] = []             
+    for c = 0 to COL_COUNT-1  // 7 col
+      gb[r][c] = " "          // for debugg better with: '.'
+    end
+  end
+  
+  if randomStartPosition then randomGB() end
+  
+  column_full = false         // in process
+  game_still_running = true 
+  drawn=false                 //is set, when the game ends in a draw
+  
+  if bots.x!="Gracz" then 
+    bots.x.tt.clear()
+    bots.x.nps=0 
+    bots.x.globalDepthScore=0
+    bots.x.currentDepth=0 
+  end
+  if bots.o!="Gracz" then 
+    bots.o.tt.clear() 
+    bots.o.nps=0 
+    bots.o.globalDepthScore=0
+    bots.o.currentDepth=0 
+  end
+  
+  
+end
+
+botInit = function(symbol)
+  
+  if symbol=="x" then
+    print("Wiadomość Testowa")
+    bots.x.setSide("x")
+    bots.x.wins=0
+    bots.x.loses=0
+    bots.x.draws=0
+    
+    bots.x.nps=0
+    bots.x.currentDepth=0
+    bots.x.globalDepthScore=0
+    
+    bots.x.tt.clear()
+    
+  elsif symbol=="o" then
+    
+    print("Testowa wiadomość")
+    bots.o.setSide("o")
+    bots.o.wins=0
+    bots.o.loses=0
+    bots.o.draws=0
+    
+    bots.o.nps=0
+    bots.o.currentDepth=0
+    bots.o.globalDepthScore=0
+    
+    bots.o.tt.clear()
+  
+  
+  end
+  
+  
+ 
+end
+
+checkDropBox = function()
+  
+  
+  for bot in myBots
+    
+    if x_db.chosen == bot.name and not x_after then
+      
+      bots.x=bot
+      botInit("x")
+      botgame[0]=true
+      started=false
+      
+    end
+    
+    if o_db.chosen == bot.name and not o_after then
+      
+      bots.o=bot
+      botInit("o")
+      botgame[1]=true
+      started=false
+      
+      
+    end
+    
+  end
+  
+  if x_db.chosen == "Gracz" and not x_after then
+    bots.x="Gracz"
+    botgame[0]=false
+    started=false
+    
+  end
+  
+  if o_db.chosen == "Gracz" and not o_after then
+    bots.o="Gracz"
+    botgame[1]=false
+    started=false
+    
+  end
+  
+  
+end
+
+
+end()
+
+
+
+function()
+ //  2_functions
+
+drop = function(column,human) 
+  if human then
+    for i=0 to 5
+      lastGB[i]=gb[i]+[]
+    end
+  end
+  lastPlayed = column
+  for row=0 to ROW_COUNT-1        // got through the column row by row
+    value = gb[row][column]
+    if value == " " then          // is this spot empty?
+      gb[row][column] = next
+      winning_move(gb, next)      // next: x/o
+      if next =='x' then next='o' else next='x' end //swap tokens. not earlier!
+      break                       // break the loop once token is placed 
+		end  //value
+  end  //for
+  
+  
+  drawGB(gb)
+  x_db.update(mouse.left)
+  o_db.update(mouse.left)
+  
+end
+
+// reverse the collect from 5 to 0
+drawGB = function(gameboard)
+  screen.clear()
+  screen.setFont("Squarewave")
+ for r = ROW_COUNT-1 to 0         // read from bottom to up
+    for c = COL_COUNT-1 to 0      // bs = 20    stp = -55
+      row_y = (-(3*bs))+r*bs      // draw from bottom to top
+      col_x = (-55)+c*bs          // draw from left to right (55 midle of scr)
+      cur_x = (-55)+current*bs    // column cursor  
+      screen.fillRound(col_x,row_y,bs-1,bs-1,"rgb(62,62,62)")   // hg grey
+      screen.drawSprite('l',col_x,row_y,bs-1,bs-1)              // colon-region
+      screen.drawSprite(gameboard[r][c],col_x,row_y,bs-2, 18, 17 )     // show next sprite
+      
+      
+      next_val = 0
+      if next=="o" then next_val=1 end
+      
+        screen.drawRect(cur_x,bs-19,bs-20,bs*6.4,"aqua")          // active col
+      
+      screen.fillRect(5,60,138,20,"rgb(224,230,0)")             // glide zone top yellow 
+      screen.drawSprite(next, cur_x, bs* (3), 18, 17)           // show next token
+    end
+ end // for row 
+ screen.drawText('4 in a Row', 0, 90, 20,"red")
+  show_winner() 
+  screen.setLineWidth(3.0)    // RAHMEN
+  screen.drawRect( 5, 0, 140, -141,"rgb(255,85,0)")  // red
+  test=system.fps
+  screen.drawText(test+"fps",190,90,7,"rgb(255,255,255)")
+  
+  
+  if mouse.release and lastGB.length!=0 and mouse.x>-200 and mouse.x<-100 and mouse.y>-15 and mouse.y<15 then
+    gb=lastGB
+    game_still_running=true
+  end
+  
+  // O BOT
+  
+  screen.setLineWidth(1)
+  
+  screen.fillRect(160,70,40,10,"red")
+  screen.drawText("Bot O",160,70,10,"#fff")
+  screen.drawLine(130,60,190,60)
+  
+  if bots.o!="Gracz" then
+    
+    screen.drawLine(130,-20,190,-20)
+    screen.drawText("Wygranych: "+bots.o.wins,160,-30,10,"#fff")
+    screen.drawText("Przegranych: "+bots.o.loses,160,-40,10,"#fff")
+
+  end
+  
+  // X BOT
+  
+  screen.fillRect(-160,70,40,10,"blue")
+  screen.drawText("Bot X",-160,70,10,"#fff")
+  screen.drawLine(-130,60,-190,60)
+  
+  if bots.x!="Gracz" then
+    
+    screen.drawLine(-130,-20,-190,-20)
+    screen.drawText("Wygranych: "+bots.x.wins,-160,-30,10,"#fff")
+    screen.drawText("Przegranych: "+bots.x.loses,-160,-40,10,"#fff")
+  end
+  
+end //func
+
+// check for the winner   
+show_winner = function()
+  if game_still_running == false then   // the winner (x/o) ist: *** too late! ***
+    if drawn==true then
+      screen.drawText('Nikt Nie wygał.', 0, -78, 20,"red")
+    else
+      if next == 'x' then
+        screen.drawText('Czerwony wygrywa.', 0, -78, 20,"red")
+      else
+        screen.drawText('Niebieski wygrywa.', 0, -78, 20,"blue")
+      end
+      screen.drawText('Wybierz Przećywników aby zacząć ponownie.', 0, -92, 10,"grey")
+    end
+  end // ..still_running
+end
+
+
+evalToString = function(value)
+  
+  local ABS = abs(value)
+  
+  if ABS<=20 then return "Remis" end
+  if value<-500 then return "Gracz wygrywa" end
+  if value>500 then return "Bot wygrywa" end
+  if value<-20 then return "Gracz lepszy" end
+  if value>20 then return "Bot lepszy" end
+  
+  
+  
+end  
+  
+  
+  
+  
+  
+end()
+
+
+
+function()
+//  3-winning
+
+winning_move = function(board, piece)
+  
+  piece = next
+  for r=0 to 5
+      for c=0 to 3      
+          if board[r][c] == piece and board[r][c+1] == piece and 
+             board[r][c+2] == piece and board[r][c+3] == piece then
+             game_still_running = false
+             
+             if next=="x" then
+              
+              if botgame[0] then bots.x.loses+=1 end
+              if botgame[1] then bots.o.wins+=1 end
+              
+            else
+            
+              if botgame[0] then bots.x.wins+=1 end
+              if botgame[1] then bots.o.loses+=1 end
+              
+             end
+          
+             return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 6    
+          if board[r][c] == piece and board[r+1][c ] == piece and 
+            board[r+2][c] == piece and board[r+3][c] == piece then
+            game_still_running = false
+            
+            if next=="x" then
+              
+              if botgame[0] then bots.x.loses+=1 end
+              if botgame[1] then bots.o.wins+=1 end
+              
+            else
+            
+              if botgame[0] then bots.x.wins+=1 end
+              if botgame[1] then bots.o.loses+=1 end
+              
+            end
+            
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 3    
+          if board[r][c] == piece and board[r+1][c+1] == piece and 
+            board[r+2][c+2] == piece and board[r+3][c+3] == piece then
+            game_still_running = false
+            
+            if next=="x" then
+              
+              if botgame[0] then bots.x.loses+=1 end
+              if botgame[1] then bots.o.wins+=1 end
+              
+            else
+            
+              if botgame[0] then bots.x.wins+=1 end
+              if botgame[1] then bots.o.loses+=1 end
+              
+            end
+            
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=3 to 5
+      for c=0 to 3
+          if board[r][c] == piece and board[r-1][c+1] == piece and 
+            board[r-2][c+2] == piece and board[r-3][c+3] == piece then
+            game_still_running = false
+            
+            if next=="x" then
+              
+              if botgame[0] then bots.x.loses+=1 end
+              if botgame[1] then bots.o.wins+=1 end
+              
+            else
+            
+              if botgame[0] then bots.x.wins+=1 end
+              if botgame[1] then bots.o.loses+=1 end
+              
+            end
+            
+            
+            return true
+          end //if
+		  end //for-r
+  end //for-c
+  
+  
+  local nonEmptyFields=0
+  
+  for row=0 to 5
+    for col=0 to 6
+      if board[row][col]!=" " then
+        nonEmptyFields+=1
+      end
+    end
+  end
+
+  logBoard(board)
+  if nonEmptyFields==42 then
+    game_still_running = false
+    drawn=true
+    if botgame[0] then bots.x.draws+=1 end
+    if botgame[1] then bots.o.draws+=1 end
+    
+    
+  end
+  
+  
+end //fnc
+
+
+end()
+
+
+
+function()
+V_ONE = class
+  
+  constructor=function()
+  
+    this.bestColumnRoot=-1 // "Null-Move"
+    this.symbols = ["x"," ","o"] //getting score with symbols.indexOf(symbol) -> -1 or 1
+    this.players=["x","o"]
+    this.globalBestScore=0
+    this.tt = new HashMap()
+    
+    this.name="V_ONE"
+    
+  end
+  
+  setSide = function(symbol)
+    this.symbol = symbol
+    if symbol == "x" then this.enemy=="o" else this.enemy=="x" end
+  end
+  
+  
+  search=function(gameboard,timer,alpha,beta,depth,ply)
+    
+    
+    local key = board_to_hash(gameboard) 
+    local qsearch = depth <= 0
+    local notRoot = ply > 0
+
+    if notRoot and tt.get(key)!=0 and tt.get(key).depth>=depth  and (tt.get(key).score<=alpha or tt.get(key).score>=beta) then // 
+      hashCount+=1
+      return tt.get(key).score
+    end
+    
+    
+    if qsearch then
+      counter+=1
+      local best = evaluate(gameboard,currentPlayer)+ply
+      return best
+    end
+    
+    if winning_js(gameboard,getEnemy(currentPlayer)) then
+      return -1000+ply
+    end
+    
+    
+    
+    
+    local bestMove=-1 //not set here
+    local legalMoves=getMoves(gameboard,depth)
+    
+    if legalMoves.length == 0 then return 0 end //gamefield is full of pieces
+    
+    for move in legalMoves
+      
+      this.bot_drop(gameboard,move)
+      
+      local score = -search(gameboard,timer,-beta,-alpha,depth-1,ply+1)
+      
+      this.bot_undo_drop(gameboard,move)
+      
+      if ply==0 and score>globalBestScore then
+          
+          globalBestScore=score
+      end
+      
+      if ply==0 and score>globalDepthScore then
+        bestColumnRoot=move
+          globalDepthScore=score
+      end
+    
+      
+      
+      if score >= beta then
+        
+        tt.put(key,new TTEntry(depth,beta))
+        return beta
+        
+      end
+      
+      alpha = max(alpha, score)
+      
+      
+            
+    end
+    
+    
+    tt.put(key,new TTEntry(depth,alpha))
+    return alpha
+    
+    
+  end
+  
+  think = function(timer) //movetime for the bot in ms
+    
+    
+    startTime = system.time() //setting startTime
+    counter=0
+    bestColumnRoot=-1
+    hashCount=0
+    currentDepth = 0
+    globalBestScore=-30000
+    currentPlayer=global.next
+    
+    local gameboard=[] //making a copy of the gameboard to not change any state
+    for r = 0 to ROW_COUNT-1    // 6 row
+      gameboard[r] = gb[r]+[]             
+    end
+
+    local maxdepth = countFreeSpaces() //max depth is the # of empty cells
+    
+    
+    for depth = 1 to maxdepth
+      currentDepth = depth
+      globalDepthScore=-30000
+      print("running depth "+depth)
+      local score = search(gameboard,timer,-30000,30000,depth,0)
+      print("finsihed after "+(system.time()-startTime)/1000+ " seconds")
+      if system.time()-startTime>timer or depth==maxdepth or globalDepthScore>500 then
+        nps=counter/(system.time()-startTime)*1000
+        break
+      end
+      
+    end
+    print("")
+    print("---------------------")
+    print("")
+    print("TU też nie wiem: "+bestColumnRoot)
+    print("")
+    print("---------------------")
+    print("")
+    
+    if bestColumnRoot==-1 then return getMoves()[0] else bestColumnRoot end
+    
+  end
+  
+  getEnemy = function(symbol)
+    
+    if symbol=="x" then return "o" else return "x" end
+    
+  end
+  
+  evaluate = function(gameboard,active)
+    
+    
+    
+    
+      
+    if winning_js(gameboard,active) then
+      return 1000
+    end
+ 
+    local eval = position_js(gameboard,this.players)
+    
+    
+    if active=="x" then return eval else return -eval end
+    
+  end
+  
+  
+  countFreeSpaces = function()
+    
+    local freeCount=0
+    for row=0 to 5
+      for col=0 to 6
+        if gb[row][col]==" " then freeCount+=1 end 
+      end
+    end
+    return freeCount
+    
+  end
+
+
+
+  bot_drop = function(gameboard,column)
+    for row=0 to ROW_COUNT-1        // got through the column row by row
+      local value = gameboard[row][column]
+      if value == " " then          // is this spot empty?
+        gameboard[row][column] = currentPlayer
+        if currentPlayer =='x' then currentPlayer='o' else currentPlayer='x' end //swap tokens. not earlier!
+        break                       // break the loop once token is placed 
+  		end  //value
+    end  //for
+  end
+  
+  bot_undo_drop = function(gameboard,column) 
+    for row=0 to ROW_COUNT-1        // got through the column row by row
+      local value = gameboard[5-row][column]     //reversing the row
+      if value != " " then          // is this spot empty?
+        gameboard[5-row][column] = " "
+        if currentPlayer =='x' then currentPlayer='o' else currentPlayer='x' end //swap tokens. not earlier!
+        break                       // break the loop once token is placed 
+  		end  //value
+    end  //for
+  end
+  
+  
+
+
+winningPosition = function(board, piece)
+
+  
+  for r=0 to 5
+      for c=0 to 3      
+          if board[r][c] == piece and board[r][c+1] == piece and 
+             board[r][c+2] == piece and board[r][c+3] == piece then
+             return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 6    
+          if board[r][c] == piece and board[r+1][c ] == piece and 
+            board[r+2][c] == piece and board[r+3][c] == piece then
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 3    
+          if board[r][c] == piece and board[r+1][c+1] == piece and 
+            board[r+2][c+2] == piece and board[r+3][c+3] == piece then
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=3 to 5
+      for c=0 to 3
+          if board[r][c] == piece and board[r-1][c+1] == piece and 
+            board[r-2][c+2] == piece and board[r-3][c+3] == piece then
+            return true
+          end //if
+		  end //for-r
+  end //for-c
+  
+  return false
+  
+end //fnc
+
+end
+
+
+end()
+
+
+
+function()
+V_TWO = class
+  
+  constructor=function()
+  
+    this.bestColumnRoot=-1 // "Null-Move"
+    this.symbols = ["x"," ","o"] //getting score with symbols.indexOf(symbol) -> -1 or 1
+    this.players=["x","o"]
+    this.globalBestScore=0
+    this.tt = new HashMap()
+    
+    this.name="V_TWO"
+    
+  end
+  
+  setSide = function(symbol)
+    this.symbol = symbol
+    if symbol == "x" then this.enemy=="o" else this.enemy=="x" end
+  end
+  
+  getLegalMoves = function(gameboard)
+    
+    local legal=[]
+    
+    
+    //ordering the moves from inside to outisde
+    
+    local centerColumn = 3  
+  
+    for offset = 0 to 3
+      local leftColumn = centerColumn - offset
+      local rightColumn = centerColumn + offset
+  
+      if leftColumn >= 0 and leftColumn != rightColumn  then
+        for row = 0 to 5
+          if gameboard[row][leftColumn] == " " then
+            legal.push(leftColumn)
+            break
+          end
+        end
+      end
+  
+      if rightColumn < 7 then
+        for row = 0 to 5
+          if gameboard[row][rightColumn] == " " then
+            legal.push(rightColumn)
+            break
+          end
+        end
+      end
+    end
+    
+   
+    
+    //normal ordering -- slower
+    
+    /*
+     for column=0 to 6
+      for row=0 to 5
+        if gameboard[row][column]==" " then
+          legal.push(column)
+          break
+        end
+      end
+     end
+    */
+ 
+    return legal
+    
+  end
+  
+  
+  search=function(gameboard,timer,alpha,beta,depth,ply)
+    
+    local key = board_to_hash(gameboard) 
+    local qsearch = depth <= 0
+    local notRoot = ply > 0
+    
+    //drawGB(gameboard)
+    //sleep(1000)
+    
+    
+    
+    
+    
+    if notRoot and tt.get(key)!=0 and tt.get(key).depth>=depth  and (tt.get(key).score<=alpha or tt.get(key).score>=beta) then // 
+      hashCount+=1
+      return tt.get(key).score
+    end
+    
+    
+    if qsearch then
+      counter+=1
+      local best = evaluate(gameboard,currentPlayer)+ply
+      return best
+    end
+    
+    if winningPosition(gameboard,getEnemy(currentPlayer)) then
+      return -1000+ply
+    end
+    
+    
+    
+    
+    local bestMove=-1 //not set here
+    local legalMoves=getMoves(gameboard,depth)
+    
+    if legalMoves.length == 0 then return 0 end //gamefield is full of pieces
+    
+    for move in legalMoves
+      this.bot_drop(gameboard,move)
+      
+      local score = -search(gameboard,timer,-beta,-alpha,depth-1,ply+1)
+      
+      this.bot_undo_drop(gameboard,move)
+      
+      if ply==0 and score>globalBestScore then
+          
+          globalBestScore=score
+      end
+      
+      if ply==0 and score>globalDepthScore then
+        bestColumnRoot=move
+          globalDepthScore=score
+      end
+      
+
+      
+      
+      if score >= beta then
+        
+        tt.put(key,new TTEntry(depth,beta))
+        return beta
+      end
+      
+      alpha = max(alpha, score)
+      
+      
+            
+    end
+    
+    tt.put(key,new TTEntry(depth,alpha))
+    
+    return alpha
+    
+    
+  end
+  
+  think = function(timer) //movetime for the bot in ms
+    
+    
+    startTime = system.time() //setting startTime
+    counter=0
+    bestColumnRoot=-1
+    hashCount=0
+    currentDepth = 0
+    globalBestScore=-30000
+    currentPlayer=global.next
+    
+    local gameboard=[] //making a copy of the gameboard to not change any state
+    for r = 0 to ROW_COUNT-1    // 6 row
+      gameboard[r] = gb[r]+[]             
+    end
+
+    local maxdepth = countFreeSpaces() //max depth is the # of empty cells
+    
+    
+    for depth = 1 to maxdepth
+      currentDepth = depth
+      globalDepthScore=-30000
+      print("Szybkość  "+depth)
+      local score = search(gameboard,timer,-30000,30000,depth,0)
+      print("skończył po "+(system.time()-startTime)/1000+ " seconds")
+      if system.time()-startTime>timer or depth==maxdepth or globalDepthScore>500 then
+        nps=counter/(system.time()-startTime)*1000
+        break
+      end
+      
+    end
+    
+    print("")
+    print("---------------------")
+    print("")
+    print("i tu też: "+bestColumnRoot)
+    print("")
+    print("---------------------")
+    print("")
+    
+    if bestColumnRoot==-1 then return getLegalMoves()[0] else bestColumnRoot end
+    
+  end
+  
+  getEnemy = function(symbol)
+    
+    if symbol=="x" then return "o" else return "x" end
+    
+  end
+  
+  evaluate = function(gameboard,active)
+    
+    local eval = 0
+    
+    
+      
+    if winningPosition(gameboard,active) then
+      return 1000
+    end
+    
+    
+    if active=="x" then return eval else return -eval end
+    
+  end
+  
+  
+  countFreeSpaces = function()
+    
+    local freeCount=0
+    for row=0 to 5
+      for col=0 to 6
+        if gb[row][col]==" " then freeCount+=1 end 
+      end
+    end
+    return freeCount
+    
+  end
+
+
+
+  bot_drop = function(gameboard,column)
+    for row=0 to ROW_COUNT-1        // got through the column row by row
+      local value = gameboard[row][column]
+      if value == " " then          // is this spot empty?
+        gameboard[row][column] = currentPlayer
+        if currentPlayer =='x' then currentPlayer='o' else currentPlayer='x' end //swap tokens. not earlier!
+        break                       // break the loop once token is placed 
+  		end  //value
+    end  //for
+  end
+  
+  bot_undo_drop = function(gameboard,column) 
+    for row=0 to ROW_COUNT-1        // got through the column row by row
+      local value = gameboard[5-row][column]     //reversing the row
+      if value != " " then          // is this spot empty?
+        gameboard[5-row][column] = " "
+        if currentPlayer =='x' then currentPlayer='o' else currentPlayer='x' end //swap tokens. not earlier!
+        break                       // break the loop once token is placed 
+  		end  //value
+    end  //for
+  end
+  
+  
+
+
+winningPosition = function(board, piece)
+  for r=0 to 5
+      for c=0 to 3      
+          if board[r][c] == piece and board[r][c+1] == piece and 
+             board[r][c+2] == piece and board[r][c+3] == piece then
+             return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 6    
+          if board[r][c] == piece and board[r+1][c ] == piece and 
+            board[r+2][c] == piece and board[r+3][c] == piece then
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=0 to 2
+      for c=0 to 3    
+          if board[r][c] == piece and board[r+1][c+1] == piece and 
+            board[r+2][c+2] == piece and board[r+3][c+3] == piece then
+            return true
+          end //if
+	    end //for-r
+  end //for-c
+
+  for r=3 to 5
+      for c=0 to 3
+          if board[r][c] == piece and board[r-1][c+1] == piece and 
+            board[r-2][c+2] == piece and board[r-3][c+3] == piece then
+            return true
+          end //if
+		  end //for-r
+  end //for-c
+  
+  return false
+  
+end //fnc
+
+won = function(board)
+  
+  if winningPosition(board,"x") or winningPosition(board,"o") then
+    return true
+  else
+    return false
+  end
+  
+end
+
+end
+
+
+end()
+
+
+
+function()
+//  helpeers:
+
+// get mouse position, reference bottom/left of board = 0/0
+getMouse = function(board, tile=bs)
+  sizex = board.length    // columns
+  mousex = clamp(floor(mouse.x/tile+sizex/2),0, sizex)  
+  return [mousex]
+end
+
+overBoard = function(board, tile=bs)
+  sizey = (board.length*tile)/2     // half height/width
+  sizex = (board[0].length*tile)/2  //   "        " 
+  if abs(mouse.x)<sizex and abs(mouse.y)<74 then  // ** (bs) vertikal ungenau **
+      return true
+    else
+      return false
+  end
+end
+
+// restrict value to low/high range (getMouse!)
+clamp = function(val,low,high)
+  return min(max(val,low),high)
+end
+
+// console:
+prtGB = function()  // for control only
+  print('spalte    : 1 2 3 4 5 6 7')
+  for rw in gb
+    rwcnt -= 1
+    print('gb-zeile '+rwcnt+': '+rw)
+  end
+end //fnc  
+
+randomGB=function()
+  
+  
+  local random_moves = random.nextInt(3)+1
+  
+  for i=0 to random_moves-1
+    
+    local allMoves = getMoves(gb)
+    local randomMove = allMoves[random.nextInt(allMoves.length-1)]
+    drop(randomMove,false)
+    
+    local allMoves = getMoves(gb)
+    local randomMove = allMoves[random.nextInt(allMoves.length-1)]
+    drop(randomMove,false)
+    
+  end
+  
+  
+end
+end()
+
+
+
+system.javascript("""
+
+//javascript
+
+
+function logBoard(board){
+  console.log(board)
+}
+
+function board_to_hash(gameboard){
+    
+    let hash=""
+    for (var row of gameboard) {
+        for (var element of row) {
+            if (element=="x"){
+              hash+="x"
+            }else if(element=="o"){
+              hash+="o"
+            }else{
+              hash+="0"
+            }
+        }
+    }
+    return hash
+}
+
+function getMoves(gameboard,depth){
+  
+  var legal = [];
+
+  // Ordering the moves from inside to outside
+  var centerColumn = 3;
+
+  for (var offset = 0; offset < 4; offset++) {
+    var leftColumn = centerColumn - offset;
+    var rightColumn = centerColumn + offset;
+
+    if (leftColumn >= 0 && leftColumn !== rightColumn) {
+      for (var row = 0; row < 6; row++) {
+        if (gameboard[row][leftColumn] === " ") {
+          legal.push(leftColumn);
+          break;
+        }
+      }
+    }
+
+    if (rightColumn < 7) {
+      for (var row = 0; row < 6; row++) {
+        if (gameboard[row][rightColumn] === " ") {
+          legal.push(rightColumn);
+          break;
+        }
+      }
+    }
+  }
+
+  // Normal ordering -- slower
+  /*
+  for (var column = 0; column < 7; column++) {
+    for (var row = 0; row < 6; row++) {
+      if (gameboard[row][column] === " ") {
+        legal.push(column);
+        break;
+      }
+    }
+  }
+  */
+
+  return legal;
+  
+}
+
+function winning_js(board, piece) {
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 4; c++) {
+      if (
+        board[r][c] == piece &&
+        board[r][c + 1] == piece &&
+        board[r][c + 2] == piece &&
+        board[r][c + 3] == piece
+      ) {
+        return true;
+      }
+    }
+  }
+
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 7; c++) {
+      if (
+        board[r][c] == piece &&
+        board[r + 1][c] == piece &&
+        board[r + 2][c] == piece &&
+        board[r + 3][c] == piece
+      ) {
+        return true;
+      }
+    }
+  }
+
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 4; c++) {
+      if (
+        board[r][c] == piece &&
+        board[r + 1][c + 1] == piece &&
+        board[r + 2][c + 2] == piece &&
+        board[r + 3][c + 3] == piece
+      ) {
+        return true;
+      }
+    }
+  }
+
+  for (let r = 3; r < 6; r++) {
+    for (let c = 0; c < 4; c++) {
+      if (
+        board[r][c] == piece &&
+        board[r - 1][c + 1] == piece &&
+        board[r - 2][c + 2] == piece &&
+        board[r - 3][c + 3] == piece
+      ) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function position_js(gameboard, players) {
+    let evaluation = 0;
+
+    for (let player of players) {
+        for (let row = 0; row < 6; row++) {
+            for (let column = 0; column < 7; column++) {
+                let symbol = gameboard[row][column];
+                if (symbol === player) {
+                    evaluation += -Math.abs(column - 3) * 1;
+                }
+            }
+        }
+
+        for (let row = 0; row < 6; row++) {
+            for (let column = 2; column < 7; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row][column - 1];
+                let symbol3 = gameboard[row][column - 2];
+
+                let _before = gameboard[row][column - 3];
+                let _after = gameboard[row][column + 1];
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        for (let column = 0; column < 7; column++) {
+            for (let row = 2; row < 6; row++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column];
+                let symbol3 = gameboard[row - 2][column];
+
+                let _before = gameboard[row - 3][column];
+                let _after = gameboard[row + 1][column];
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        for (let row = 0; row < 3; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row + 1][column + 1];
+                let symbol3 = gameboard[row + 2][column + 2];
+
+                let _before = gameboard[row - 1][column - 1];
+                let _after = gameboard[row + 3][column + 3];
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        for (let row = 2; row < 6; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column + 1];
+                let symbol3 = gameboard[row - 2][column + 2];
+
+                let _before = gameboard[row + 1][column - 1];
+                let _after = gameboard[row - 3][column + 3];
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        evaluation = -evaluation;
+    }
+
+    return evaluation;
+}
+
+
+
+global.logBoard=logBoard;
+global.board_to_hash=board_to_hash;
+global.getMoves=getMoves
+global.winning_js=winning_js
+global.position_js=position_js
+global.search_js=search_js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""")
+
+
+
+system.javascript("""
+
+//javascript
+
+const ROW_COUNT = 6
+const COL_COUNT = 7
+  
+class JS_ONE {
+    constructor() {
+        this.bestColumnRoot = -1; // "Null-Move"
+        this.symbols = ["x", " ", "o"]; // getting score with symbols.indexOf(symbol) -> -1 or 1
+        this.players = ["x", "o"];
+        this.globalBestScore = 0;
+        this.tt = new Map();
+        this.name = "Bot 1";
+        this.currentPlayer = "";
+        this.counter=0;
+        this.nps =0;
+        this.currentDepth=0;
+        this.hashCount=0
+    }
+
+    setSide(symbol) {
+        this.symbol = symbol;
+        this.enemy = symbol === "x" ? "o" : "x";
+    }
+
+    search(gameboard, timer, alpha, beta, depth, ply) {
+        const key = global.board_to_hash(gameboard);
+        const qsearch = depth <= 0;
+        const notRoot = ply > 0;
+
+        if (notRoot && this.tt.get(key) !== undefined && this.tt.get(key).depth >= depth &&
+            (this.tt.get(key).score <= alpha || this.tt.get(key).score >= beta)) {
+            this.hashCount += 1;
+            return this.tt.get(key).score;
+        }
+
+        if (qsearch) {
+            this.counter += 1;
+            const best = this.evaluate(gameboard, this.currentPlayer) + ply;
+            return best;
+        }
+
+        if (global.winning_js(gameboard, this.getEnemy(this.currentPlayer))) {
+            return -1000 + ply;
+        }
+
+        let bestMove = -1;
+        const legalMoves = this.getOrderedMoves(gameboard, this.currentPlayer);
+
+        if (legalMoves.length === 0) {
+            return 0; // gamefield is full of pieces
+        }
+
+        for (const move of legalMoves) {
+            this.botDrop(gameboard, move);
+
+            const score = -this.search(gameboard, timer, -beta, -alpha, depth - 1, ply + 1);
+
+            this.botUndoDrop(gameboard, move);
+
+            if (ply === 0 && score > this.globalBestScore) {
+                this.globalBestScore = score;
+            }
+
+            if (ply === 0 && score > this.globalDepthScore) {
+                this.bestColumnRoot = move;
+                this.globalDepthScore = score;
+            }
+            if (ply==0){
+              console.log("move: "+move+" "+score)
+            }
+
+            if (score >= beta) {
+                this.tt.set(key, { depth, score: beta });
+                return beta;
+            }
+
+            alpha = Math.max(alpha, score);
+        }
+
+        this.tt.set(key, { depth, score: alpha });
+        return alpha;
+    }
+
+    think(timer,gb) {
+      
+        console.log("FreeFields " +freeFieldsUnderField(gb,4,0))
+        let startTime = Date.now();
+        this.counter = 0;
+        this.bestColumnRoot = -1;
+        this.hashCount = 0;
+        this.currentDepth = 0;
+        this.globalBestScore = -30000;
+        this.currentPlayer = global.next;
+
+        const gameboard = [];
+
+        for (let r = 0; r < ROW_COUNT; r++) {
+            gameboard[r] = [...gb[r]];
+        }
+
+        const maxDepth = this.countFreeSpaces(gb);
+
+        for (let depth = 1; depth <= maxDepth; depth++) {
+            this.currentDepth = depth;
+            this.globalDepthScore = -30000;
+            console.log("running depth " + depth);
+            const score = this.search(gameboard, timer, -30000, 30000, depth, 0);
+            console.log("finished after " + (Date.now() - startTime) / 1000 + " seconds");
+
+            if (Date.now() - startTime > timer || depth === maxDepth || this.globalDepthScore > 500) {
+                this.nps = this.counter / ((Date.now() - startTime) / 1000);
+                break;
+            }
+        }
+
+        console.log("");
+        console.log("---------------------");
+        console.log("");
+        console.log("zapomniałem  " + this.bestColumnRoot);
+        console.log("Nowa Pozycja: " + this.counter);
+        console.log("Stara Pozycja: " + this.hashCount);
+        console.log("");
+        console.log("---------------------");
+        console.log("");
+
+        return this.bestColumnRoot === -1 ? global.getMoves()[0] : this.bestColumnRoot;
+    }
+
+    getEnemy(symbol) {
+        return symbol === "x" ? "o" : "x";
+    }
+
+    evaluate(gameboard, active) {
+        if (global.winning_js(gameboard, active)) {
+            return 1000;
+        }
+
+        const evalualtion = position_js(gameboard, this.players);
+
+        return active === "x" ? evalualtion : -evalualtion;
+    }
+
+    countFreeSpaces(gb) {
+        let freeCount = 0;
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 7; col++) {
+                if (gb[row][col] === " ") {
+                    freeCount += 1;
+                }
+            }
+        }
+
+        return freeCount;
+    }
+
+    botDrop(gameboard, column) {
+        for (let row = 0; row < ROW_COUNT; row++) {
+          if (gameboard[row]) {
+            const value = gameboard[row][column];
+
+            if (value === " ") {
+                gameboard[row][column] = this.currentPlayer;
+                this.currentPlayer = this.currentPlayer === 'x' ? 'o' : 'x';
+                break;
+            }
+          }
+        }
+    }
+
+    botUndoDrop(gameboard, column) {
+        for (let row = 0; row < ROW_COUNT; row++) {
+            const value = gameboard[5 - row][column];
+
+            if (value !== " ") {
+                gameboard[5 - row][column] = " ";
+                this.currentPlayer = this.currentPlayer === 'x' ? 'o' : 'x';
+                break;
+            }
+        }
+    }
+    
+    getOrderedMoves(gameboard,currentPlayer){
+      var legal = [];
+
+      // Prioritize winning moves
+      for (var column = 0; column < 7; column++) {
+        if (gameboard[5][column]==""){
+          this.botDrop(gameboard, column);
+          if (winning_js(gameboard, currentPlayer)) {
+            this.botUndoDrop(gameboard, column);
+            return [column]; // Make the winning move immediately
+          }
+          this.botUndoDrop(gameboard, column);
+        }
+      }
+    
+      // Prioritize blocking opponent's winning moves
+      for (var column = 0; column < 7; column++) {
+        if (gameboard[5][column]==""){
+          this.botDrop(gameboard, column);
+          if (winning_js(gameboard, getEnemy(currentPlayer))) {
+            this.botUndoDrop(gameboard, column);
+            return [column]; // Block opponent's winning move
+          }
+          this.botUndoDrop(gameboard, column);
+        }
+      }
+    
+      // Ordering the moves from inside to outside
+      var centerColumn = 3;
+    
+      for (var offset = 0; offset < 4; offset++) {
+        var leftColumn = centerColumn - offset;
+        var rightColumn = centerColumn + offset;
+    
+        if (leftColumn >= 0 && leftColumn !== rightColumn) {
+          for (var row = 0; row < 6; row++) {
+            if (gameboard[row][leftColumn] === " ") {
+              legal.push(leftColumn);
+              break;
+            }
+          }
+        }
+    
+        if (rightColumn < 7) {
+          for (var row = 0; row < 6; row++) {
+            if (gameboard[row][rightColumn] === " ") {
+              legal.push(rightColumn);
+              break;
+            }
+          }
+        }
+      }
+    
+      return legal;
+    }
+    
+}
+
+function position_js(gameboard, players) {
+    let evaluation = 0;
+    
+    for (let player of players) {
+        for (let row = 0; row < 6; row++) {
+            for (let column = 0; column < 7; column++) {
+                let symbol = gameboard[row][column];
+                if (symbol === player) {
+                    evaluation += -Math.abs(column - 3) * 1;
+                }
+            }
+        }
+
+        for (let row = 0; row < 6; row++) {
+            for (let column = 2; column < 7; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row][column - 1];
+                let symbol3 = gameboard[row][column - 2];
+
+                let _before = gameboard[row][column - 3];
+                let _after = gameboard[row][column + 1];
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    
+                    let totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row,column)
+                    if (totalFree % 2 != 0) {
+                        evaluation += 10*(7-column); // oder irgendeinen anderen Boost-Wert
+                    }
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        for (let column = 0; column < 7; column++) {
+            for (let row = 2; row < 6; row++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column];
+                let symbol3 = gameboard[row - 2][column];
+
+                let _before = row - 3 >= 0 ? gameboard[row - 3][column] : " ";
+                let _after = row + 1 <= 5 ? gameboard[row + 1][column] : " ";
+  
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row,column)
+                    if (totalFree % 2 != 0) {
+                        evaluation += 10*(7-column); // oder irgendeinen anderen Boost-Wert
+                    }
+                    evaluation += 10;
+                    break;
+                }
+                
+            }
+        }
+        
+        for (let row = 0; row < 3; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row + 1][column + 1];
+                let symbol3 = gameboard[row + 2][column + 2];
+
+                let _before = row - 1 >= 0 && column-1>=0 ? gameboard[row -1][column-1] : " ";
+                let _after = row + 3 <= 5 && column+3<=6 ? gameboard[row + 3][column+3] : " ";
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row,column)
+                    if (totalFree % 2 != 0) {
+                        evaluation += 10*(7-column); // oder irgendeinen anderen Boost-Wert
+                    }
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+        
+        for (let row = 2; row < 6; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column + 1];
+                let symbol3 = gameboard[row - 2][column + 2];
+
+                let _before = row + 1 <=5 && column-1>=0 ? gameboard[row +1][column-1] : " ";
+                let _after = row - 3 >=0 && column+3<=6 ? gameboard[row - 3][column+3] : " ";
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row,column)
+                    if (totalFree % 2 != 0) {
+                        evaluation += 10*(7-column); // oder irgendeinen anderen Boost-Wert
+                    }
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+        
+        evaluation = -evaluation;
+    }
+
+    return evaluation;
+}
+
+function freeFieldLeftWithoutCol(gameboard,col){
+
+
+    let freeSpaces = 0;
+
+    for (let c = 0; c < 7 ; c++) {
+        if (c!=col){
+          if (gameboard[5][c]!==" "){
+            break
+          }
+          freeSpaces++;
+  
+          for (let r = 4; r >=0; r--) {
+              if (gameboard[r][c] !== " ") {
+                  break;
+              }else{
+                freeSpaces++;
+              }
+          }
+        }
+    }
+
+    return freeSpaces;
+}
+
+function freeFieldsUnderField(gameboard,row,col){
+  
+  if(row==0) return 0;
+  
+  let count = 0;
+  for (let r = row-1; r>=0 ; r--){
+    if (gameboard[r][col]!==" "){
+      break
+    }
+    count++;
+  }
+  
+  return count;
+  
+}
+
+global.JS_ONE=JS_ONE
+
+""")
+
+
+
+system.javascript("""
+
+//javascript
+
+const ROW_COUNT = 6
+const COL_COUNT = 7
+  
+class JS_TWO {
+    constructor() {
+        this.bestColumnRoot = -1; // "Null-Move"
+        this.symbols = ["x", " ", "o"]; // getting score with symbols.indexOf(symbol) -> -1 or 1
+        this.players = ["x", "o"];
+        this.globalBestScore = 0;
+        this.tt = new Map();
+        this.name = "Bot 2";
+        this.currentPlayer = "";
+        this.counter=0;
+        this.nps =0;
+        this.currentDepth=0;
+        this.hashCount=0
+    }
+
+    setSide(symbol) {
+        this.symbol = symbol;
+        this.enemy = symbol === "x" ? "o" : "x";
+    }
+
+    search(gameboard, timer, alpha, beta, depth, ply) {
+        const key = global.board_to_hash(gameboard);
+        const qsearch = depth <= 0;
+        const notRoot = ply > 0;
+
+        if (notRoot && this.tt.get(key) !== undefined && this.tt.get(key).depth >= depth &&
+            (this.tt.get(key).score <= alpha || this.tt.get(key).score >= beta)) {
+            this.hashCount += 1;
+            return this.tt.get(key).score;
+        }
+
+        if (qsearch) {
+            this.counter += 1;
+            const best = this.evaluate(gameboard, this.currentPlayer) + ply;
+            return best;
+        }
+
+        if (global.winning_js(gameboard, this.getEnemy(this.currentPlayer))) {
+            return -1000 + ply;
+        }
+
+        let bestMove = -1;
+        const legalMoves = this.getOrderedMoves(gameboard, this.currentPlayer);
+
+        if (legalMoves.length === 0) {
+            return 0; // gamefield is full of pieces
+        }
+
+        for (const move of legalMoves) {
+            this.botDrop(gameboard, move);
+
+            const score = -this.search(gameboard, timer, -beta, -alpha, depth - 1, ply + 1);
+
+            this.botUndoDrop(gameboard, move);
+
+            if (ply === 0 && score > this.globalBestScore) {
+                this.globalBestScore = score;
+            }
+
+            if (ply === 0 && score > this.globalDepthScore) {
+                this.bestColumnRoot = move;
+                this.globalDepthScore = score;
+            }
+            if (ply==0){
+              console.log("move: "+move+" "+score)
+            }
+
+            if (score >= beta) {
+                this.tt.set(key, { depth, score: beta });
+                return beta;
+            }
+
+            alpha = Math.max(alpha, score);
+        }
+
+        this.tt.set(key, { depth, score: alpha });
+        return alpha;
+    }
+
+    think(timer,gb) {
+        
+        let startTime = Date.now();
+        this.counter = 0;
+        this.bestColumnRoot = -1;
+        this.hashCount = 0;
+        this.currentDepth = 0;
+        this.globalBestScore = -30000;
+        this.currentPlayer = global.next;
+
+        const gameboard = [];
+
+        for (let r = 0; r < ROW_COUNT; r++) {
+            gameboard[r] = [...gb[r]];
+        }
+
+        const maxDepth = this.countFreeSpaces(gb);
+
+        for (let depth = 1; depth <= maxDepth; depth++) {
+            this.currentDepth = depth;
+            this.globalDepthScore = -30000;
+            console.log("running depth " + depth);
+            const score = this.search(gameboard, timer, -30000, 30000, depth, 0);
+            console.log("finished after " + (Date.now() - startTime) / 1000 + " seconds");
+
+            if (Date.now() - startTime > timer || depth === maxDepth || this.globalDepthScore > 500) {
+                this.nps = this.counter / ((Date.now() - startTime) / 1000);
+                break;
+            }
+        }
+
+        console.log("");
+        console.log("---------------------");
+        console.log("");
+        console.log("Zapomniałem " + this.bestColumnRoot);
+        console.log("Nowa Pozaycja: " + this.counter);
+        console.log("Stara Pozycja: " + this.hashCount);
+        console.log("");
+        console.log("---------------------");
+        console.log("");
+
+        return this.bestColumnRoot === -1 ? global.getMoves()[0] : this.bestColumnRoot;
+    }
+
+    getEnemy(symbol) {
+        return symbol === "x" ? "o" : "x";
+    }
+
+    evaluate(gameboard, active) {
+        if (global.winning_js(gameboard, active)) {
+            return 1000;
+        }
+
+        const evalualtion = position_js(gameboard, this.players);
+
+        return active === "x" ? evalualtion : -evalualtion;
+    }
+
+    countFreeSpaces(gb) {
+        let freeCount = 0;
+
+        for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 7; col++) {
+                if (gb[row][col] === " ") {
+                    freeCount += 1;
+                }
+            }
+        }
+
+        return freeCount;
+    }
+
+    botDrop(gameboard, column) {
+        for (let row = 0; row < ROW_COUNT; row++) {
+          if (gameboard[row]) {
+            const value = gameboard[row][column];
+
+            if (value === " ") {
+                gameboard[row][column] = this.currentPlayer;
+                this.currentPlayer = this.currentPlayer === 'x' ? 'o' : 'x';
+                break;
+            }
+          }
+        }
+    }
+
+    botUndoDrop(gameboard, column) {
+        for (let row = 0; row < ROW_COUNT; row++) {
+            const value = gameboard[5 - row][column];
+
+            if (value !== " ") {
+                gameboard[5 - row][column] = " ";
+                this.currentPlayer = this.currentPlayer === 'x' ? 'o' : 'x';
+                break;
+            }
+        }
+    }
+    
+    getOrderedMoves(gameboard,currentPlayer){
+      var legal = [];
+
+      // Prioritize winning moves
+      for (var column = 0; column < 7; column++) {
+        if (gameboard[5][column]==""){
+          this.botDrop(gameboard, column);
+          if (winning_js(gameboard, currentPlayer)) {
+            this.botUndoDrop(gameboard, column);
+            return [column]; // Make the winning move immediately
+          }
+          this.botUndoDrop(gameboard, column);
+        }
+      }
+    
+      // Prioritize blocking opponent's winning moves
+      for (var column = 0; column < 7; column++) {
+        if (gameboard[5][column]==""){
+          this.botDrop(gameboard, column);
+          if (winning_js(gameboard, getEnemy(currentPlayer))) {
+            this.botUndoDrop(gameboard, column);
+            return [column]; // Block opponent's winning move
+          }
+          this.botUndoDrop(gameboard, column);
+        }
+      }
+    
+      // Ordering the moves from inside to outside
+      var centerColumn = 3;
+    
+      for (var offset = 0; offset < 4; offset++) {
+        var leftColumn = centerColumn - offset;
+        var rightColumn = centerColumn + offset;
+    
+        if (leftColumn >= 0 && leftColumn !== rightColumn) {
+          for (var row = 0; row < 6; row++) {
+            if (gameboard[row][leftColumn] === " ") {
+              legal.push(leftColumn);
+              break;
+            }
+          }
+        }
+    
+        if (rightColumn < 7) {
+          for (var row = 0; row < 6; row++) {
+            if (gameboard[row][rightColumn] === " ") {
+              legal.push(rightColumn);
+              break;
+            }
+          }
+        }
+      }
+    
+      return legal;
+    }
+    
+}
+
+function position_js(gameboard, players) {
+    let evaluation = 0;
+   
+    let zugZwangBoost = 1
+    
+    for (let player of players) {
+        for (let row = 0; row < 6; row++) {
+            for (let column = 0; column < 7; column++) {
+                let symbol = gameboard[row][column];
+                if (symbol === player) {
+                    evaluation += -Math.abs(column - 3) * 20;
+                }
+            }
+        }
+      
+        for (let row = 0; row < 6; row++) {
+            for (let column = 2; column < 7; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row][column - 1];
+                let symbol3 = gameboard[row][column - 2];
+
+                let _before = column-3>=0 ? gameboard[row][column-3] : "#";
+                let _after  = column+1<=6 ? gameboard[row][column+1] : "#";
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = 0;
+                    
+                    if (_before === " "){
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column-3) + freeFieldsUnderField(gameboard,row,column-3)
+                    }else{
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column+1) + freeFieldsUnderField(gameboard,row,column+1)
+                    }
+                    
+                    if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row); // oder irgendeinen anderen Boost-Wert
+                    }
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+
+        for (let column = 0; column < 7; column++) {
+            for (let row = 2; row < 6; row++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column];
+                let symbol3 = gameboard[row - 2][column];
+
+                let _before = row - 3 >= 0 ? gameboard[row - 3][column] : "#";
+                let _after  = row + 1 <= 5 ? gameboard[row + 1][column] : "#";
+  
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = 0;
+                    
+                    if (_before === " "){
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row-3,column)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row-3); // oder irgendeinen anderen Boost-Wert
+                      }
+                    }else{
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column) + freeFieldsUnderField(gameboard,row+1,column)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row+1); // oder irgendeinen anderen Boost-Wert
+                      } 
+                    }
+                    
+                    
+                    evaluation += 10;
+                    break;
+                }
+                
+            }
+        }
+        
+        for (let row = 0; row < 3; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row + 1][column + 1];
+                let symbol3 = gameboard[row + 2][column + 2];
+
+                let _before = row - 1 >= 0 && column-1>=0 ? gameboard[row - 1][column-1] : "#";
+                let _after  = row + 3 <= 5 && column+3<=6 ? gameboard[row + 3][column+3] : "#";
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = 0;
+                    
+                    if (_before === " "){
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column-1) + freeFieldsUnderField(gameboard,row-1,column-1)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row-1); // oder irgendeinen anderen Boost-Wert
+                    }
+                      
+                    }else{
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column+3) + freeFieldsUnderField(gameboard,row+3,column+3)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row+3); // oder irgendeinen anderen Boost-Wert
+                      }
+                      
+                    }
+                    
+                
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+        
+        for (let row = 2; row < 6; row++) {
+            for (let column = 0; column < 4; column++) {
+                let symbol1 = gameboard[row][column];
+                let symbol2 = gameboard[row - 1][column + 1];
+                let symbol3 = gameboard[row - 2][column + 2];
+
+                let _before = row + 1 <=5 && column-1>=0 ? gameboard[row +1][column-1] : "#";
+                let _after = row - 3 >=0 && column+3<=6 ? gameboard[row - 3][column+3] : "#";
+
+                if (symbol1 === player && symbol2 === player && symbol3 === player && (_before === " " || _after === " ")) {
+                    let totalFree = 0;
+                    
+                    if (_before === " "){
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column-1) + freeFieldsUnderField(gameboard,row+1,column-1)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row+1); // oder irgendeinen anderen Boost-Wert
+                      }
+                    }else{
+                      totalFree = freeFieldLeftWithoutCol(gameboard,column+3) + freeFieldsUnderField(gameboard,row-3,column+3)
+                      if (totalFree % 2 != 0) {
+                        evaluation += zugZwangBoost*(6-row-3); // oder irgendeinen anderen Boost-Wert
+                      }
+                    }
+               
+                    evaluation += 10;
+                    break;
+                }
+            }
+        }
+        
+        evaluation = -evaluation;
+    }
+
+    return evaluation;
+}
+
+function freeFieldLeftWithoutCol(gameboard,col){
+
+
+    let freeSpaces = 0;
+
+    for (let c = 0; c < 7 ; c++) {
+        if (c!=col){
+          if (gameboard[5][c]!==" "){
+            break
+          }
+          freeSpaces++;
+  
+          for (let r = 4; r >=0; r--) {
+              if (gameboard[r][c] !== " ") {
+                  break;
+              }else{
+                freeSpaces++;
+              }
+          }
+        }
+    }
+
+    return freeSpaces;
+}
+
+function freeFieldsUnderField(gameboard,row,col){
+  
+  if(row==0) return 0;
+  
+  let count = 0;
+  for (let r = row-1; r>=0 ; r--){
+    if (gameboard[r][col]!==" "){
+      break
+    }
+    count++;
+  }
+  
+  return count;
+  
+}
+
+global.JS_TWO=JS_TWO
+
+""")
+
+
+
+system.javascript("""
+
+//javascript
+
+class HashMap {
+  constructor() {
+    this.data = {};
+  }
+
+  // Set a key-value pair in the hashmap
+  put(key, value) {
+    this.data[key] = value;
+  }
+
+  // Get the value associated with a key
+  get(key) {
+    return this.data[key];
+  }
+
+  // Check if a key exists in the hashmap
+  has(key) {
+    return key in this.data;
+  }
+
+  // Remove a key-value pair from the hashmap
+  remove(key) {
+    if (this.has(key)) {
+      delete this.data[key];
+    }
+  }
+
+  // Get all keys in the hashmap
+  keys() {
+    return Object.keys(this.data);
+  }
+
+  // Get all values in the hashmap
+  values() {
+    return Object.values(this.data);
+  }
+
+  // Clear the hashmap
+  clear() {
+    this.data = {};
+  }
+
+  // Get the number of key-value pairs in the hashmap
+  size() {
+    return Object.keys(this.data).length;
+  }
+}
+
+
+
+global.HashMap=HashMap;
+
+
+
+""")
+
+
+
+system.javascript("""
+
+//javascript
+
+class HashSet {
+  constructor() {
+    this.data = {};
+  }
+
+  add(element) {
+    this.data[element] = true;
+  }
+
+  contains(element) {
+    return this.data[element] === true;
+  }
+
+  remove(element) {
+    delete this.data[element];
+  }
+
+  clear() {
+    this.data = {};
+  }
+
+  size() {
+    return Object.keys(this.data).length;
+  }
+
+  toArray() {
+    return Object.keys(this.data);
+  }
+}
+
+
+global.HashSet=HashSet;
+
+""")
+
+
+
+system.javascript("""
+
+//javascript
+
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+
+    append(data) {
+        const newNode = new Node(data);
+
+        if (!this.head) {
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+    }
+
+    prepend(data) {
+        const newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
+    }
+
+    delete(data) {
+        if (!this.head) {
+            return;
+        }
+
+        if (this.head.data === data) {
+            this.head = this.head.next;
+            return;
+        }
+
+        let current = this.head;
+        while (current.next) {
+            if (current.next.data === data) {
+                current.next = current.next.next;
+                return;
+            }
+            current = current.next;
+        }
+    }
+
+    display() {
+        let current = this.head;
+        while (current) {
+            console.log(current.data);
+            current = current.next;
+        }
+    }
+}
+
+global.LinkedList=LinkedList
+
+
+
+""")
+
+
+
+function()
+dropbox = class
+  
+  constructor = function(x,y,width,height,drawBoxColor,fillBoxColor,title,textsize,textColor,textFont,hover,hovercolor,moveable)
+    
+    this.open=false
+    this.moving=false
+    this.subListOpen=0
+    this.chosen="###" //magic string
+    this.items=[]
+    this.title=title
+    this.x=x
+    this.y=y
+    this.width=width
+    this.height=height
+    this.textColor=textColor
+    this.drawBoxColor=drawBoxColor
+    this.fillBoxColor=fillBoxColor
+    this.textsize=textsize
+    this.hover=hover
+    this.hovercolor=hovercolor
+    this.moveable=moveable
+    this.textFont=textFont
+    
+    
+  end
+  
+  add=function(item)
+    
+    items.push(item)
+    
+  end
+  
+  addDropBox =function(item)
+    
+    items.push(item)
+    
+    local index=items.indexOf(item)
+    item.x=x
+    item.y=y-height*(index+1)
+    item.width=width
+    item.height=height
+    item.textColor=textColor
+    item.drawBoxColor=drawBoxColor
+    item.fillBoxColor=fillBoxColor
+    item.textsize=textsize
+    item.hover=hover
+    item.hovercolor=hovercolor
+    item.textFont=textFont
+    item.mainBox=this
+      
+  end
+  
+  
+  update = function(input_key)
+    
+    if open then
+      clickedItem(input_key)
+      clickedOutside(input_key)
+    else
+      clickedDropBox(input_key)
+    end
+    
+    if moveable then
+      isMoveDropBox()
+      if moving then
+        moveDropBox()
+      end
+    end
+    
+    if (subListOpen!=0) then
+      subListOpen.update(input_key)
+    end
+    draw()
+  end
+  
+  
+  clickedDropBox=function(input_key)
+    
+    if (input_key and mouse.x>x-width/2 and  mouse.x<x+width/2 and mouse.y>y-height/2 and  mouse.y<y+height/2) then
+      open=true
+    end
+    
+  end
+  
+  clickedItem =function(input_key)
+    if items.length<1 then return false end
+    for i=0 to items.length-1
+      
+      if (input_key  and mouse.x>x-width/2 and mouse.x<x+width/2 and mouse.y>y+height/2-(i+2)*height and  mouse.y<y+height/2-(i+1)*height) then
+        if (items[i].type=="object" and items[i].name=="subdropbox") then
+          items[i].chosen="###"
+          subListOpen=items[i]
+        else
+          open=false
+          subListOpen=0
+          this.chosen=items[i]
+        end
+      end
+    end
+  end
+  
+  clickedOutside=function(input_key)
+    if items.length<1 or subListOpen!=0 then return false end
+    
+    if input_key and (mouse.x<x-width/2 or mouse.x>x+width/2 or mouse.y>y+height/2 or mouse.y<y-height/2-items.length*height) then
+      subListOpen=0
+      open=false
+    end
+       
+  end
+  
+  isMoveDropBox=function()
+    
+    if (not moving and mouse.pressed and mouse.x<x-width/2 and mouse.x>x-width/2-5 and mouse.y<y+height/2+5 and mouse.y>height/2) then
+      moving=true
+      
+    end
+    
+    if moving and mouse.release then
+      moving=false
+    end
+    
+  end
+  
+  moveDropBox=function()
+    
+    x=mouse.x+width/2+2.5
+    y=mouse.y-7.5
+    
+  end
+  
+  get = function()
+    return chosen
+  end
+  
+  draw = function()
+  
+    screen.setFont(textFont)
+    if not open then
+      screen.fillRect(this.x,this.y,this.width,this.height,this.fillBoxColor)
+      screen.drawRect(this.x,this.y,this.width,this.height,this.drawBoxColor)
+      if chosen!="###" then
+        screen.drawText(chosen,this.x,this.y,this.textsize,this.textColor)
+      else
+        screen.drawText(title,this.x,this.y,this.textsize,this.textColor)
+      end
+      
+    else
+      screen.fillRect(this.x,this.y,this.width,this.height,this.fillBoxColor)
+      screen.drawRect(this.x,this.y,this.width,this.height,this.drawBoxColor)
+      screen.drawText(title,this.x,this.y,this.textsize,this.textColor)
+      if items.length>0 then
+        for i=0 to items.length-1
+          if (hover and mouse.x>x-width/2 and  mouse.x<x+width/2 and mouse.y>y+height/2-(i+2)*height and  mouse.y<y+height/2-(i+1)*height) then
+            screen.fillRect(this.x,this.y-height*(i+1),this.width,this.height,this.hovercolor)
+          else
+            screen.fillRect(this.x,this.y-height*(i+1),this.width,this.height,this.fillBoxColor)
+          end
+          screen.drawRect(this.x,this.y-height*(i+1),this.width,this.height,this.drawBoxColor)
+          
+          if (items[i].type=="object" and items[i].name=="subdropbox") then
+            screen.drawText(items[i].title,this.x,this.y-height*(i+1),this.textsize,this.textColor)
+          else
+            screen.drawText(items[i],this.x,this.y-height*(i+1),this.textsize,this.textColor)
+          end
+        end
+      else
+        screen.drawText("BRAK ELEMENTÓW DO WYBORU.",x,y,textsize,"rgb(147,0,0)")
+      end
+    end
+    
+    if moveable then
+      screen.setLineWidth(0.5)
+      screen.drawRect(x-width/2-2.5,y+height/2+2.5,5,5,,drawBoxColor)
+      screen.setLineWidth(1)
+    end
+    screen.setFont()
+  end
+  
+end
+
+subdropbox=class
+  
+  constructor = function(title)
+    this.name="subdropbox"
+    this.chosen="###" //magic string
+    this.items=[]
+    this.title=title
+    
+  end
+  
+  add=function(item)
+    items.push(item)
+  end
+  
+  get = function()
+    return chosen
+  end
+  
+  update=function(input_key)
+
+    clickedItem(input_key)
+    clickedOutside(input_key)
+    draw()
+    
+  end
+  
+  clickedItem =function(input_key)
+    if items.length<1 then return false end
+    for i=0 to items.length-1
+      
+      if (input_key and mouse.x>x+width/2+(i)*width and  mouse.x<x+width/2+(i+1)*width and mouse.y>y-height/2 and  mouse.y<y+height/2) then
+          mainBox.chosen=items[i]
+          mainBox.open=false
+          mainBox.subListOpen=0
+      end
+    end
+  end
+  
+  clickedOutside=function(input_key)
+    if items.length<1 then return false end
+    
+    if input_key and (mouse.x<x-width/2 or mouse.x>x+width/2+items.length*width or mouse.y>y+height/2 or mouse.y<y-height/2) then
+      mainBox.subListOpen=0
+    end
+       
+  end
+  
+  
+  draw=function()
+    screen.setFont(textFont)
+     screen.fillRect(this.x,this.y,this.width,this.height,this.fillBoxColor)
+      screen.drawRect(this.x,this.y,this.width,this.height,this.drawBoxColor)
+      screen.drawText(title,this.x,this.y,this.textsize,this.textColor)
+      if items.length>0 then
+        for i=0 to items.length-1
+          if (hover and mouse.x>x+width/2+(i)*width and  mouse.x<x+width/2+(i+1)*width and mouse.y>y-height/2 and  mouse.y<y+height/2) then
+            screen.fillRect(this.x+width*(i+1),this.y,this.width,this.height,this.hovercolor)
+          else
+            screen.fillRect(this.x+width*(i+1),this.y,this.width,this.height,this.fillBoxColor)
+          end
+          screen.drawRect(this.x+width*(i+1),this.y,this.width,this.height,this.drawBoxColor)
+          screen.drawText(items[i],this.x+width*(i+1),this.y,this.textsize,this.textColor)
+        end
+      else
+        screen.drawText("BRAK ELEMENTÓW DO WYBORU",x,y,textsize,"rgb(147,0,0)")
+      end
+    screen.setFont()
+  end
+  
+end
+end()
+
+
+
+system.javascript("""
+
+//javascript
+
+function testDoc(){
+  
+  var watchLineValues = document.querySelectorAll('.watch-line-value');
+    
+  // Iteriere über jedes Element und gib den Textinhalt aus
+  watchLineValues.forEach(function(element) {
+      console.log("Elemint: "+element.textContent.trim());
+  });
+
+  console.log("Witam Wszystkich")
+}
+
+global.testDoc=testDoc
+
+""")
+
+
+
+function()
+TTEntry = class
+  
+  constructor = function(depth,score)
+    this.depth = depth
+    this.score = score
+  end
+  
+end
+end()
+
+
+</script></html>

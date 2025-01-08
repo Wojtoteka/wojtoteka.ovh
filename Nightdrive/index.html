@@ -1,0 +1,596 @@
+<!DOCTYPE html><html><head><title>Night Drive</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[{"file":"music.mp3","version":1,"size":1891727,"properties":{}}]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+coin = class 
+  constructor = function(x,y,speed)
+   this.coin_x = x
+   this.coin_y = y
+   this.coin_speed = speed
+   this.coin_colour = "yellow"
+   this.hitbox = 5
+   this.destroyed = false 
+   this.n = 5 //controls coin collected animation
+  end
+  
+  update = function()
+    if destroyed == false then
+     coin_x-=coin_speed+global_time/55
+    end
+  end
+   
+ draw = function()
+   
+  if destroyed == false then
+   n=1
+   screen.setLineWidth(0.8)
+   hitbox = 5+0.5*size
+   x=coin_x 
+   y=coin_y
+   size = 10-y/9
+   //COIN MODEL
+   screen.setAlpha(0.2)
+   screen.fillRound(x,y-1*size,1.5*size,0.5*size,"rgb(0,0,0)")//shadow
+   screen.setAlpha(0.8)
+  elsif destroyed==true and n>=0 then //COLLECT EFFECT
+    n-=0.05
+    size += n*2
+    screen.setAlpha(n)
+  else
+    screen.setAlpha(0)
+  end
+   //screen.drawPolygon(x-hitbox,y,x,y+hitbox,x+hitbox,y,x,y-hitbox,"#FFFFFF")
+   screen.setFont( "Edunline" )
+   screen.drawRound(x,y,1.5*size*sin(system.time()/150),1.5*size,coin_colour)
+   screen.drawRound(x,y,1.5*size,1.5*size*cos(system.time()/150),coin_colour)
+   screen.drawText( '$', x, y, size/1.3, coin_colour )
+
+   //COLLISIONS
+   if x-hitbox<=player_x+player_hitbox and x+hitbox>=player_x-player_hitbox then
+     if y+hitbox>=player_y-player_hitbox/4-10 and y-hitbox<=player_y+player_hitbox/4-10 then  
+       destroyed = true
+      end
+    end
+   
+  end
+end
+
+
+
+end()
+
+
+
+function()
+enemy = class
+  constructor = function(x,y,speed,colour)
+   this.enemy_x = x
+   this.enemy_y = y
+   this.enemy_speed = speed
+   this.enemy_colour = colour
+   this.enemy_type = 0
+   this.hitbox = 20
+   this.collided = false
+  end
+  
+  update = function()
+   enemy_x-=enemy_speed+global_time/55
+  end
+
+  draw = function()
+   screen.setAlpha(1)
+   screen.setLineWidth(0.8)
+   size = 10-y/9
+   size1 = size
+   size2 = size1/1.1
+   x=enemy_x 
+   y=enemy_y+bounce
+   x2 = enemy_x/(1.07-y2/700) 
+   y2 = enemy_y/1.1 + 5-(enemy_y-20)/10+bounce
+   bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+   //ENEMY MODEL
+   //wheels
+   screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   //body
+   screen.drawRect( x, y, 5*size1, 3*size1,enemy_colour)
+   screen.drawRect( x2, y2, 5*size2, 3*size2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,enemy_colour)
+   
+   //COLLISIONS
+   if y<=-20 then
+    if x-hitbox*2.3<=player_x+player_hitbox and x+hitbox*2.3-size>=player_x-player_hitbox then
+     if y+hitbox/4-10>=player_y-player_hitbox/4-9 and y-hitbox/4-10<=player_y+player_hitbox/4-9 then  
+      collide()
+      end
+    end
+   end
+   if y<=10 and y>-20 then
+    if x-hitbox*1.4<=player_x+player_hitbox and x+hitbox*1.4-size>=player_x-player_hitbox then
+     if y+hitbox/7-10>=player_y-player_hitbox/4-10 and y-hitbox/7-10<=player_y+player_hitbox/4-10 then  
+       collide()
+      end
+    end
+   end
+   if y>10 then
+    if x-hitbox<=player_x+player_hitbox and x+hitbox-size>=player_x-player_hitbox then
+     if y+hitbox/12-8>=player_y-player_hitbox/5-8 and y-hitbox/12-8<=player_y+player_hitbox/5-8 then  
+       collide()
+      end
+    end
+   end
+   
+  collide = function()
+    collided=true
+  end
+  
+  
+  //PREVENT COINS FROM SPAWNING IN ENEMY CARS
+  for c in coins
+   if c!=null then
+   if c.x-c.hitbox<=enemy_x+hitbox and c.x+c.hitbox>=enemy_x-hitbox/1.1 then
+     if c.y+c.hitbox>=enemy_y-hitbox/4-10 and c.y-c.hitbox<=enemy_y+hitbox/4-10 then  
+       if c.destroyed == false then
+        coins.removeElement(c)
+       end
+      end
+    end
+  
+    end
+   end
+   
+  end
+  
+end
+
+random.intInRange = function(MIN,MAX)
+  return floor(random.next() * (floor(MAX) - ceil(MIN) + 1) + ceil(MIN))
+end
+
+
+end()
+
+
+
+function()
+init = function() 
+  TIMER = system.time() // TIMER FOR LOOPING ROAD EFFECT
+  ini_time = system.time() // TIMER FOR ENEMY SPAWNER
+  ini_time2 = system.time() // TIMER FOR COIN SPAWNER
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370 
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  highscore = 0
+  global_time = 0
+  volume=0
+  enemies = []
+  coins = []
+  stars=[]
+  for i=0 to 15
+    local star=object
+    change_pos=function() 
+      x=random.intInRange(0,300) 
+      y=random.intInRange(100,20) 
+     end 
+    end
+    star.change_pos()
+    stars.push(star)
+  end
+  scene = 0
+  
+  //FOR TOUCHSCREEN CONTROLS
+  left = 0
+  right = 0
+  up = 0
+  down = 0
+  
+end
+
+
+update = function()
+  audio.playMusic( "music", volume, 1 )
+  
+  //MENU
+  if scene==0 then
+  ini_time = system.time()
+  ini_time2 = system.time()
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  global_time = 0
+  for e in enemies
+   if e!=null then
+     e.update()
+     enemies.removeElement(e)
+   end
+  end
+  for c in coins
+   if c!=null then
+     c.update()
+     coins.removeElement(c)
+   end
+  end
+ end
+  
+  //GAMEPLAY
+  if scene==1 then
+  //TO INCREASE DIFFICULTY AS TIME PASSES
+  if global_time<80 then
+   global_time+=0.01
+  end
+  
+  //KEY INPUTS
+  if keyboard.RIGHT or gamepad.RIGHT or right==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x += player_speed - player_z
+    end
+  end
+  if keyboard.LEFT or gamepad.LEFT or left==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x -= (player_speed - player_z/2)/1.2
+    end
+  end
+  if keyboard.UP or gamepad.UP or up==1 then
+    if player_y<=25 then
+     player_y += player_speed/2 
+     if abs(player_x-player_z)<=240 then
+       player_x += -player_x/110
+     end
+    end
+  end
+  if keyboard.DOWN or gamepad.DOWN or down==1 then
+    if player_y>=-52 then
+     player_y -= player_speed/2
+     if abs(player_x-player_z)<=240 then
+       player_x -= -player_x/110
+     end
+    end
+  end
+  player_z = player_y/30
+  
+  //PREVENT PLAYER FROM GOING OUT OF BOUNDS
+  if player_x-player_z<-240 then
+    player_x+=1
+  end
+  if player_x-player_z>240 then
+    player_x-=1
+  end
+  
+  //ENEMY
+  current_time = system.time()
+  for e in enemies
+   if e!=null then
+     e.update()
+    if e.enemy_x <=-screen.width/2-90 then
+      enemies.removeElement(e)
+    end
+    if e.collided then
+      scene = 2
+      volume = 0
+      audio.playSound("explosion",0.5,1,0,0)
+      audio.playSound("defeat",0.9,1,0,0)
+    end
+   end
+  end
+  if current_time - ini_time >= enemy_spawn_delay then
+     //spawn enemy with random colour
+    enemies.push(new enemy(500,random.intInRange(25,-50),1,
+      "hsl("+random.intInRange(0,359)+", 100%, 50%)"))
+    ini_time = system.time()
+    enemy_spawn_delay = random.intInRange(870-ceil(global_time*2),3900-ceil(global_time*25))
+  end
+  
+  //COINS 
+  current_time2 = system.time()
+  for c in coins 
+   if c!=null then
+     c.update()
+    if c.coin_x <=-screen.width/2-90 then
+      coins.removeElement(c)
+    elsif c.n<=0.05 then
+      score+=1
+      audio.playSound("coins",1,1,0,0)
+      coins.removeElement(c)
+    end
+   end
+  end
+  if current_time2 - ini_time2 >= coin_spawn_delay then
+    coins.push(new coin(500,random.intInRange(21,-60),1))
+    ini_time2 = system.time()
+    coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
+  end
+  end
+  
+  //HIGHSCORE SYSTEM
+  if highscore<score then
+    highscore = score
+  end
+  
+  //STARS BG
+  if scene == 0 or scene==0.5 or scene==1 then
+   for s in stars
+     if s.x<=-screen.width/2 then 
+      s.change_pos() 
+     end
+     s.x-=1
+   end
+  end
+  
+  //BUTTONS
+  if scene==0 then //START BUTTON IN MENU
+   if mouse.x<28 and mouse.x>-28and mouse.y<-13 and mouse.y>-31 then
+     if mouse.press then
+       scene = 0.5
+     end
+   elsif gamepad.release.A then
+     scene = 0.5
+    end
+  end
+    
+  if scene==2 then //BACK BUTTON IN GAME OVER SCENE
+   if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
+     if mouse.press then
+       scene = 0
+     end
+   elsif gamepad.release.A then
+    scene = 0
+    end
+  end
+  
+  //SCENE TRANS BTWN SCENES 1 AND 2
+  if scene==0.5 then
+    if player_x<-90 then
+      player_x+=2
+      volume+=0.005
+    elsif player_x>=-90 then
+      scene = 1
+    end
+  end
+
+  
+end
+
+
+
+
+draw = function()
+  screen.clear()
+  screen.setAlpha(1)
+
+  //ROAD LINES
+  n=100
+  screen.setAlpha(0.5)
+  screen.setLineWidth(0.5)
+  if scene==0 or scene==0.5 or scene==1 then
+   TIMER2 = 5*(system.time()-TIMER)/150
+  end
+  for i=-n/2 to n/2
+   if x<n*-10.41 then
+    TIMER = system.time()
+   end
+   x = 20*i-TIMER2*3 
+   x2 = 7*i-TIMER2
+   screen.drawLine(x,-90,x2,20,"#FFFFFF") 
+  end
+  //ROAD BORDERS
+  screen.setLineWidth(0.9)
+  screen.drawLine(-screen.width/2,20,screen.width/2,20,"#FFFFFF")
+  screen.drawLine(-screen.width/2,-90,screen.width/2,-90,"#FFFFFF")
+  //ROAD COLOUR
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,100,0,-100,"rgb(198,22,140)","rgb(38,44,57)")
+  screen.fillRect(0,-35,screen.width,110)
+  //BACKGROUND
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,20,0,70,"rgb(142,16,100)","rgb(19,31,57)")//sky
+  screen.fillRect(0,70,screen.width,screen.height/2)
+  screen.setAlpha(0.2)
+  screen.setBlending("additive")
+  screen.setLinearGradient(0,7,0,39,"rgb(255,28,179)","rgb(0,9,28)")//bloom
+  screen.fillRect(0,30,screen.width,20)
+  //for i=-20 to 20
+    //h_y=5*sin(-system.time()/200-(i-1)/3)-3*cos(-system.time()/200-(i-1)/2)+50
+    //h_y2=20
+    //screen.drawLine(i*10,h_y,i*10+55,h_y2,"#FFFFFF")
+  //end
+  //STARS
+  for s in stars
+    screen.fillRect(s.x,s.y,1.5,1.5,"#FFFFFF")
+  end
+  
+  if scene==0.5 or scene==1 or scene==2 then
+  
+  //DRAW PLAYER
+  screen.setLineWidth(1)
+  screen.setAlpha(1)
+  size = 10-y/9
+  size1 = size
+  size2 = size1/1.1
+  //player_hitbox = 10+8
+  //screen.drawPolygon(x-player_hitbox,y,x+player_hitbox,y,x+player_hitbox,y-player_hitbox,x-player_hitbox,y-player_hitbox,"#FFFFFF")
+  x=player_x
+  y=player_y+bounce
+  x2 = player_x/(1.07-y2/700) 
+  y2 = player_y/1.1 + 5-(player_y-20)/10+bounce
+  bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+  //PLAYER MODEL
+  //wheels
+  screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  //body
+  screen.drawRect( x, y, 5*size1, 3*size1, '#FFF')
+  screen.drawRect( x2, y2, 5*size2, 3*size2,"rgb(180,180,180)")
+  screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  
+  //DRAW ENEMIES
+  for e in enemies
+    if e!=null then
+      e.draw()
+    end
+  end
+  
+  //DRAW COINS
+  for c in coins
+    if c!=null then
+     c.draw()
+    end
+  end
+  
+  end
+  
+  //GAME UI
+  if scene==0 then
+    screen.setAlpha(1)
+    screen.setFont("Edunline")
+    screen.drawText("Night Drive",0,50,20,"rgb(255,198,255)")
+    screen.setFont("Zepto")
+    screen.drawText("START!",1,-22,17,"rgb(0,255,255)")
+  end
+  
+  if scene==1 then
+  screen.setFont("Squarewave")
+  screen.drawText(score,-screen.width/2+20,90,20,"rgb(255,198,255)")
+  end
+  
+  if scene==2 then // GAMEOVER SCENE
+    screen.setAlpha(1)
+    screen.setBlending("normal")
+    if b_y > 0 then
+     b_y-=2
+    end
+    screen.fillRect(0,b_y,screen.width,screen.height,"rgb(9,0,28)")
+    
+    screen.setAlpha(0.1*sin(system.time()/25)+0.9)
+    screen.drawText("Koniec Gry!",0,b_y+50,23,"rgb(255,0,0)")
+    screen.setAlpha(1)
+    screen.setFont("Squarewave")
+    screen.drawText("wynik",-4,b_y+8,20,"rgb(0,255,255)")
+    screen.drawText(score,37,b_y+6,15,"rgb(0,255,255)")
+    screen.drawText("Najwyższy Wynik",-49,b_y-12,20,"rgb(255,0,255)")
+    screen.drawText(highscore,38,b_y-14,15,"rgb(255,0,255)")
+    screen.setFont("Zepto")
+    screen.drawText("Zagraj Ponownie!",0,b_y-55,21,"rgb(0,255,85)")
+  end
+  
+  
+  //TOUCHSCREEN CONTROLS
+  if scene==1 and system.inputs.touch then
+  u_x=-screen.width/2+screen.width/8
+  u_y=-screen.height/2+screen.height/5
+  s=19
+  diameter = 19
+  screen.drawRound(u_x-s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y+s-2,u_x,u_y+s+3,u_x+3,u_y+s-2)
+  screen.drawRound(u_x,u_y+s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-s+3,u_y+3,u_x-s-3,u_y,u_x-s+3,u_y-3)
+  screen.drawRound(u_x+s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y-s+2,u_x,u_y-s-3,u_x+3,u_y-s+2)
+  screen.drawRound(u_x,u_y-s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x+s-3,u_y+3,u_x+s+3,u_y,u_x+s-3,u_y-3)
+  if touch.x>=u_x-s-diameter/2 and touch.x<=u_x-s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    left = 1
+  else left = 0
+  end
+  if touch.x>=u_x+s-diameter/2 and touch.x<=u_x+s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    right = 1
+  else right = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y+s-diameter/2 and touch.y<=u_y+s+diameter/2 and touch.touching then
+     up = 1
+  else up = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y-s-diameter/2 and touch.y<=u_y-s+diameter/2 and touch.touching then
+    down = 1
+  else down = 0
+  end
+  end
+  
+end
+
+
+
+end()
+
+
+</script></html>
