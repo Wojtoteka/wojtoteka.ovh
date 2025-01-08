@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Wojtoteka</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('img/tlo.jpg') no-repeat center center/cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+        .radio-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: fadeIn 1s ease;
+        }
+        .radio-container h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #f4f4f4;
+        }
+        .radio-container p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #dcdcdc;
+        }
+        iframe {
+            width: 100%;
+            min-height: 150px;
+            border: 0;
+            border-radius: 10px;
+            animation: glow 2s infinite alternate;
+        }
+        footer {
+            font-size: 14px;
+            color: #bbb;
+            text-align: center;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #0066ff;
+            }
+            to {
+                box-shadow: 0 0 20px #3399ff;
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="radio-container">
+        <h1>Radio Wojtoteka</h1>
+        <p>Życzymy miłych wrażeń z słuchania</p>
+        <iframe src="https://fm.wojtoteka.ovh/public/radio_wojtoteka/embed?theme=dark" 
+                frameborder="0" 
+                allowtransparency="true">
+        </iframe>
+    </div>
+    <footer>
+        Stworzone przez <a href="#">Wojtoteka</a>
+    </footer>
+</body>
+</html>
