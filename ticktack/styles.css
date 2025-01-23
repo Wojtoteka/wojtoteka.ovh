@@ -1,0 +1,751 @@
+:root {
+    --discord-blue: #7289da;
+    --discord-dark: #1a1a2e;
+    --discord-darker: #16213e;
+    --accent-blue: #0f3460;
+    --text-blue: #00b4d8;
+    --glow-blue: #4cc9f0;
+    --gradient-1: linear-gradient(45deg, #0f3460, #16213e);
+    --gradient-2: linear-gradient(135deg, #7289da, #4cc9f0);
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--discord-dark);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--discord-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--discord-blue);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-blue);
+}
+
+/* Header & Navigation */
+header {
+    background: var(--gradient-1);
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(114,137,218,0.1)" stroke-width="2"/></svg>');
+    opacity: 0.1;
+    animation: rotate 60s linear infinite;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.logo {
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(76,201,240,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.logo:hover {
+    transform: scale(1.1) rotate(360deg);
+    box-shadow: 0 0 30px rgba(76,201,240,0.5);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-2);
+    transition: transform 0.3s;
+    z-index: -1;
+}
+
+.nav-links a:hover {
+    color: var(--glow-blue);
+}
+
+.nav-links a:hover::before {
+    transform: translateX(100%);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 6rem 1rem;
+    position: relative;
+    background: var(--gradient-1);
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    margin-bottom: 1rem;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-blue);
+}
+
+.cta-button {
+    display: inline-block;
+    background: var(--gradient-2);
+    color: white;
+    text-decoration: none;
+    padding: 1.2rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(76,201,240,0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(76,201,240,0.5);
+}
+
+.cta-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-100%) rotate(45deg);
+    transition: transform 0.6s;
+}
+
+.cta-button:hover::after {
+    transform: translateX(100%) rotate(45deg);
+}
+
+/* Features Section */
+section {
+    padding: 6rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    font-size: 3rem;
+    color: var(--text-blue);
+    position: relative;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--gradient-2);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    perspective: 1000px;
+}
+
+.feature-card {
+    background: var(--discord-darker);
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.5s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px) rotateX(10deg);
+    box-shadow: 0 20px 40px rgba(76,201,240,0.2);
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.feature-card:hover::before {
+    opacity: 0.1;
+}
+
+.feature-card h3 {
+    margin-bottom: 1.5rem;
+    color: var(--glow-blue);
+    font-size: 1.8rem;
+}
+
+/* Commands Section */
+.commands-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.command {
+    background: var(--discord-darker);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.command:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(76,201,240,0.2);
+}
+
+.command code {
+    background: rgba(114,137,218,0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: var(--glow-blue);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.command p {
+    color: #ffffff90;
+    font-size: 1.1rem;
+}
+
+/* Footer */
+footer {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px var(--glow-blue); }
+    to { text-shadow: 0 0 20px var(--glow-blue), 0 0 30px var(--glow-blue); }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .commands-list {
+        grid-template-columns: 1fr;
+    }
+    
+    section {
+        padding: 4rem 1rem;
+    }
+}
+
+/* Additional Animations */
+.feature-card, .command {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating Animation */
+.hero h1 {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Add at the end of the file */
+
+/* Difficulty Bars */
+.difficulty-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.difficulty-bar::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--discord-blue), var(--glow-blue));
+    box-shadow: 0 0 10px var(--glow-blue);
+}
+
+.difficulty-bar.easy::after {
+    width: 33%;
+    animation: fillBar 1.5s ease-out;
+}
+
+.difficulty-bar.medium::after {
+    width: 66%;
+    animation: fillBar 2s ease-out;
+}
+
+.difficulty-bar.hard::after {
+    width: 100%;
+    animation: fillBar 2.5s ease-out;
+}
+
+/* Stats Section */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    background: var(--discord-darker);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h3 {
+    font-size: 2.5rem;
+    color: var(--glow-blue);
+    margin-bottom: 0.5rem;
+}
+
+/* CTA Section */
+.cta-section {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: var(--gradient-1);
+    border-radius: 20px;
+    margin: 2rem auto;
+}
+
+.cta-section p {
+    margin-bottom: 3rem;
+    font-size: 1.2rem;
+    color: var(--text-blue);
+}
+
+@keyframes fillBar {
+    from { width: 0; }
+}
+
+/* Floating Animation */
+.hero h1 {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+/* Add at the end of your CSS file */
+
+.emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+#difficulty-levels .feature-card {
+    padding: 2rem;
+    background: var(--discord-darker);
+    border: 1px solid rgba(114,137,218,0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#difficulty-levels .feature-card h3 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+#difficulty-levels .feature-card p {
+    color: #ffffff90;
+    margin-bottom: auto;
+    padding-bottom: 1rem;
+}
+
+.difficulty-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-top: auto;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+.difficulty-bar::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--discord-blue), var(--glow-blue));
+    box-shadow: 0 0 10px var(--glow-blue);
+}
+
+.difficulty-bar.easy::after {
+    width: 33%;
+    animation: fillBar 1.5s ease-out;
+}
+
+.difficulty-bar.medium::after {
+    width: 66%;
+    animation: fillBar 2s ease-out;
+}
+
+.difficulty-bar.hard::after {
+    width: 100%;
+    animation: fillBar 2.5s ease-out;
+}
+
+/* New Detailed Features Section */
+.detailed-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.detail-card {
+    background: var(--discord-darker);
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(114,137,218,0.1);
+}
+
+.detail-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--discord-blue);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.detail-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 2s infinite;
+}
+
+.detail-card h3 {
+    color: var(--text-blue);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.detail-card p {
+    color: #ffffff90;
+    line-height: 1.6;
+}
+
+.detail-hover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to top, var(--discord-blue), transparent);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.detail-card:hover .detail-hover {
+    transform: translateY(0);
+}
+
+.detail-tip {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Add hover effect variation for each card */
+.detail-card:nth-child(1):hover { border-color: #ff7eee; }
+.detail-card:nth-child(2):hover { border-color: #7effb2; }
+.detail-card:nth-child(3):hover { border-color: #7e9eff; }
+.detail-card:nth-child(4):hover { border-color: #ffdd7e; }
+
+.detail-card:nth-child(1) .detail-hover { background: linear-gradient(to top, #ff7eee50, transparent); }
+.detail-card:nth-child(2) .detail-hover { background: linear-gradient(to top, #7effb250, transparent); }
+.detail-card:nth-child(3) .detail-hover { background: linear-gradient(to top, #7e9eff50, transparent); }
+.detail-card:nth-child(4) .detail-hover { background: linear-gradient(to top, #ffdd7e50, transparent); }
+
+/* Gameplay Showcase Section */
+.gameplay-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.gameplay-board {
+    background: var(--discord-darker);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: perspective(1000px) rotateX(10deg);
+    transition: transform 0.3s;
+}
+
+.gameplay-board:hover {
+    transform: perspective(1000px) rotateX(0deg);
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.board-cell {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--discord-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: rgba(114,137,218,0.1);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.board-cell[data-demo="X"] {
+    color: var(--glow-blue);
+    animation: appear 0.5s ease-out forwards;
+    text-shadow: 0 0 10px var(--glow-blue);
+}
+
+.board-cell[data-demo="O"] {
+    color: #ff7eee;
+    animation: appear 0.5s ease-out forwards;
+    text-shadow: 0 0 10px #ff7eee;
+}
+
+.board-cell:empty::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--glow-blue);
+    animation: cursor 1.5s infinite;
+    opacity: 0.5;
+}
+
+/* Animacje dla planszy */
+@keyframes appear {
+    from {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+@keyframes cursor {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+}
+
+/* Gameplay Info */
+.gameplay-info {
+    background: var(--discord-darker);
+    padding: 2.5rem;
+    border-radius: 20px;
+    position: relative;
+}
+
+.gameplay-info h3 {
+    color: var(--text-blue);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 0 10px rgba(76,201,240,0.3);
+}
+
+.gameplay-info p {
+    margin: 1.5rem 0;
+    font-size: 1.2rem;
+    color: #ffffff90;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.gameplay-info p::before {
+    content: '➤';
+    color: var(--glow-blue);
+    font-size: 1.4rem;
+    animation: point 1s infinite;
+}
+
+.gameplay-info code {
+    background: rgba(114,137,218,0.2);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    color: var(--glow-blue);
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: 1px solid rgba(114,137,218,0.3);
+}
+
+@keyframes point {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .gameplay-showcase {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .gameplay-board {
+        transform: none;
+    }
+    
+    .board-cell {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+}

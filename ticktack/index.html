@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickTack - Discord Bot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="logo.png" alt="TickTack Logo" class="logo">
+            <div class="nav-links">
+                <a href="#features">Funkcje</a>
+                <a href="#commands">Komendy</a>
+                <a href="#invite">Dodaj bota</a>
+            </div>
+        </nav>
+        <div class="hero">
+            <h1>TickTack</h1>
+            <p>Twój ulubiony bot do gry w kółko i krzyżyk!</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1331759180138287135&permissions=8&integration_type=0&scope=bot" class="cta-button">Dodaj do Discord</a>
+        </div>
+    </header>
+
+    <section id="features">
+        <h2>Funkcje</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🎮 Gra w kółko i krzyżyk</h3>
+                <p>Zagraj przeciwko AI na trzech poziomach trudności</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎵 Radio Wojtoteka FM</h3>
+                <p>Słuchaj muzyki na kanale głosowym</p>
+            </div>
+            <div class="feature-card">
+                <h3>🤖 Inteligentne AI</h3>
+                <p>Zaawansowany algorytm minimax dla trudnego poziomu</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="difficulty-levels">
+        <h2>Poziomy Trudności</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="emoji">😊</span>
+                <h3>Łatwy</h3>
+                <p>Idealny do nauki i zabawy</p>
+                <div class="difficulty-bar easy"></div>
+            </div>
+            <div class="feature-card">
+                <span class="emoji">🤔</span>
+                <h3>Średni</h3>
+                <p>Dla graczy z doświadczeniem</p>
+                <div class="difficulty-bar medium"></div>
+            </div>
+            <div class="feature-card">
+                <span class="emoji">😈</span>
+                <h3>Trudny</h3>
+                <p>Prawdziwe wyzwanie</p>
+                <div class="difficulty-bar hard"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gameplay">
+        <h2>Zobacz jak to działa</h2>
+        <div class="gameplay-showcase">
+            <div class="gameplay-board demo-board">
+                <div class="board-row">
+                    <div class="board-cell" data-demo="X" style="animation-delay: 0.2s">X</div>
+                    <div class="board-cell" data-demo="O" style="animation-delay: 0.4s">O</div>
+                    <div class="board-cell" data-demo=""></div>
+                </div>
+                <div class="board-row">
+                    <div class="board-cell" data-demo=""></div>
+                    <div class="board-cell" data-demo="X" style="animation-delay: 0.6s">X</div>
+                    <div class="board-cell" data-demo=""></div>
+                </div>
+                <div class="board-row">
+                    <div class="board-cell" data-demo="O" style="animation-delay: 0.8s">O</div>
+                    <div class="board-cell" data-demo=""></div>
+                    <div class="board-cell" data-demo="X" style="animation-delay: 1s">X</div>
+                </div>
+            </div>
+            <div class="gameplay-info">
+                <h3>Prosta rozgrywka</h3>
+                <p>1. Użyj komendy <code>/start</code></p>
+                <p>2. Wybierz poziom trudności</p>
+                <p>3. Graj używając przycisków!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features-detailed">
+        <h2>Dlaczego TickTack?</h2>
+        <div class="detailed-features">
+            <div class="detail-card">
+                <div class="detail-icon">🎯</div>
+                <h3>Szybka rozgrywka</h3>
+                <p>Rozpocznij grę jedną komendą i ciesz się rozgrywką bez zbędnych komplikacji</p>
+                <div class="detail-hover">
+                    <span class="detail-tip">Średni czas gry: 2 minuty</span>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-icon">🤖</div>
+                <h3>Zaawansowane AI</h3>
+                <p>Bot wykorzystuje algorytm minimax do podejmowania strategicznych decyzji</p>
+                <div class="detail-hover">
+                    <span class="detail-tip">Niezwykle trudny do pokonania na poziomie hard!</span>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-icon">🎵</div>
+                <h3>Radio 24/7</h3>
+                <p>Słuchaj muzyki razem ze znajomymi podczas gry</p>
+                <div class="detail-hover">
+                    <span class="detail-tip">Wysokiej jakości stream audio</span>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-icon">⚡</div>
+                <h3>Natychmiastowa reakcja</h3>
+                <p>Bot reaguje błyskawicznie na każdą komendę</p>
+                <div class="detail-hover">
+                    <span class="detail-tip">Hosting na serwerach SkillHost.pl</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="commands">
+        <h2>Komendy</h2>
+        <div class="commands-list">
+            <div class="command">
+                <code>/start</code>
+                <p>Rozpocznij nową grę</p>
+            </div>
+            <div class="command">
+                <code>/radio</code>
+                <p>Włącz Radio Wojtoteka FM</p>
+            </div>
+            <div class="command">
+                <code>/end</code>
+                <p>Zakończ aktualną grę</p>
+            </div>
+            <div class="command">
+                <code>/status</code>
+                <p>Sprawdź status gry</p>
+            </div>
+            <div class="command">
+                <code>/pomoc</code>
+                <p>Wyświetl pomoc</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="invite" class="cta-section">
+        <h2>Dołącz do zabawy!</h2>
+        <p>Dodaj TickTack do swojego serwera już teraz</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1331759180138287135&permissions=8&integration_type=0&scope=bot" class="cta-button">
+            <i class="fab fa-discord"></i> Dodaj do Discord
+        </a>
+    </section>
+
+    <footer>
+        <p>Powered by SkillHost.pl | Bot stworzony przez @Wojtoteka_</p>
+    </footer>
+</body>
+</html>
