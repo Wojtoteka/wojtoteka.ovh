@@ -46,15 +46,18 @@
         }
 
         .games {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(300px, 1fr));
+            gap: 30px;
             margin-top: 20px;
+            width: 100%;
+            justify-content: start; /* Zmiana z center na start */
         }
 
         .game {
-            width: 300px;
+            min-width: 300px;
+            max-width: 100%;
+            margin: 0;
             text-align: center;
             padding: 20px;
             transition: transform 0.2s;
@@ -110,13 +113,14 @@
             }
 
             .game {
-                width: 90%; /* Gry zajmują całą szerokość na małych ekranach */
+                min-width: unset;
+                width: 100%; /* Gry zajmują całą szerokość na małych ekranach */
                 margin: 0 auto;
             }
 
             .games {
-                flex-direction: column; /* Gry ułożone w pionie */
-                gap: 15px;
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
         }
     </style>
@@ -152,7 +156,6 @@
                 <h2>GloomCraft</h2>
                 <a href="https://wojtoteka.ovh/GloomCraft">Zagraj teraz</a>
             </div>
-        </div>
 
             <div class="game">
                 <img src="fishing/icon192.png" alt="Fishing Party">
