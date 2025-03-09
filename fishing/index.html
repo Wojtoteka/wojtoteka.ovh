@@ -1,0 +1,946 @@
+<!DOCTYPE html><html><head><title>Fishing Party</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"arrowup.png","version":8,"size":118,"properties":{}},{"file":"crab.png","version":0,"size":129,"properties":{}},{"file":"doigt.png","version":53,"size":175,"properties":{}},{"file":"door0.png","version":1,"size":301,"properties":{}},{"file":"door1.png","version":1,"size":306,"properties":{}},{"file":"fish.png","version":0,"size":116,"properties":{}},{"file":"fish1.png","version":0,"size":144,"properties":{}},{"file":"fish2.png","version":0,"size":145,"properties":{}},{"file":"fishscore.png","version":0,"size":112,"properties":{}},{"file":"huit.png","version":77,"size":220,"properties":{}},{"file":"icon.png","version":155,"size":1038,"properties":{"frames":1,"fps":5}},{"file":"mast.png","version":0,"size":150,"properties":{}},{"file":"octopus1.png","version":1,"size":303,"properties":{}},{"file":"octopus2.png","version":32,"size":310,"properties":{}},{"file":"piranha1.png","version":25,"size":216,"properties":{}},{"file":"piranha2.png","version":3,"size":230,"properties":{}},{"file":"piranhaback0.png","version":36,"size":192,"properties":{}},{"file":"piranhaback1.png","version":8,"size":186,"properties":{}},{"file":"piranhafront0.png","version":5,"size":195,"properties":{}},{"file":"piranhafront1.png","version":17,"size":212,"properties":{}},{"file":"poster.png","version":2,"size":36394,"properties":{"frames":1,"fps":5}},{"file":"rock0.png","version":1,"size":287,"properties":{}},{"file":"rock1.png","version":1,"size":292,"properties":{}},{"file":"rock2.png","version":13,"size":287,"properties":{}},{"file":"sailor.png","version":27,"size":198,"properties":{}},{"file":"sandbottom0.png","version":1,"size":199,"properties":{}},{"file":"sandbottom1.png","version":1,"size":207,"properties":{}},{"file":"sandbottomright0.png","version":1,"size":222,"properties":{}},{"file":"sandbottomright1.png","version":1,"size":226,"properties":{}},{"file":"sandfull.png","version":7,"size":177,"properties":{}},{"file":"sandleft0.png","version":1,"size":199,"properties":{}},{"file":"sandleft1.png","version":1,"size":202,"properties":{}},{"file":"sandleftbottom0.png","version":1,"size":224,"properties":{}},{"file":"sandleftbottom1.png","version":1,"size":228,"properties":{}},{"file":"sandright0.png","version":1,"size":195,"properties":{}},{"file":"sandright1.png","version":1,"size":193,"properties":{}},{"file":"sandtop0.png","version":1,"size":200,"properties":{}},{"file":"sandtop1.png","version":1,"size":200,"properties":{}},{"file":"sandtopleft0.png","version":1,"size":214,"properties":{}},{"file":"sandtopleft1.png","version":1,"size":208,"properties":{}},{"file":"sandtopright0.png","version":1,"size":209,"properties":{}},{"file":"sandtopright1.png","version":1,"size":207,"properties":{}},{"file":"sea.png","version":0,"size":87,"properties":{}},{"file":"shark1.png","version":0,"size":470,"properties":{}},{"file":"shark2.png","version":0,"size":455,"properties":{}},{"file":"ship.png","version":0,"size":323,"properties":{}},{"file":"ship2.png","version":0,"size":305,"properties":{}},{"file":"shiptop.png","version":0,"size":235,"properties":{}},{"file":"wall0.png","version":9,"size":242,"properties":{}},{"file":"wall1.png","version":3,"size":263,"properties":{}},{"file":"wallsand.png","version":3,"size":219,"properties":{}},{"file":"walltile.png","version":8,"size":162,"properties":{}},{"file":"wave0.png","version":1,"size":99,"properties":{}},{"file":"wave1.png","version":1,"size":113,"properties":{}},{"file":"wave2.png","version":24,"size":120,"properties":{}},{"file":"wave3.png","version":7,"size":126,"properties":{}},{"file":"wave4.png","version":13,"size":124,"properties":{}}],"assets":[],"maps":{"map1":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft1\",\"sea\",\"wave0\",\"rock2\",\"sandright0\",\"sandleft0\",\"rock1\",\"wave3\",\"sandright1\",\"rock0\",\"wave1\",\"wave2\",\"sandtop0\",\"sandtop1\",\"wall1\",\"wall0\"],\"data\":[1,2,2,3,2,3,2,4,5,5,6,6,4,2,2,3,2,3,2,1,7,8,8,8,8,9,8,8,8,8,8,8,8,8,8,8,8,10,8,11,12,8,8,13,8,8,8,8,8,8,8,14,8,8,8,8,8,8,8,11,12,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,8,8,8,15,7,8,8,8,8,8,8,9,8,8,16,8,8,8,8,8,17,8,8,11,7,8,8,17,8,8,8,8,8,9,8,9,8,8,8,8,8,8,8,11,12,8,8,8,8,8,8,8,8,8,8,8,14,8,8,8,8,8,8,15,12,8,8,8,8,8,8,8,8,8,8,9,8,8,8,8,8,8,8,11,12,8,8,16,8,9,8,8,8,8,8,13,8,9,8,9,16,8,8,11,12,8,8,8,8,8,8,8,8,9,8,8,8,8,8,8,8,8,8,15,12,9,8,8,8,8,8,8,8,8,8,8,8,8,8,18,8,8,8,11,12,8,8,8,8,8,8,16,8,8,8,8,8,8,8,8,8,8,8,11,12,8,8,17,8,8,8,9,8,8,8,9,8,8,8,8,8,8,8,11,7,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,16,8,8,11,12,8,8,8,8,9,8,14,9,8,8,8,8,17,8,8,8,8,8,11,7,8,8,8,8,8,8,8,8,8,8,13,8,8,8,8,8,8,8,15,12,8,10,8,8,8,8,9,8,8,8,8,8,8,8,9,8,8,8,11,12,8,9,8,8,8,9,8,8,8,8,8,8,8,8,8,8,8,8,11,12,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,10,8,11,1,19,19,20,19,20,19,21,5,6,6,5,22,19,19,20,19,20,19,1]}","map2":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft0\",\"sea\",\"wave3\",\"wave2\",\"sandright0\",\"wave0\",\"rock2\",\"wave1\",\"wave4\",\"rock0\",\"sandleft1\",\"sandright1\",\"rock1\",\"sandtopright0\",\"sandtopleft1\",\"sandtopleft0\",\"sandtop1\",\"sandbottomright1\",\"sandleftbottom0\",\"sandtop0\",\"wall0\",\"wall1\"],\"data\":[1,2,3,3,3,2,2,4,5,5,6,6,4,2,2,3,3,2,2,1,7,8,9,8,8,8,8,8,8,8,8,8,8,8,8,8,8,10,8,11,7,8,8,8,12,8,8,12,8,8,8,8,8,12,8,8,8,8,8,11,7,8,13,8,8,8,8,8,8,8,8,14,8,8,8,15,8,16,8,11,17,8,8,8,8,8,15,8,8,8,8,8,8,8,8,8,8,8,8,18,7,8,8,9,8,13,8,8,8,13,8,8,8,8,16,8,8,8,8,11,17,8,8,8,8,8,8,8,8,8,8,8,19,8,8,8,8,14,8,18,7,8,8,10,8,8,19,20,21,8,8,20,22,8,8,8,8,8,8,11,7,8,8,8,8,8,8,11,7,8,8,18,7,8,19,8,8,12,8,11,7,8,8,8,12,8,8,11,7,8,10,18,7,8,10,8,8,8,8,11,7,8,15,8,8,8,16,11,7,14,8,18,7,8,8,15,8,8,8,11,17,8,8,8,15,8,8,11,1,23,23,1,7,13,8,8,8,14,8,18,7,8,14,8,8,8,8,24,3,2,3,3,25,8,8,8,8,9,8,11,7,8,8,8,8,19,8,8,19,8,8,8,8,8,19,8,8,8,8,11,7,8,8,9,8,8,8,15,8,8,8,14,8,8,8,8,8,10,8,11,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,17,8,8,13,8,8,8,12,8,8,8,8,12,8,8,16,8,8,8,18,17,8,8,8,8,8,8,8,8,9,8,8,8,8,9,8,8,14,8,11,7,8,8,10,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,11,1,26,26,23,23,26,26,27,5,6,6,5,28,26,26,26,23,23,26,1]}","map3":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft0\",\"sea\",\"sandright0\",\"sandleft1\",\"wave4\",\"wave1\",\"sandright1\",\"rock0\",\"wave0\",\"wave3\",\"wave2\",\"sandtop0\",\"sandtopleft1\",\"sandtopright0\",\"sandtopleft0\",\"sandleftbottom0\",\"sandbottomright0\",\"sandbottomright1\",\"sandleftbottom1\",\"sandtopright1\",\"sandtop1\",\"wall1\",\"wall0\"],\"data\":[1,2,3,3,3,2,2,4,5,5,6,6,4,2,2,3,3,2,2,1,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,10,8,8,8,11,8,8,8,8,12,8,8,8,8,8,8,12,8,8,13,10,8,14,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,13,10,8,8,8,15,8,8,14,8,8,16,8,14,16,8,8,8,8,8,9,10,8,16,8,8,11,8,8,8,8,8,8,8,14,8,8,8,17,8,13,7,8,8,8,8,8,8,8,8,12,8,8,8,8,8,8,8,8,8,9,1,18,18,19,8,8,20,18,18,21,20,18,18,19,8,8,20,18,18,1,1,2,2,22,8,8,23,2,3,22,24,3,3,25,8,14,24,3,2,1,7,14,8,8,8,8,8,14,8,17,8,8,8,8,8,8,8,8,14,9,7,8,11,8,14,17,8,8,8,8,8,14,8,8,12,8,8,8,8,9,1,18,18,21,8,8,26,18,18,21,20,18,18,21,8,8,20,18,18,1,1,2,2,25,8,8,24,3,2,22,23,2,3,22,8,8,24,2,2,1,7,8,8,8,8,8,8,11,8,8,8,8,8,8,8,8,8,8,8,9,7,8,16,8,15,8,8,8,8,8,8,15,8,16,8,8,8,14,8,9,10,8,8,8,8,8,8,11,8,8,8,8,8,8,8,8,8,8,8,13,10,8,8,8,17,8,8,8,8,8,17,8,8,8,14,8,8,8,8,13,7,8,8,14,8,8,15,8,8,8,8,8,15,8,8,14,8,12,8,9,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,1,18,18,27,27,18,18,28,5,6,6,5,29,18,18,27,27,27,18,1]}","map4":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"wallsand\",\"door1\",\"door0\",\"sandleft0\",\"sea\",\"wave1\",\"wave4\",\"sandright0\",\"sandleft1\",\"wave2\",\"wave3\",\"sandright1\",\"rock2\",\"rock0\",\"rock1\",\"wave0\",\"sandtop0\",\"wall0\",\"wall1\",\"sandtop1\"],\"data\":[1,1,1,1,1,2,2,3,4,5,4,5,3,2,2,1,1,1,1,1,1,1,1,1,6,7,7,7,8,7,7,7,7,9,7,10,1,1,1,1,1,1,1,1,11,7,7,12,7,7,13,7,7,7,7,14,1,1,1,1,1,1,1,1,11,7,7,7,7,7,7,7,7,12,7,14,1,1,1,1,1,1,1,1,11,15,15,16,17,16,7,7,7,8,7,10,1,1,1,1,1,1,1,1,6,7,7,7,7,7,7,7,7,7,7,14,1,1,1,1,1,1,1,1,11,7,8,7,9,7,12,7,7,9,7,10,1,1,1,1,1,1,1,1,6,7,13,7,7,7,7,7,7,7,7,10,1,1,1,1,1,1,1,1,11,7,7,7,7,7,16,15,17,16,16,10,1,1,1,1,1,1,1,1,11,7,7,7,18,7,7,7,7,7,7,10,1,1,1,1,1,1,1,1,6,7,7,12,7,7,7,18,7,7,7,14,1,1,1,1,1,1,1,1,6,7,7,7,7,7,7,7,7,7,12,14,1,1,1,1,1,1,1,1,11,15,17,15,16,16,7,7,7,13,7,10,1,1,1,1,1,1,1,1,6,7,7,7,7,7,7,9,7,7,7,14,1,1,1,1,1,1,1,1,11,7,7,7,18,7,7,8,7,18,7,14,1,1,1,1,1,1,1,1,6,13,7,7,7,7,7,7,7,7,7,10,1,1,1,1,1,1,1,1,11,7,7,7,7,7,16,17,16,17,15,10,1,1,1,1,1,1,1,1,11,7,18,7,7,8,7,7,7,7,7,10,1,1,1,1,1,1,1,1,6,7,7,7,7,7,7,7,7,7,9,10,1,1,1,1,1,1,1,1,1,19,19,20,5,4,4,5,21,22,19,1,1,1,1,1]}","map5":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft1\",\"sea\",\"sandright0\",\"sandleft0\",\"wave1\",\"wave3\",\"wave0\",\"sandright1\",\"sandbottomright1\",\"sandleftbottom0\",\"rock0\",\"rock2\",\"wave2\",\"sandtopright0\",\"sandtopleft1\",\"sandtop0\",\"sandtop1\",\"wall1\",\"wall0\"],\"data\":[1,2,2,3,2,1,1,4,5,5,6,6,4,1,1,3,2,3,2,1,7,8,8,8,8,9,10,8,8,8,8,8,8,9,10,8,8,8,8,9,10,8,11,8,8,9,10,8,8,8,8,12,8,9,10,8,8,8,8,9,10,8,8,8,8,9,10,8,8,8,8,8,8,9,10,13,8,8,8,14,7,8,8,8,8,9,10,13,8,8,8,8,8,9,10,8,11,8,8,9,7,8,8,11,8,9,10,8,8,13,8,13,8,9,10,8,8,8,8,9,10,8,8,8,8,15,16,8,8,8,8,8,12,15,16,8,8,8,8,14,10,8,8,8,8,8,8,8,8,8,8,13,8,8,8,8,17,8,8,9,10,8,11,8,8,13,8,8,8,17,8,8,8,13,8,8,8,8,8,9,10,8,8,8,8,8,8,8,17,17,18,8,8,8,8,8,8,8,8,14,10,13,8,8,8,8,8,8,8,18,18,18,8,8,8,19,8,8,8,9,10,8,8,8,8,8,8,8,8,8,18,8,8,8,8,8,8,8,11,9,10,8,8,11,8,8,8,13,8,8,8,13,8,8,8,8,8,8,8,9,7,13,8,17,8,20,21,8,8,8,8,8,8,20,21,8,11,8,8,9,10,8,8,8,8,9,10,12,13,8,8,11,8,9,10,8,8,8,8,9,7,8,8,8,11,9,10,8,8,8,8,8,8,9,10,8,8,8,8,14,10,8,8,8,8,9,10,13,8,11,8,8,8,9,10,13,8,8,8,9,10,8,13,8,8,9,10,8,8,8,8,11,8,9,10,8,8,11,8,9,10,8,8,8,8,9,10,8,8,8,8,8,8,9,10,8,8,8,8,9,1,22,22,23,22,1,1,24,5,6,6,5,25,1,1,23,22,23,22,1]}","map6":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft1\",\"sea\",\"wave0\",\"sandright0\",\"sandleft0\",\"wave3\",\"sandtopright0\",\"sandtopleft1\",\"sandtop0\",\"sandright1\",\"sandbottomright1\",\"sandleftbottom1\",\"wave1\",\"rock0\",\"sandtop1\",\"wall1\",\"wall0\"],\"data\":[1,2,2,3,2,3,2,4,5,5,6,6,4,2,2,3,2,3,2,1,7,8,8,8,8,9,8,8,8,8,8,8,8,8,8,8,8,8,8,10,11,8,8,8,8,8,8,8,8,8,8,12,8,8,8,8,8,8,8,10,11,8,8,13,14,8,8,13,15,15,15,15,15,15,15,15,14,8,8,16,7,8,8,10,7,8,8,17,3,3,3,3,3,3,3,1,7,8,8,10,7,8,8,10,7,8,8,8,8,8,8,8,8,8,8,10,7,8,8,10,11,8,8,10,7,8,8,8,8,8,8,8,12,8,8,10,7,8,8,16,11,8,8,10,1,15,15,15,15,15,15,15,14,8,8,10,7,8,8,10,11,8,8,10,1,3,3,3,3,3,3,3,18,9,8,10,7,8,8,10,11,8,8,10,7,8,8,8,8,8,8,8,8,8,8,10,7,8,8,16,11,9,8,10,7,8,8,8,8,8,8,8,8,8,8,10,7,8,8,10,11,8,8,10,7,8,8,13,15,15,15,15,15,15,15,1,1,15,15,1,11,8,8,10,7,8,8,17,3,3,3,3,3,3,3,3,3,3,3,1,7,9,8,10,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,16,11,8,8,10,7,8,8,12,8,8,8,8,8,19,8,8,8,8,8,10,7,8,8,10,1,15,15,15,15,15,15,15,15,15,14,8,8,8,8,16,11,8,8,17,3,3,3,3,3,3,3,3,3,1,7,9,20,20,8,10,11,8,9,8,8,8,9,8,8,8,8,8,8,16,7,8,8,8,8,10,11,8,8,8,8,8,8,8,8,8,8,8,8,16,7,8,8,8,8,10,1,15,15,21,15,21,15,22,5,6,6,5,23,1,1,21,15,21,15,1]}","map7":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"sandbottom0\",\"sandbottom1\",\"wallsand\",\"door0\",\"door1\",\"sandleft1\",\"sea\",\"wave0\",\"sandright0\",\"sandleft0\",\"wave1\",\"wave3\",\"rock2\",\"sandright1\",\"sandtopright0\",\"sandtopleft1\",\"sandbottomright1\",\"sandleftbottom1\",\"sandtop0\",\"sandtop1\",\"wall1\",\"wall0\"],\"data\":[1,2,2,3,2,3,2,4,5,5,6,6,4,2,2,3,2,3,2,1,7,8,8,8,8,9,8,8,8,8,8,8,8,8,8,8,8,8,8,10,11,8,8,12,8,8,8,8,8,8,8,13,8,8,8,8,8,12,8,10,11,8,8,14,14,8,8,8,8,8,8,8,8,8,8,14,14,8,8,15,7,8,8,14,8,8,8,9,8,16,17,8,8,8,8,8,14,8,8,10,7,8,8,12,8,8,8,8,16,1,1,17,8,8,8,8,8,8,8,10,11,8,8,8,8,8,8,16,1,1,1,1,17,8,8,8,8,8,8,15,11,8,8,8,8,8,16,1,1,1,1,1,1,17,8,8,8,12,8,10,11,8,12,8,8,16,1,1,1,1,1,1,1,1,17,9,8,8,8,10,11,8,8,8,16,1,1,1,1,1,1,1,1,1,1,17,8,8,8,15,11,9,8,8,18,1,1,1,1,1,1,1,1,1,1,19,8,8,8,10,11,8,8,8,8,18,1,1,1,1,1,1,1,1,19,8,8,8,8,10,11,8,8,12,8,8,18,1,1,1,1,1,1,19,8,8,8,8,8,10,7,9,8,8,8,8,8,18,1,1,1,1,19,8,8,8,8,12,8,10,11,8,8,8,8,9,8,13,18,1,1,19,8,12,8,8,8,8,8,10,7,8,8,14,8,8,8,8,8,18,19,8,8,8,8,8,14,8,8,15,11,8,8,14,14,8,8,9,8,8,8,8,8,8,8,14,14,12,8,10,11,8,9,8,8,8,9,8,8,8,8,8,12,8,8,8,8,8,8,10,11,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,10,1,20,20,21,20,21,20,22,5,6,6,5,23,20,20,21,20,21,20,1]}","map8":"{\"width\":20,\"height\":20,\"block_width\":16,\"block_height\":16,\"sprites\":[0,\"sandfull\",\"wallsand\",\"door0\",\"door1\",\"sandleftbottom1\",\"sea\",\"sandright1\",\"sandtopright1\",\"sandbottom0\",\"wave0\",\"sandbottomright1\",\"sandbottom1\",\"sandleft0\",\"sandright0\",\"sandtop1\",\"sandtopleft1\",\"sandtopright0\",\"rock1\"],\"data\":[1,1,1,1,1,1,1,2,3,3,4,4,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,6,6,6,6,7,1,1,1,1,1,1,1,1,1,1,1,1,1,5,6,6,6,6,8,1,1,1,1,1,1,1,1,1,1,1,1,1,5,6,6,6,6,8,1,1,1,1,1,1,1,1,1,1,9,9,9,5,6,6,10,6,6,11,12,12,12,12,12,12,12,12,1,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,14,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,14,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,14,1,15,15,15,16,10,6,6,6,6,17,15,15,15,15,15,15,15,15,1,1,1,1,1,1,16,6,6,6,10,11,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,16,6,6,6,6,11,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,16,6,6,6,6,11,1,1,1,1,1,1,1,1,9,9,9,9,9,9,5,6,6,6,10,6,11,9,9,9,9,9,1,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,14,13,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,14,13,6,6,6,6,6,6,6,6,6,6,18,6,6,6,6,6,6,6,14,1,15,15,15,15,15,15,15,16,6,6,6,6,6,17,15,15,15,15,1,1,1,1,1,1,1,1,1,5,6,6,6,6,17,1,1,1,1,1,1,1,1,1,1,1,1,1,13,6,6,6,6,17,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,4,3,2,1,1,1,1,1,1,1]}"},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="parser.js"></script><script src="program.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="runner_v1_i.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+animals = []
+
+updateAnimals = function()
+  local l = levels[level%levels.length]
+  for type in l.animals
+    local count = l.animals[type]
+    count *= 1+floor(level/levels.length)*.25
+    if countAnimals(type)<min(count,tick/120) then
+      addAnimal(type)
+    end
+  end
+
+  for a in animals
+    a.type.update(a)
+  end
+end
+
+countAnimals = function(type)
+  local sum = 0
+  for a in animals
+    if a.type.name == type then sum += 1 end
+  end
+  sum
+end
+
+addAnimal = function(type)
+  local px = random.next()*360-180
+  local py = random.next()*360-180
+  local dx = x-px
+  local dy = y-py
+  if sqrt(dx*dx+dy*dy)>80 and isSea(px,py) then
+    animal_types[type].add(px,py)
+  end
+end
+
+drawAnimals = function()
+  local time = system.time()
+  for s in animals
+    s.type.draw(s)
+  end
+end
+
+animal_types.shark = object
+  name = "shark"
+  draw = function(s)
+    screen.setDrawScale(if s.vx then s.vx else s.vy end,1)
+    local sprite = if (system.time()+s.phase)%400<200 then "shark1" else "shark2" end
+    screen.drawSprite(sprite,s.x-x,s.y-y-5,25,25)
+    screen.setDrawScale(1,1)
+  end
+  
+  add = function(x,y)
+    local dir = random.nextInt(4)
+    local s = object
+      x = x
+      y = y
+      vx = [1,0,-1,0][dir]
+      vy = [0,1,0,-1][dir]
+      speed = 3 //random.next()*3+1
+      phase = random.next()*400
+      type = animal_types.shark
+    end
+   animals.push(s)
+  end
+  
+  update = function(s)
+    if not isSea(s.x+s.vx*10,s.y+s.vy*10) or random.next()<.005 then
+      if random.next()<.5 then
+        if abs(s.x-x)>abs(s.y-y) then
+          if s.x<x then s.vx = 1 else s.vx = -1 end
+          s.vy = 0
+        else
+          if s.y<y then s.vy = 1 else s.vy = -1 end
+          s.vx = 0
+        end
+      else
+        local dir = random.nextInt(4)
+        s.vx = [1,0,-1,0][dir]
+        s.vy = [0,1,0,-1][dir]
+      end
+    else
+      s.x += s.vx*.25*s.speed
+      s.y += s.vy*.25*s.speed
+    end
+    
+    local dx = s.x-x
+    local dy = (s.y-y)*1.5
+    if sqrt(dx*dx+dy*dy)<20 then gameOver() end
+  end
+end
+
+animal_types.piranha = object
+  name = "piranha"
+  draw = function(s)
+    screen.setDrawScale(if s.vx then s.vx else s.vy end,1)
+    local sprite = if (system.time()+s.phase)%400<200 then "piranha1" else "piranha2" end
+    screen.drawSprite(sprite,s.x-x,s.y-y,18,12)
+    screen.setDrawScale(1,1)
+  end
+  
+  add = function(x,y)
+    local dir = random.nextInt(2)
+    local s = object
+      x = x
+      y = y
+      vx = [1,-1][dir]
+      vy = 0
+      speed = 2
+      phase = random.next()*400
+      type = animal_types.piranha
+    end
+   animals.push(s)
+  end
+  
+  update = function(s)
+    if not isSea(s.x+s.vx*10,s.y+s.vy*10) or random.next()<.005 then
+      local dir = random.nextInt(2)
+      s.vx = [1,-1][dir]
+      s.vy = 0
+    else
+      s.x += s.vx*.25*s.speed
+      s.y += s.vy*.25*s.speed
+    end
+    
+    local dx = s.x-x
+    local dy = (s.y-y)*1.5
+    if sqrt(dx*dx+dy*dy)<15 then gameOver() end
+  end
+end
+
+animal_types.piranhab = object
+  name = "piranhab"
+  draw = function(s)
+    local sprite =
+      if s.vy>0 then "piranhaback" else "piranhafront" end + if (system.time()+s.phase)%400<200 then 0 else 1 end
+    screen.drawSprite(sprite,s.x-x,s.y-y,12,12)
+    screen.setDrawScale(1,1)
+  end
+  
+  add = function(x,y)
+    local dir = random.nextInt(2)
+    local s = object
+      x = x
+      y = y
+      vy = [1,-1][dir]
+      vx = 0
+      speed = 2
+      phase = random.next()*400
+      type = animal_types.piranhab
+    end
+   animals.push(s)
+  end
+  
+  update = function(s)
+    if not isSea(s.x+s.vx*10,s.y+s.vy*10) or random.next()<.005 then
+      local dir = random.nextInt(2)
+      s.vy = [1,-1][dir]
+      s.vx = 0
+    else
+      s.x += s.vx*.25*s.speed
+      s.y += s.vy*.25*s.speed
+    end
+    
+    local dx = s.x-x
+    local dy = (s.y-y)*1.5
+    if sqrt(dx*dx+dy*dy)<12 then gameOver() end
+  end
+end
+
+animal_types.octopus = object
+  name = "octopus"
+  draw = function(s)
+    screen.setDrawScale(if s.vx then -s.vx else s.vy end,1)
+    local sprite = if (system.time()+s.phase)%400<200 then "octopus1" else "octopus2" end
+    screen.drawSprite(sprite,s.x-x,s.y-y,20,20)
+    screen.setDrawScale(1,1)
+  end
+  
+  add = function(x,y)
+    local dir = random.nextInt(4)
+    local s = object
+      x = x
+      y = y
+      vx = [1,0,-1,0][dir]
+      vy = [0,1,0,-1][dir]
+      speed = 1
+      phase = random.next()*400
+      type = animal_types.octopus
+    end
+   animals.push(s)
+  end
+  
+  update = function(s)
+    if not isSea(s.x+s.vx*10,s.y+s.vy*10) or random.next()<.005 then
+      if random.next()<.5 then
+        if abs(s.x-x)>abs(s.y-y) then
+          if s.x<x then s.vx = 1 else s.vx = -1 end
+          s.vy = 0
+        else
+          if s.y<y then s.vy = 1 else s.vy = -1 end
+          s.vx = 0
+        end
+      else
+        local dir = random.nextInt(4)
+        s.vx = [1,0,-1,0][dir]
+        s.vy = [0,1,0,-1][dir]
+      end
+      s.dash = if random.next()<.5 then 60 else 0 end
+    else
+      if s.dash then
+        s.dash -= 1
+        s.x += s.vx*s.speed*1.25
+        s.y += s.vy*s.speed*1.25
+      else
+        s.x += s.vx*.25*s.speed
+        s.y += s.vy*.25*s.speed
+      end
+    end
+    
+    local dx = s.x-x
+    local dy = (s.y-y)*1.5
+    if sqrt(dx*dx+dy*dy)<20 then gameOver() end
+  end
+end
+
+
+
+
+fishedSound = function()
+  audio.beep("square tempo 20000 volume 50 span 100 F4 to F6")
+end
+
+lostSound = function()
+  audio.beep("saw tempo 10000 volume 100 span 100 C2 to C4 to C2 to C4")
+  audio.beep("duration 500 - square duration 200 span 80 duration 800 C3")
+  audio.beep("duration 500 - square duration 200 span 80 duration 800 A3")
+  audio.beep("duration 500 - square duration 200 span 80 duration 800 F3")
+end
+
+startSound = function()
+  audio.beep("square tempo 960 volume 100 span 50 F5 C6")
+end
+
+splashSound = function()
+  audio.beep("noise tempo 480 volume 60 span 100 C4 volume 100 C4 volume 80 C4 volume 60 C4 volume 40 C4 volume 20 tempo 120 C4")
+end
+
+rockSound = function()
+  audio.beep("noise duration 50 volume 50 span 100 C6")
+  audio.beep("saw duration 100 volume 100 span 100 C2")
+end
+
+levelClearedSound = function()
+  audio.beep("duration 200 - saw duration 50 volume 100 span 80 F5 C6 F")
+  audio.beep("duration 200 - saw volume 50 span 80 duration 75 - duration 50 F5 C6 F")
+  audio.beep("duration 200 - saw volume 25 span 80 duration 175 - duration 50 F5 C6 F")
+end
+
+levelUpSound = function()
+  audio.beep("square duration 100 volume 50 span 50 F4 F G G duration 200 A volume 20 A volume 6 A")
+  audio.beep("square duration 100 volume 50 span 50 Bb4 Bb C5 C duration 200 C volume 20 C volume 6 C")
+  audio.beep("square duration 100 volume 50 span 50 D5 D E5 E duration 200 F volume 20 F volume 6 F")
+end
+
+crabs = []
+while crabs.length<10
+  local cx = 200+50*random.next()
+  if random.next()<.5 then cx *= -1 end
+  local cy = random.next()*400
+  crabs.push(object x=cx y=cy rotation=random.next()*360 end)
+end
+
+drawCrabs = function()
+  for c in crabs
+    screen.setDrawRotation(c.rotation)
+    screen.drawSprite("crab",c.x-x,fmod(c.y-y,400)-200,10,10)
+    screen.setDrawRotation(0)
+    //print(c.y)
+  end
+end
+
+fmod = function(x,y)
+  x-floor(x/y)*y
+end
+
+draw = function()
+  if not status then
+    screen.setLinearGradient(0,0,0,screen.height/2,"rgb(255,161,113)","rgb(142,142,255)")
+    screen.fillRect(0,screen.height/4,screen.width,screen.height/2)
+    local sunpos = exp(-tick/2000)
+    screen.fillRound(0,screen.height/4-(screen.height/4+20)*sunpos,40,40,"#FFF")
+    screen.fillRect(0,-screen.height/4,screen.width,screen.height/2,"rgb(0,151,227)")
+    random.seed(floor(tick/10))
+    drawFishes()
+    for i=1 to 20
+      random.seed((tick+i)*3.493849)
+      local x = random.next()*40-20
+      local y = random.next()
+      screen.fillRect(x*(1+y*2),-y*screen.height/2,4,1,"#FFF")
+    end
+    if tick>60 then
+      screen.setColor("rgb(25,55,113)")
+    else
+      screen.setColor("rgba(255,255,255,0")
+    end
+    screen.drawText("FISHING",0,screen.height/4+20,40)
+    screen.drawText("PARTY",0,screen.height/4-20,40)
+  else
+    screen.fillRect(0,0,screen.width,screen.height,"rgb(255,179,28)")
+    local m = current_level.map
+    local mdown = previous_level.map
+    local mup = next_level.map
+    
+    screen.drawMap(getAnimatedMap(mdown,floor(system.time()/125)%10),-x,-y-400,400,400)
+    screen.drawMap(getAnimatedMap(m,floor(system.time()/125)%10),-x,-y,400,400)
+    screen.drawMap(getAnimatedMap(mup,floor(system.time()/125)%10),-x,-y+400,400,400)
+    drawCrabs()
+    drawFishes()
+    drawAnimals()
+    screen.setDrawRotation(rotation-90)
+    screen.drawSprite(if velocity>.1 and system.time()%400<200 then "ship2" else "ship" end,0,0,20)
+    screen.drawSprite("shiptop",0,2,20)
+    drawFished()
+    screen.setDrawRotation(0)
+    if rotation>180 then
+      screen.drawSprite("mast",0,10,20,20)
+      local px = 4*cos(rotation/180*PI+PI)
+      local py = 4*sin(rotation/180*PI+PI)+5
+      screen.drawSprite("sailor",px,py,10,10)
+    end
+    screen.setDrawRotation(rotation-90)
+    for i=0 to 10 by 1
+      local a = (1-pow(abs(5-i)/5,2))
+      local dx = cos(rotation/180*PI)
+      local dy = sin(rotation/180*PI)
+      local color = if i>0 and i<10 then "#EEE" else"rgb(113,55,25)" end
+      screen.fillRect(0+dx*(a*2+1),6+i+dy*(a*2+1),10+a*5,2,color)
+    end
+    screen.setDrawRotation(0)
+    if rotation<=180 then
+      screen.drawSprite("mast",0,10,20,20)
+      local px = 4*cos(rotation/180*PI+PI)
+      local py = 4*sin(rotation/180*PI+PI)+5
+      screen.drawSprite("sailor",px,py,10,10)
+    end
+    if touch.touching and 0 then
+      screen.fillRound(gesture_last_x,gesture_last_y,50,50,"rgba(255,255,255,.2)")
+      screen.fillRound(touch.x,touch.y,25,25,"rgba(255,255,255,.3)")
+    end
+    if fade then
+      screen.fillRect(0,0,screen.width,screen.height,"rgba("+fade_color+","+fade+")")
+      fade = if fade<.01 then 0 else fade*.98 end
+    end
+    drawScore()
+  end
+  if status == "lost" then
+    screen.fillRect(0,0,screen.width,screen.height,"rgba(0,0,0,.5)")
+    screen.drawText("GAME OVER",0,30,30,"#FFF")
+    screen.drawText("LEVEL "+(level+1),0,-40,20,"#FFF")
+    screen.drawText("SCORE "+score,0,-20,20,"#FFF")
+  end
+  drawMessage()
+  if show_controls then drawControls() end
+end
+
+drawScore = function()
+  screen.setColor("#FFF")
+  screen.drawSprite("fishscore",screen.width/2-12,screen.height/2-21,score_size*12,score_size*12)
+  screen.drawText(score,screen.width/2-30,screen.height/2-20,score_size*20)
+  score_size = score_size+(1-score_size)*.1
+  screen.drawText("Lv",-screen.width/2+12,screen.height/2-20,level_size*15,"rgb(25,84,113)")
+  screen.drawText((level+1),-screen.width/2+30,screen.height/2-20,level_size*20,"#FFF")
+  level_size = level_size+(1-level_size)*.1
+end
+
+drawControls = function()
+  screen.setAlpha(.5)
+  screen.drawSprite("huit",0,-screen.height/4,80,40)
+  screen.setAlpha(1)
+  local phase = (system.time()%2000)/2000*2*PI
+  local x = sin(phase)*35+5
+  local y = sin(phase*2)*15-10-screen.height/4
+  screen.drawSprite("doigt",x,y,30)
+end
+
+updateFishes = function()
+  if fishes.length<20 and spawned_fish<current_level.fish then
+    if addFish() then
+      spawned_fish += 1
+    end
+  end
+
+  for f in fishes
+    if f.fished then
+      f.fished -= 1
+      f.x += (x-f.x)*.15
+      f.y += (y-f.y)*.15
+      if f.fished == 0 then
+        fishes.remove(fishes.indexOf(f))
+      end
+      continue
+    end
+    if not isSea(f.x+f.facing*10,f.y) then
+      f.facing *= -1
+    end
+    f.x += f.facing*.25
+    local dx = f.x-x
+    local dy = f.y-y
+    if sqrt(dx*dx+dy*dy)<20 then
+      score += 1
+      fished += 1
+      score_size = 1.5
+      f.fished = 20
+      fishedSound()
+    end
+  end
+end
+
+menuFishes = function()
+  x = y = 0
+  fishes = []
+  for i = 1 to 10
+    fishes.push(object
+      x = random.next()*200-100
+      y = -random.next()*100-50
+      facing = random.nextInt(2)*2-1
+    end)
+  end
+end
+
+updateMenuFishes = function()
+  for f in fishes
+    f.x += f.facing*.25
+    if f.x>90 and f.facing>0 or f.x<-90 and f.facing<0 then
+      f.facing *= -1
+    end
+  end
+end
+
+menuFishes()
+
+addFish = function()
+  local f = object
+    x = random.next()*360-180
+    y = random.next()*360-180
+    facing = if random.next()<.5 then -1 else 1 end
+    phase = random.next()*400
+  end
+  local dx = x-f.x
+  local dy = y-f.y
+  if sqrt(dx*dx+dy*dy)>80 and isSea(f.x,f.y) then
+    fishes.push(f)
+    1
+  else
+    0
+  end  
+end
+
+drawFishes = function()
+  local time = system.time()
+  for f in fishes
+    if f.fished then continue end
+    screen.setDrawScale(-f.facing,1)
+    local sprite = if (time+f.phase)%400<200 then "fish1" else "fish2" end
+    screen.drawSprite(sprite,f.x-x,f.y-y,10,10)
+    screen.setDrawScale(1,1)
+  end
+end
+
+drawFished = function()
+  for f in fishes
+    if f.fished then
+      screen.drawSprite("fish",f.x-x,f.y-y,10,10)
+    end
+  end
+end
+
+gamepadAnalyzer = function()
+  if gamepad.LEFT_STICK_AMOUNT>.5 then
+    angle = gamepad.LEFT_STICK_ANGLE
+    gamepad_touching = 1
+  else
+    gamepad_touching = 0
+  end
+end
+
+gestureAnalyzer = function()
+  if not gesture_touching and not gesture_lock then
+    if touch.touching then
+      gesture_touching = 1
+      local dx = touch.x-gesture_last_x
+      local dy = touch.y-gesture_last_y
+      local d = sqrt(dx*dx+dy*dy)
+      if d>40 then
+        gesture_last_x = touch.x
+        gesture_last_y = touch.y
+      end
+    end
+  elsif touch.touching and not gesture_lock then
+    local dx = touch.x-gesture_last_x
+    local dy = touch.y-gesture_last_y
+    local d = sqrt(dx*dx+dy*dy)
+    if d>5 then
+      angle = atan2(dy,dx)*180/PI
+      gesture_last_x = (touch.x-dx*10/d)*.02+gesture_last_x*.98
+      gesture_last_y = (touch.y-dy*10/d)*.02+gesture_last_y*.98
+    end
+  else
+    if gesture_lock and not touch.touching then
+      gesture_lock = 0
+      gesture_last_x = gesture_last_y = 0
+    end
+    gesture_touching = 0
+  end
+  return 0
+end
+
+keyboardAnalyzer = function()
+  keyboard_touching = keyboard.LEFT or keyboard.RIGHT or keyboard.UP or keyboard.DOWN
+  if keyboard.UP then
+    angle = if keyboard.LEFT then 135 elsif keyboard.RIGHT then 45 else 90 end
+  elsif keyboard.DOWN then
+    angle = if keyboard.LEFT then 225 elsif keyboard.RIGHT then 315 else 270 end
+  elsif keyboard.LEFT then
+    angle = 180
+  elsif keyboard.RIGHT then
+    angle = 0
+  end
+end
+
+levels = [
+  object
+    level = 1
+    map = 1
+    fish = 20
+    animals = object
+      piranha = 10
+    end
+  end,
+  
+  object
+    level = 2
+    map = 2
+    fish = 20
+    animals = object
+      shark = 4
+    end
+  end,
+  
+  object
+    level = 3
+    map = 3
+    fish = 20
+    animals = object
+      piranha = 5
+      piranhab = 5
+    end
+  end,
+  
+  object
+    level = 4
+    map = 4
+    fish = 20
+    animals = object
+      octopus = 4
+    end
+  end,
+  
+  object
+    level = 5
+    map = 5
+    fish = 20
+    animals = object
+      shark = 3
+      piranha = 5
+      piranhab = 5
+    end
+  end,
+  
+  object
+    level = 6
+    map = 6
+    fish = 20
+    animals = object
+      octopus = 4
+      piranha = 4
+      piranhab = 4
+    end
+  end,
+  
+  object
+    level = 7
+    map = 7
+    fish = 20
+    animals = object
+      octopus = 8
+      piranha = 5
+      piranhab = 5
+    end
+  end,
+  
+  object
+    level = 8
+    map = 8
+    fish = 20
+    animals = object
+      octopus = 5
+      shark = 5
+      piranha = 5
+      piranhab = 5
+    end
+  end
+]
+
+update = function()
+  if status == "lost" then
+    if (touch.touching and not previous_touching) or (keyboard.SPACE and not previous_space) or (gamepad.A and not previous_A) then
+      status = 0
+      tick = 0
+      menuFishes()
+    end
+  elsif status == "playing" then
+    if velocity>1 then
+      show_controls = 0
+    end
+    gestureAnalyzer()
+    gamepadAnalyzer()
+    keyboardAnalyzer()
+    gesture_touching = gesture_touching or gamepad_touching or keyboard_touching
+    local a = (angle+360)%360
+    if a>rotation+180 then a -= 360 end
+    if a<rotation-180 then a += 360 end
+    rotation = rotation*.95+a*.05
+    rotation = (rotation+360)%360
+    
+    physics()
+    tick += 1
+    updateFishes()
+    updateAnimals()
+    
+    if y>230 then
+      startLevel(level+1)
+      y -= 400
+      closeDoor()
+      startMessage("LEVEL "+(level+1))
+      level_size = 2
+      draw_arrow = 0
+      levelUpSound()
+    elsif fished == current_level.fish and not level_cleared then
+      level_cleared = 1
+      openDoor()
+      startMessage("LEVEL CLEARED!")
+      draw_arrow = 1
+      levelClearedSound()
+    end
+  else
+    updateMenuFishes()
+    tick += 1
+    if (touch.touching and not previous_touching) or (keyboard.SPACE and not previous_space) or (gamepad.A and not previous_A) then
+      local ready = 1
+      for s in sprites
+        if not sprites[s].ready then
+          ready = 0
+          print(s+" not ready")
+          end
+      end
+      if ready then start() end
+    end
+  end
+  previous_touching = touch.touching
+  previous_space = keyboard.SPACE
+  previous_A = gamepad.A
+  updateMessage()
+end
+
+start = function()
+  score = 0
+  status = "playing"
+  fade = 0
+  velocity = 0
+  startSound()
+  random.seed(4)
+  startLevel(0)
+  show_controls = 1
+  gesture_lock = 1
+end
+
+startLevel = function(lvl)
+  level = lvl
+  spawned_fish = 0
+  tick = 0
+  fished = 0
+  level_cleared = 0
+  previous_level = levels[(lvl-1+levels.length)%levels.length]
+  current_level = levels[lvl%levels.length]
+  next_level = levels[(lvl+1)%levels.length]
+  animals = []
+  fishes = []
+  map = maps["map"+levels[level%levels.length].map]
+end
+
+gameOver = function()
+  status = "lost"
+  fade = 1
+  fade_color = "255,0,0"
+  draw_arrow = 0
+  show_controls = 0
+  lostSound()
+  closeDoor()
+end
+
+init = function()
+  startMusic()
+end
+
+animated_maps = object end
+
+getAnimatedMap = function(num,frame)
+  if animated_maps[num] and animated_maps[num][frame] then
+    return animated_maps[num][frame]
+  else
+    local time = system.time()
+    local m = maps["map"+num].clone()
+    local f = 0
+    animated_maps[num][frame] = m
+    for j=0 to 19
+      for k=0 to 19
+        local s = m.get(j,k)
+        if s.startsWith("wave") then
+          m.set(j,k,"wave"+((j*3+k*7+floor((j+k+frame)/2))%5))
+        elsif s.startsWith("sand") then
+          f = floor((k*3+j*7+frame)/2)%2
+          m.set(j,k,s.replace("0",f).replace("1",f))
+        elsif s.startsWith("rock") then
+          m.set(j,k,"rock"+floor((k*3+j+frame)/2)%3)
+        elsif s.startsWith("wall") then
+          m.set(j,k,"wall"+floor((k*3+j+frame)/2)%2)
+        elsif s.startsWith("door") then
+          m.set(j,k,"door"+floor((k*3+j+frame)/2)%2)
+        end
+      end
+    end
+    return m
+  end
+end
+
+openDoor = function()
+  open_door_map1 = current_level.map
+  open_door_map2 = next_level.map
+  for i=0 to 9
+    local m = animated_maps[current_level.map][i]
+    m.set(9,19,"sea")
+    m.set(10,19,"sea")
+    m = animated_maps[next_level.map][i]
+    m.set(9,0,"sea")
+    m.set(10,0,"sea")
+  end
+end
+
+closeDoor = function()
+  for i=0 to 9
+    local m = animated_maps[open_door_map2][i]
+    m.set(9,0,"door"+random.nextInt(2))
+    m.set(10,0,"door"+random.nextInt(2))
+    m = animated_maps[open_door_map1][i]
+    m.set(9,19,"door"+random.nextInt(2))
+    m.set(10,19,"door"+random.nextInt(2))
+  end
+end
+
+
+startMessage = function(text)
+  message_text = text
+  message_time = 120
+  message_v = 0
+  message_size = 50
+end
+
+drawMessage = function()
+  if message_time>0 then
+    if message_time>20 then
+      message_v += (25-message_size)*.3
+      message_v *= .7
+    else
+      message_v += (1-message_size)*.3
+      message_v *= .2
+    end
+    message_size += message_v
+    message_time -= 1
+    screen.drawText(message_text,0,screen.height/4,message_size,"#FFF")
+  elsif draw_arrow then
+    if system.time()%500<250 then
+      screen.setAlpha(.5)
+      screen.drawSprite("arrowup",0,screen.height/4,25)
+      screen.setAlpha(1)
+    end
+  end
+end
+
+updateMessage = function()
+  
+end
+
+startMusic = function()
+  audio.beep("loop 0 span 50 volume 20 tempo 80 saw loop 2 F2 C2 end loop 4 G C end F2 C2 tempo 160 F C D E tempo 80 end")
+  audio.beep("loop 0 span 20 volume 20 tempo 160 saw loop 4 - A5 end loop 8 - Bb5 end loop 4 - A5  end")
+  audio.beep("loop 0 span 10 volume 20 tempo 160 noise - C4 end")
+  audio.beep("span 50 square tempo 320 volume 10 loop 0 "+
+    "F5 E F G A - F E F E D C D C Bb4 A "+
+    "G A Bb A G - G F# G A Bb B C5 D Eb E "+
+    "G F E D C - A4 Bb C5 D C B4 C5 D D# E "+
+    "F A C6 Bb5 A - - E D C Bb4 C5 C# D D# E end"
+    )
+end
+
+physics = function()
+  sailing = 1
+
+  local dx = cos(rotation/180*PI)
+  local dy = sin(rotation/180*PI)
+  local px = x+dx*10
+  local py = y+dy*10
+  
+  if isShipSand(x+dx*20,y+dy*20) then
+    sailing = 0
+  elsif isShipBlock(x+dx*10,y+dy*10) then
+    if velocity then rockSound() end
+    velocity = 0
+    sailing = 0
+  end
+  
+  if gesture_touching and sailing then
+    if velocity<1 then
+      velocity += (1.5-velocity)*.03
+    else
+      velocity += (1.5-velocity)*.01
+    end
+  else
+    velocity += (0-velocity)*.05
+  end
+
+  x += velocity*cos(rotation/180*PI)
+  y += velocity*sin(rotation/180*PI)
+end
+
+isSand = function(x,y)
+  local m = map.get(floor(x/20)+10,floor(y/20)+10)
+  m.startsWith("sand") or not m
+end
+
+isBlock = function(x,y)
+  local m = map.get(floor(x/20)+10,floor(y/20)+10)
+  not (m == "sea" or m.startsWith("wave") or m.startsWith("sand") or not m)
+end
+
+isSea = function(x,y)
+  local m = map.get(floor(x/20)+10,floor(y/20)+10)
+  m == "sea" or m.startsWith("wave")
+end
+
+isShipSand = function(x,y)
+  y = floor(y/20)+10
+  if y<20 then
+    local m = getAnimatedMap(current_level.map,0).get(floor(x/20)+10,y)
+    m.startsWith("sand") or not m
+  else
+    local m = getAnimatedMap(next_level.map,0).get(floor(x/20)+10,y-20)
+    m.startsWith("sand") or not m
+  end
+end
+
+isShipBlock = function(x,y)
+  y = floor(y/20)+10
+  if y<20 then
+    local m = getAnimatedMap(current_level.map,0).get(floor(x/20)+10,y)
+    not (m == "sea" or m.startsWith("wave") or m.startsWith("sand") or not m)
+  else
+    local m = getAnimatedMap(next_level.map,0).get(floor(x/20)+10,y-20)
+    not (m == "sea" or m.startsWith("wave") or m.startsWith("sand") or not m)
+  end
+end
+
+  
+
+</script></html>
