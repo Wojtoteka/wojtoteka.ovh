@@ -144,6 +144,28 @@
             animation: fadeIn 1s 1.5s ease-out forwards; /* Delayed fade in for footer */
         }
 
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: rgba(0,0,0,0.25);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff9800 40%, #ffcc80 100%);
+            border-radius: 8px;
+            border: 2px solid rgba(0,0,0,0.15);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff6d00 40%, #ffb74d 100%);
+        }
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #ff9800 rgba(0,0,0,0.25);
+        }
+
         /* Keyframe Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
