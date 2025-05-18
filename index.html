@@ -34,10 +34,12 @@
         /* Main Content Container */
         .container {
             z-index: 1;
-            max-width: 700px;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.6); /* Added background for better readability */
+            width: 100%;
+            max-width: 480px; /* Zwiększona szerokość */
+            padding: 28px 24px 28px 24px; /* padding po bokach */
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.68);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45); /* Dodany cień */
         }
 
         /* Profile Picture */
@@ -70,30 +72,35 @@
 
         .social-links {
             margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 14px; /* umiarkowany odstęp między przyciskami */
         }
         
         .social-links a {
-            display: block;
+            display: flex; /* Użyj flexbox do centrowania zawartości */
+            align-items: center; /* Wyśrodkuj w pionie */
+            justify-content: center; /* Wyśrodkuj w poziomie */
             text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
+            background-color: rgba(255, 255, 255, 0.13); /* Transparent background */
             color: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            width: 80%; /* Make buttons wider */
-            margin: 10px auto; /* Center the buttons */
+            padding: 15px 0; /* Zmniejszony padding (góra/dół mniej, boki bez zmian) */
+            border-radius: 10px; /* Slightly more rounded corners */
+            width: 100%; /* Prawie cała szerokość kontenera */
+            margin: 0;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 1.05em;
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(10px); /* Start slightly lower for animation */
         }
 
         .social-links a:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.22);
             color: #fff;
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px) scale(1.04); /* Bardziej wyraźny efekt hover */
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45); /* Znacznie, znacznie zwiększony i ciemniejszy cień */
         }
 
         /* Staggered animation for links */
@@ -187,13 +194,13 @@
         <p>Znajdziesz tu wszystkie ważne linki</p>
 
         <div class="social-links">
-            <a href="gry.html" target="_blank">Moje gry</a>
-            <a href="https://www.youtube.com/@xMarisnix" target="_blank">Youtube</a>
-            <a href="https://discord.com/users/1328758394588500024" target="_blank">Discord</a>
-            <a href="http://t.me/wojtoteka" target="_blank">Telegram</a>
-            <a href="https://radio.wojtoteka.ovh/" target="_blank">Radio Wojtoteka</a>
-            <a href="https://wojtoteka.github.io/WojtotekaFM-web/" target="_blank">WojtotekaFM- Bot discord</a>
-            <a href="https://discord.gg/WZ7QwQumzC" target="_blank">Discord Goat tag</a>
+            <a href="gry.html" target="_blank">🕹️ Moje gry</a>
+            <a href="https://www.youtube.com/@xMarisnix" target="_blank">📺 YouTube</a>
+            <a href="https://discord.com/users/1328758394588500024" target="_blank">💬 Discord (profil)</a>
+            <a href="http://t.me/wojtoteka" target="_blank">📨 Telegram</a>
+            <a href="https://radio.wojtoteka.ovh/" target="_blank">🎵 Radio Wojtoteka</a>
+            <a href="https://wojtoteka.github.io/WojtotekaFM-web/" target="_blank">🤖 WojtotekaFM Bot</a>
+            <a href="https://discord.gg/WZ7QwQumzC" target="_blank">🐐 Discord Goat Tag</a>
         </div>
     </div>
 
