@@ -12,7 +12,7 @@
             padding: 0;
             height: 100%;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-            display: flex; /* Keeps content centered */
+            display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
@@ -31,24 +31,24 @@
             filter: brightness(50%);
         }
 
-        /* Main Content Container */
+        /* Main Content Container - zmniejszony o ~12% */
         .container {
             z-index: 1;
-            width: 100%;
-            max-width: 480px; /* Zwiększona szerokość */
-            padding: 28px 24px 28px 24px; /* padding po bokach */
-            border-radius: 14px;
+            width: 85%;
+            max-width: 570px; /* było 650px */
+            padding: 30px 22px; /* było 35px 25px */
+            border-radius: 14px; /* było 16px */
             background: rgba(0, 0, 0, 0.68);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45); /* Dodany cień */
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
         }
 
-        /* Profile Picture */
+        /* Profile Picture - zmniejszony o ~12% */
         .profile-pic {
-            width: 120px;
-            height: 120px;
+            width: 120px; /* było 140px */
+            height: 120px; /* było 140px */
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 18px; /* było 20px */
             animation: scaleIn 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
             transition: transform 0.3s ease;
         }
@@ -58,49 +58,50 @@
         }
 
         h1 {
-            font-size: 1.8em; /* Slightly larger for better impact */
-            margin: 10px 0;
+            font-size: 1.9em; /* było 2.2em */
+            margin: 13px 0; /* było 15px */
             animation: fadeInUp 0.5s 0.2s ease-out forwards;
         }
 
         p {
-            font-size: 1em;
-            margin: 10px 0;
+            font-size: 0.95em; /* było 1.1em */
+            margin: 10px 0; /* było 12px */
             color: #ddd;
             animation: fadeInUp 0.5s 0.4s ease-out forwards;
         }
 
         .social-links {
-            margin-top: 20px;
+            margin-top: 22px; /* było 25px */
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 14px; /* umiarkowany odstęp między przyciskami */
+            gap: 13px; /* było 15px */
         }
         
         .social-links a {
-            display: flex; /* Użyj flexbox do centrowania zawartości */
-            align-items: center; /* Wyśrodkuj w pionie */
-            justify-content: center; /* Wyśrodkuj w poziomie */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.13); /* Transparent background */
+            background-color: rgba(255, 255, 255, 0.13);
             color: white;
-            padding: 15px 0; /* Zmniejszony padding (góra/dół mniej, boki bez zmian) */
-            border-radius: 10px; /* Slightly more rounded corners */
-            width: 100%; /* Prawie cała szerokość kontenera */
+            padding: 15px 13px; /* było 18px 15px */
+            border-radius: 9px; /* było 10px */
+            width: 100%;
             margin: 0;
             font-weight: bold;
-            font-size: 1.05em;
+            font-size: 0.9em; /* było 1.05em */
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0; /* Start hidden for animation */
-            transform: translateY(10px); /* Start slightly lower for animation */
+            opacity: 0;
+            transform: translateY(10px);
+            box-sizing: border-box;
         }
 
         .social-links a:hover {
             background-color: rgba(255, 255, 255, 0.22);
             color: #fff;
-            transform: translateY(-5px) scale(1.04); /* Bardziej wyraźny efekt hover */
-            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45); /* Znacznie, znacznie zwiększony i ciemniejszy cień */
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
         }
 
         /* Staggered animation for links */
@@ -112,36 +113,121 @@
         .social-links a:nth-child(6) { animation: fadeInUpLink 0.5s 1.1s ease-out forwards; }
         .social-links a:nth-child(7) { animation: fadeInUpLink 0.5s 1.2s ease-out forwards; }
 
-        /* Notification bar */
-        .notification-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            z-index: 1000;
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        .notification-bar a {
-            color: #FFD700;
-            text-decoration: underline;
-        }
-
         /* Footer Styles */
         .footer {
-            font-size: 0.75em;
+            font-size: 0.75em; /* było 0.8em */
             color: white;
             position: absolute;
-            bottom: 10px;
+            bottom: 15px;
             width: 100%;
             text-align: center;
-            opacity: 0; /* Start hidden for animation */
-            animation: fadeIn 1s 1.5s ease-out forwards; /* Delayed fade in for footer */
+            opacity: 0;
+            animation: fadeIn 1s 1.5s ease-out forwards;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        /* Mobile tablet adjustments - bez zmian */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                max-width: 500px;
+                padding: 25px 20px;
+            }
+
+            .profile-pic {
+                width: 110px;
+                height: 110px;
+                margin-bottom: 18px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin: 12px 0;
+            }
+
+            p {
+                font-size: 1em;
+                margin: 10px 0;
+            }
+
+            .social-links {
+                gap: 12px;
+                margin-top: 20px;
+            }
+
+            .social-links a {
+                padding: 15px 12px;
+                font-size: 0.95em;
+                border-radius: 8px;
+            }
+        }
+
+        /* Mobile phone adjustments - bez zmian */
+        @media (max-width: 480px) {
+            .container {
+                width: 92%;
+                padding: 20px 15px;
+                margin: 15px;
+            }
+
+            .profile-pic {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 10px 0;
+            }
+
+            p {
+                font-size: 0.9em;
+                margin: 8px 0;
+            }
+
+            .social-links {
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .social-links a {
+                padding: 13px 10px;
+                font-size: 0.85em;
+                border-radius: 7px;
+            }
+
+            .footer {
+                font-size: 0.7em;
+                bottom: 10px;
+            }
+        }
+
+        /* Very small screens - bez zmian */
+        @media (max-width: 320px) {
+            .container {
+                width: 95%;
+                padding: 18px 12px;
+            }
+
+            .profile-pic {
+                width: 75px;
+                height: 75px;
+            }
+
+            h1 {
+                font-size: 1.3em;
+            }
+
+            p {
+                font-size: 0.8em;
+            }
+
+            .social-links a {
+                padding: 11px 8px;
+                font-size: 0.8em;
+            }
         }
 
         /* Custom scrollbar styles */
