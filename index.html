@@ -71,11 +71,11 @@
         }
 
         .social-links {
-            margin-top: 22px; /* było 25px */
+            margin-top: 18px; /* było 22px - zmniejszone */
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 13px; /* było 15px */
+            gap: 10px; /* było 13px - zmniejszone */
         }
         
         .social-links a {
@@ -85,12 +85,12 @@
             text-decoration: none;
             background-color: rgba(255, 255, 255, 0.13);
             color: white;
-            padding: 15px 13px; /* było 18px 15px */
+            padding: 13px 13px; /* było 15px - zmniejszone */
             border-radius: 9px; /* było 10px */
             width: 100%;
             margin: 0;
             font-weight: bold;
-            font-size: 0.9em; /* było 1.05em */
+            font-size: 0.85em; /* było 0.9em - zmniejszone */
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             transform: translateY(10px);
@@ -104,15 +104,16 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
         }
 
-        /* Staggered animation for links - poprawione dla 8 linków */
+        /* Staggered animation for links - poprawione dla 9 linków */
         .social-links a:nth-child(1) { animation: fadeInUpLink 0.5s 0.6s ease-out forwards; }
-        .social-links a:nth-child(2) { animation: fadeInUpLink 0.5s 0.7s ease-out forwards; }
-        .social-links a:nth-child(3) { animation: fadeInUpLink 0.5s 0.8s ease-out forwards; }
-        .social-links a:nth-child(4) { animation: fadeInUpLink 0.5s 0.9s ease-out forwards; }
-        .social-links a:nth-child(5) { animation: fadeInUpLink 0.5s 1.0s ease-out forwards; }
-        .social-links a:nth-child(6) { animation: fadeInUpLink 0.5s 1.1s ease-out forwards; }
-        .social-links a:nth-child(7) { animation: fadeInUpLink 0.5s 1.2s ease-out forwards; }
-        .social-links a:nth-child(8) { animation: fadeInUpLink 0.5s 1.3s ease-out forwards; }
+        .social-links a:nth-child(2) { animation: fadeInUpLink 0.5s 0.65s ease-out forwards; }
+        .social-links a:nth-child(3) { animation: fadeInUpLink 0.5s 0.7s ease-out forwards; }
+        .social-links a:nth-child(4) { animation: fadeInUpLink 0.5s 0.75s ease-out forwards; }
+        .social-links a:nth-child(5) { animation: fadeInUpLink 0.5s 0.8s ease-out forwards; }
+        .social-links a:nth-child(6) { animation: fadeInUpLink 0.5s 0.85s ease-out forwards; }
+        .social-links a:nth-child(7) { animation: fadeInUpLink 0.5s 0.9s ease-out forwards; }
+        .social-links a:nth-child(8) { animation: fadeInUpLink 0.5s 0.95s ease-out forwards; }
+        .social-links a:nth-child(9) { animation: fadeInUpLink 0.5s 1.0s ease-out forwards; }
 
         /* Footer Styles */
         .footer {
@@ -153,13 +154,13 @@
             }
 
             .social-links {
-                gap: 12px;
-                margin-top: 20px;
+                gap: 9px; /* było 12px - zmniejszone */
+                margin-top: 16px; /* było 20px - zmniejszone */
             }
 
             .social-links a {
-                padding: 15px 12px;
-                font-size: 0.95em;
+                padding: 13px 12px; /* było 15px - zmniejszone */
+                font-size: 0.9em; /* było 0.95em - zmniejszone */
                 border-radius: 8px;
             }
         }
@@ -189,13 +190,13 @@
             }
 
             .social-links {
-                gap: 10px;
-                margin-top: 15px;
+                gap: 8px; /* było 10px - zmniejszone */
+                margin-top: 12px; /* było 15px - zmniejszone */
             }
 
             .social-links a {
-                padding: 13px 10px;
-                font-size: 0.85em;
+                padding: 11px 10px; /* było 13px - zmniejszone */
+                font-size: 0.8em; /* było 0.85em - zmniejszone */
                 border-radius: 7px;
             }
 
@@ -226,8 +227,8 @@
             }
 
             .social-links a {
-                padding: 11px 8px;
-                font-size: 0.8em;
+                padding: 9px 8px; /* było 11px - zmniejszone */
+                font-size: 0.75em; /* było 0.8em - zmniejszone */
             }
         }
 
@@ -310,6 +311,7 @@
             <a href="https://radio.wojtoteka.ovh/" target="_blank">🎵 Radio Wojtoteka</a>
             <a href="https://wojtoteka.github.io/WojtotekaFM-web/" target="_blank">🤖 WojtotekaFM Bot</a>
             <a href="https://ticktack.space/" target="_blank">🤖 Ticktack Bot</a>
+            <a href="https://sandbox.wojtoteka.ovh/" target="_blank">🧪 Sandbox</a>
             <a href="https://discord.gg/WZ7QwQumzC" target="_blank">🐐 Discord Goat Tag</a>
         </div>
     </div>
