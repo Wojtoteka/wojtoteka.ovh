@@ -1,0 +1,682 @@
+<!DOCTYPE html><html><head><title>Rope climber</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"climbing.png","version":173,"size":201,"properties":{"frames":2,"fps":6}},{"file":"cloud.png","version":72,"size":284,"properties":{"frames":1,"fps":5}},{"file":"hook.png","version":34,"size":132,"properties":{"frames":1,"fps":5}},{"file":"icon.png","version":126,"size":354,"properties":{"frames":1,"fps":5}},{"file":"in_air.png","version":40,"size":222,"properties":{"frames":2,"fps":5}},{"file":"on_rope.png","version":26,"size":189,"properties":{"frames":1,"fps":5}},{"file":"platform.png","version":8,"size":151,"properties":{"frames":1,"fps":5}},{"file":"poster.png","version":3,"size":57721,"properties":{"frames":1,"fps":5}},{"file":"trunk_bg.png","version":49,"size":140,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{"level_map":"{\"width\":6,\"height\":9,\"block_width\":32,\"block_height\":32,\"sprites\":[0,\"bg2\",\"bg0\",\"bg4\",\"bg1\",\"bg3\",\"bg5\"],\"data\":[1,2,2,2,2,2,2,2,3,2,4,2,2,2,2,2,2,2,2,5,2,2,2,2,2,2,2,1,3,2,2,2,2,2,2,2,5,2,2,6,2,2,2,4,2,2,2,2,2,2,2,2,2,5]}","level_map2":"{\"width\":6,\"height\":9,\"block_width\":32,\"block_height\":32,\"sprites\":[0,\"bg0\",\"bg4\",\"bg2\",\"bg1\",\"bg5\",\"bg3\"],\"data\":[1,1,1,1,1,1,1,2,1,1,1,1,3,1,1,4,1,5,1,1,1,1,1,1,1,2,1,6,1,1,1,1,1,1,1,5,1,4,1,1,1,1,1,1,1,1,3,1,2,1,2,1,1,1]}"},"sounds":[{"file":"qubodupwobble1.wav","version":1,"size":170640,"properties":{}},{"file":"wilhelm_scream.ogg","version":1,"size":48391,"properties":{}}],"music":[{"file":"fort_fairy.mp3","version":1,"size":5483587,"properties":{}}]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'portrait' ;
+var aspect = '4x3' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+
+Cloud =  class
+  constructor = function(y_overide = -999,parallax = 0.2)
+    this.pos = object
+      x = 0
+      y = 0
+    end
+    this.parallax = parallax + (random.next()/2)
+    reset_random_pos_x()
+    if y_overide != -999 then
+      pos.y = y_overide
+    end
+  end
+  
+  reset_random_pos_x = function()
+    pos.x = -screen.width/2 + random.nextInt(screen.width)
+    pos.y = screen.height/2 + (random.nextInt(30) * 10)
+  end
+  
+  move = function(game_speed)
+    pos.y -= game_speed * parallax
+    if pos.y <= -screen.height/2 then
+      reset_random_pos_x()
+    end
+  end
+  
+  draw = function()
+    screen.drawSprite("cloud", pos.x, pos.y, 32,16)
+  end
+
+end
+end()
+
+
+
+function()
+init = function()
+  random.seed(system.time()) // New ramdom seed based on sytem time
+  reset_game()
+  game_state = "game_start"
+end
+
+reset_game = function()
+  player = new Player(0,30)
+  nbr_section_platform = 4
+  difficulty_increase = 500
+  platforms = [new Platform(nbr_section_platform, "middle", 40), 
+               new Platform(nbr_section_platform, "right", 60),
+               new Platform(nbr_section_platform, "left", 80),
+               new Platform(nbr_section_platform, "right", -80),
+               new Platform(nbr_section_platform, "middle", -60),
+               new Platform(nbr_section_platform, "left", -40),
+               new Platform(nbr_section_platform, "all", -145),
+                ]
+                
+  platforms[0].pos.x = 0 // force one platform to middle of screen so player can start
+  
+  clouds = [new Cloud(30),new Cloud(50),new Cloud(100), new Cloud(),new Cloud(),new Cloud(),new Cloud(), new Cloud()]
+  
+  _game_y_speed_max = 0.8
+  game_y_speed = _game_y_speed_max / 2
+  
+  prev_distance_climbed = 0
+  distance_climbed = 0
+  
+  if game_state !="game_start" then
+    game_state = "playing"
+  end
+  
+  game_over_timeout = 30
+  play_game_music()
+end
+
+update = function()
+
+  if game_state == "game_start" then
+    if mouse.press then
+      game_state = "playing"
+      
+    end
+  end
+  
+  if game_state == "game_over" then
+      stop_game_music()
+      if mouse.press and game_over_timeout <= 0 then
+        reset_game()
+      end
+      
+      if game_over_timeout > 0 then
+        game_over_timeout -= 1
+      end
+  end
+  
+  if game_state == "playing" then
+    // Increase speed the closer the player gets to the top
+    game_y_speed = remap(player.pos.y, -screen.height/2, screen.height/2, 0, _game_y_speed_max)
+    
+    player.move(game_y_speed)
+   
+    // Increase difficulty
+    if (distance_climbed % difficulty_increase) - prev_distance_climbed < 0 then
+        nbr_section_platform -= 1
+    end
+    prev_distance_climbed = distance_climbed % difficulty_increase
+   
+    for p in platforms
+      p.move_y(game_y_speed)
+      p.set_nbr_sections(nbr_section_platform)
+    end
+    
+    for c in clouds
+      c.move(game_y_speed)
+    end
+  
+    if player.active == false then
+      game_state = "game_over"
+
+    else
+      distance_climbed += game_y_speed
+    end
+  end
+end
+
+draw = function()
+  screen.clear("rgb(66,109,197)")
+  screen.setLinearGradient(0,100,0,-100, "rgb(131,153,197)", "rgb(66,109,197)")
+  screen.fillRect(0,0,screen.width,screen.height)
+    for c in clouds
+      c.draw()
+    end
+    for p in platforms
+      p.draw_trunk()
+    end
+    for p in platforms
+      p.draw()
+    end
+
+  if game_state == "playing" then
+    player.draw()
+    screen.drawText("Distance climbed: "+round(distance_climbed/10)  +" m",0,screen.height/2-10,10, "#FFF")
+  end
+  
+  if game_state == "game_over"then
+    screen.fillRect(0,0,screen.width,screen.height,"rgba(150,0,0,.6)")
+    screen.drawText("GAME OVER",0,40,30,"rgb(255,255,255)")
+
+    local high_score = storage.get("high_score")
+    if high_score < distance_climbed then
+      high_score = distance_climbed
+    end
+    storage.set("high_score", high_score)
+    screen.drawText("High score: "+round(high_score/10)  +" m",0,-15,12, "#FFF")
+    screen.drawText("Distance climbed: "+round(distance_climbed/10)  +" m",0,-30,12, "#FFF")
+
+    if game_over_timeout <= 0 then
+      if inputs.touch then 
+        screen.drawText("Touch screen to restart",0,-60,12, "#FFF")
+      else
+        screen.drawText("Click screen to restart",0,-60,12, "#FFF")
+      end
+    end
+  end
+  
+  if game_state == "game_start"then
+    inputs = system.inputs
+
+    screen.fillRect(0,0,screen.width,screen.height,"rgba(0,50,50,.7)")
+    screen.drawText("Rope Climber",0,50,30,"rgb(255,255,255)")
+    screen.drawText("Climb as high as possible by",0,10,12, "#FFF")
+    screen.drawText("using your rope and hook.",0,0,12, "#FFF")
+    if inputs.touch then 
+      screen.drawText("Throw hook by touching screen and ",0,-20,12, "#FFF")
+      screen.drawText("swing by keeping finger on screen",0,-30,12, "#FFF")
+    else
+      screen.drawText("Throw hook by clicking and swing by ",0,-20,12, "#FFF")
+      screen.drawText("holding down mouse button",0,-30,12, "#FFF")
+    end
+    screen.drawText("You only have one throw of the hook",0,-45,12, "#FFF")
+    screen.drawText("while in the air, so make it count.",0,-55,12, "#FFF")
+    
+    if inputs.touch then 
+      screen.drawText("Touch to start",0,-80,12, "#FFF")
+    else
+      screen.drawText("Click to start",0,-80,12, "#FFF")
+    end
+
+  end
+end
+end()
+
+
+
+function()
+
+
+Platform =  class
+  constructor = function(nbr_sections, screen_position, y_start_pos=screen.height/2)
+    this.pos = object
+      x = 0
+      y = 0
+    end
+    
+    this.x_offset = 0
+    this.x_range = 0
+    if screen_position == "left" then
+      this.x_offset = -screen.width/4
+      this.x_range = screen.width/8
+    elsif screen_position == "right" then
+      this.x_offset = screen.width/4
+      this.x_range = screen.width/8
+    elsif  screen_position == "middle" then
+      this.x_offset = 0
+      this.x_range = screen.width/8
+    elsif  screen_position == "all" then
+      this.x_offset = 0
+      this.x_range = screen.width/2
+    end
+    
+    this.screen_position = screen_position
+
+    this.bottom_screen_pos = -screen.height/2
+    
+    this.nbr_sections = nbr_sections
+    this.new_nbr_sections = nbr_sections
+    this.section_w = 8
+    this.section_h = 8
+    
+    this.active = true
+    
+    this.fade_in_timer = 0
+    this.FADE_MAX = 60
+    
+    reset_random_pos_x(y_start_pos)
+  end
+  
+  move_y = function(y_speed)
+    pos.y -= y_speed
+    
+    if pos.y <= bottom_screen_pos then
+      reset_random_pos_x()
+    end
+  end
+  
+  set_nbr_sections = function(i)
+    if i > 0 and nbr_sections != i then
+      new_nbr_sections = i
+    end
+  end
+  
+  collision_point = function(point_pos_x, point_pos_y)
+    if active then
+      local hit_box = calc_hit_box()
+  
+      if point_pos_x >= hit_box.left and
+         point_pos_x <= hit_box.right and
+         point_pos_y <= hit_box.top and
+         point_pos_y >= hit_box.bottom then
+           
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  reset_random_pos_x = function(y_start_pos=screen.height/2)
+    pos.x = x_offset + (-x_range + random.nextInt(x_range*2))
+    pos.y = y_start_pos
+    nbr_sections = new_nbr_sections
+    active = true
+    fade_in_timer = FADE_MAX
+  end
+  
+  calc_hit_box = function()
+    
+    local hit_box = object
+      left = pos.x - (section_w * nbr_sections) / 2
+      right = pos.x + (section_w * nbr_sections) / 2
+      bottom = pos.y - section_h / 2
+      top = pos.y + section_h / 2
+    end
+    return hit_box
+  end
+  
+  draw = function()
+   if active then
+      if fade_in_timer then
+        local alpa_value = remap(fade_in_timer, 1, FADE_MAX, 1, 0.1)
+        screen.setAlpha(alpa_value)
+        fade_in_timer -=1
+        if fade_in_timer <= 0 then
+          fade_in_timer = 0
+        end
+      end
+      local start_pos = pos.x - (nbr_sections * section_w)/2 - section_w/2
+  
+      for i=1 to nbr_sections
+        screen.drawSprite("platform", start_pos + section_w*i, pos.y, 8,8)
+      end
+      
+      local nbr_top = nbr_sections - 1
+      if nbr_top >= 1 then
+        start_pos = pos.x - (nbr_top * section_w)/2 - section_w/2
+        for i=1 to nbr_sections-1
+          screen.drawSprite("platform", start_pos + section_w*i, pos.y+7, 8,8)
+        end
+      end
+      screen.setAlpha(1)
+   end
+  end
+  
+  draw_trunk = function()
+
+    if active then
+      if fade_in_timer then
+        local alpa_value = remap(fade_in_timer, 1, FADE_MAX, 1, 0.1)
+        screen.setAlpha(alpa_value)
+      end
+      for j=1 to 100
+          screen.drawSprite("trunk_bg", pos.x-2, pos.y-(j*8), 8,8)
+      end
+      screen.setAlpha(1)
+    end
+  end
+
+end
+  
+end()
+
+
+
+function()
+Player =  class
+  constructor = function(x, y)
+    this.active = true
+    this.pos = object
+      x = x
+      y = y
+      dx = 0
+      dy = 0
+    end
+    
+    this.max_d = object
+      x = 3
+      y = 5 
+    end
+    
+    this.width = 8
+    this.height = 8
+    
+    this.rope_acc = 2
+    this.jump_acc = 0.5
+    this.gravity = -0.05
+    this.gravity_on_rope = -0.1
+    
+    this.dir = 1
+    this.movment = "on_rope"
+    
+    // Rope variables
+    this.prev_pos = object
+      x = x
+      y = y
+    end
+    this.anker_point = object
+      x = 0
+      y = 0
+      distance = 1
+      connected_plattform = 0
+    end
+
+    this.play_once = true
+
+    this.rope_lenght = 30
+    this.rope_active = false
+    this.climb_dist = 0
+    this.climb_speed = 0.8
+    this.rope_shot = false
+    
+    this.rope_animation_timer = 0
+    this.rope_animation_timer_max = 10
+    this.rope_animation_timer_step = 0
+    this.hook_y = 0 
+  end
+  
+  move = function(game_y_speed)
+    if rope_active then
+      pos.dy += gravity_on_rope
+    else
+      pos.dy += gravity
+    end
+    if climb_dist == 0 then
+      movment = "in_air"
+    end
+
+
+    if mouse.press then
+      if rope_shot == false then
+        rope_shot = true
+        shoot_rope()
+      end
+    end
+    if mouse.release then
+      if rope_active then
+        rope_active = false
+        pos.dx += dir * jump_acc
+        climb_dist = 0
+        anker_point.connected_plattform.active = false
+      end
+    end
+    
+    if pos.dx > 0 then
+      dir = 1
+    else
+      dir = -1
+    end
+    
+    if rope_active then 
+      movment = "on_rope"
+      if sign(prev_pos.dx) != sign(pos.dx) then
+
+         pos.dx += dir * rope_acc
+      end
+    end
+    
+    // Max speed
+    pos.dx = min(pos.dx, max_d.x)
+    pos.dy = min(pos.dy, max_d.y)
+
+    prev_pos.x = pos.x
+    prev_pos.y = pos.y
+    prev_pos.dx = pos.dx
+    pos.x += pos.dx 
+    pos.y += pos.dy 
+    
+    pos.y = clamp(pos.y, -screen.height/2,screen.height) 
+   
+    if rope_active then 
+      anker_point.y -= game_y_speed
+      if climb_dist > 1 then 
+        climb_dist = climb_dist - climb_speed
+        movment = "climbing"
+      elsif climb_dist < -1 then
+        climb_dist = climb_dist + climb_speed
+         movment = "climbing"
+      else
+        climb_dist = 0
+      end
+      anker_point.distance = rope_lenght + climb_dist
+      
+      // Rope physics based on: https://www.youtube.com/watch?v=qISgdDhdCro&t=389s&ab_channel=TenMinutePhysics
+      solve_constraints()
+      update_new_velocity()
+    end
+    
+    
+    if pos.y <= -screen.height/2 then
+      active = false
+      if play_once then
+        audio.playSound("wilhelm_scream")
+        play_once = false
+      end
+    end
+  end
+  
+  sign = function(x)
+    if x > 0 then 
+      return 1 
+    elsif x > 0 then 
+      return -1 
+    else 
+      return 0 
+    end
+  end
+
+  solve_constraints = function()
+    local dir_x = pos.x - anker_point.x
+    local dir_y = pos.y - anker_point.y
+    local length = sqrt(pow(dir_x, 2) + pow(dir_y, 2))
+    
+    if length == 0 then
+      return
+    end
+   
+    local diff = (anker_point.distance - length)
+    dir_x = dir_x / length
+    dir_y = dir_y / length
+
+    pos.x += dir_x * diff
+    pos.y += dir_y * diff
+  end
+  
+  update_new_velocity = function()
+    pos.dx = (pos.x - prev_pos.x) 
+    pos.dy = (pos.y - prev_pos.y) 
+  end
+
+  shoot_rope = function()
+    local angle = 90
+
+    local ret = cast_ray_platform(pos.x ,pos.y, angle)
+    
+    if ret.hit then
+      climb_dist = round(sqrt(pow(ret.x-pos.x, 2) + pow(ret.y-pos.y, 2)) - rope_lenght )
+      anker_point.x = ret.x
+      anker_point.y = ret.y
+      anker_point.distance = rope_lenght + climb_dist
+      anker_point.connected_plattform = ret.obj
+      pos.dx += dir * rope_acc
+      rope_active = true
+      rope_animation_timer = rope_animation_timer_max
+      rope_animation_timer_step = anker_point.distance / rope_animation_timer
+      hook_y = pos.y
+      rope_shot = false // reload if hit platform
+      audio.playSound("qubodupwobble1")
+    else
+      anker_point.x = pos.x
+      anker_point.y = screen.height/2
+      anker_point.distance = round(sqrt(pow(anker_point.x-pos.x, 2) + pow(anker_point.y-pos.y, 2)) - rope_lenght )
+      rope_animation_timer = rope_animation_timer_max
+      rope_animation_timer_step = anker_point.distance / rope_animation_timer
+      hook_y = pos.y
+    end
+  end
+  
+  rope_animation = function()
+    if rope_animation_timer == 0 then
+      screen.drawBezierCurve(anker_point.x, anker_point.y-2, anker_point.x+(2*dir), anker_point.y-2-(climb_dist/4), pos.x, pos.y, pos.x, pos.y,  "rgb(147,98,0)")
+      screen.drawSprite("hook",anker_point.x, anker_point.y, 4,8)
+    else
+      rope_animation_timer -= 1
+      
+      hook_y +=  rope_animation_timer_step
+      screen.drawLine(anker_point.x, hook_y, pos.x, pos.y,  "rgb(147,98,0)")
+      screen.drawSprite("hook", anker_point.x, hook_y, 4,8)
+    end
+      
+  end
+  
+  draw = function()
+    if rope_active == 1 or rope_animation_timer != 0 then
+      rope_animation()
+    end
+    screen.setDrawScale(dir, 1)
+    screen.drawSprite(movment, pos.x, pos.y, 8,8)
+    screen.setDrawScale(1, 1)
+  end
+end
+end()
+
+
+
+function()
+play_game_music = function()
+  // Public Domain, CC Zero
+  game_music = audio.playMusic( "fort_fairy", 0.5, true )
+end
+
+stop_game_music = function()
+  game_music.stop()
+end
+end()
+
+
+
+function()
+clamp = function(value, lower_limit, upper_limit)
+  local val = max(value, lower_limit)
+  val = min(val, upper_limit)
+  return val
+end
+
+cast_ray_platform = function(x, y, angle, step = 0.1)
+  local x_pos = x
+  local y_pos = y
+  
+  local ret = object
+    hit = false
+    x = 0
+    y = 1000
+    obj = 0
+  end
+
+  local dir_x = cosd(angle)
+  local dir_y = sind(angle)
+
+  while ret.hit == false 
+    x_pos += dir_x * step
+    y_pos += dir_y * step
+
+    for p in platforms 
+      if p.collision_point(x_pos, y_pos) then
+        ret.hit = true
+        ret.obj = p
+        ret.x = x_pos
+        ret.y = y_pos
+      end
+    end
+    
+    if abs(y_pos) > screen.height+10 then 
+      break
+    end
+    
+    if abs(x_pos) > screen.width+10 then 
+      break
+    end
+    
+  end
+
+  return ret
+end
+
+remap = function(value, in_min, in_max, out_min, out_max)
+  return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+end
+
+end()
+
+
+</script></html>
