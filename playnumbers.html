@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polityka Prywatności - PlayNumbers | Wojtoteka</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <style>
+        /* General Resets and Base Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        #background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(40%);
+        }
+
+        /* Main Content Container */
+        .container {
+            z-index: 1;
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 35px 30px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.75);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Header Section */
+        .header {
+            margin-bottom: 30px;
+            animation: scaleIn 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            animation: scaleIn 0.6s 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
+            opacity: 0;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            margin: 0 auto 15px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin: 15px 0 10px;
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.5s 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #81C784;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.5s 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .last-updated {
+            background: rgba(255, 243, 205, 0.2);
+            border: 1px solid rgba(255, 234, 167, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #FFE082;
+            animation: fadeInUp 0.5s 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            text-align: left;
+            border-left: 4px solid #4CAF50;
+            animation: fadeInUpSection 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .section:nth-child(2) { animation-delay: 1.0s; }
+        .section:nth-child(3) { animation-delay: 1.1s; }
+        .section:nth-child(4) { animation-delay: 1.2s; }
+        .section:nth-child(5) { animation-delay: 1.3s; }
+        .section:nth-child(6) { animation-delay: 1.4s; }
+        .section:nth-child(7) { animation-delay: 1.5s; }
+        .section:nth-child(8) { animation-delay: 1.6s; }
+        .section:nth-child(9) { animation-delay: 1.7s; }
+        .section:nth-child(10) { animation-delay: 1.8s; }
+
+        .section h2 {
+            color: #81C784;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .section h2::before {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .section p, .section li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #ddd;
+            text-align: justify;
+        }
+
+        .section ul {
+            padding-left: 20px;
+        }
+
+        .highlight {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            margin: 15px 0;
+            color: #A5D6A7;
+        }
+
+        .highlight strong {
+            color: #C8E6C9;
+        }
+
+        .emoji {
+            font-size: 1.1em;
+            margin-right: 8px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: rgba(76, 175, 80, 0.15);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            animation: fadeInUp 0.6s 1.9s ease-out forwards;
+            opacity: 0;
+        }
+
+        .contact-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            color: #81C784;
+        }
+
+        .contact-section p {
+            color: #C8E6C9;
+            margin: 8px 0;
+        }
+
+        /* Back to site link */
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 12px 20px;
+            background: rgba(76, 175, 80, 0.2);
+            color: #81C784;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s 2.0s ease-out forwards;
+            opacity: 0;
+        }
+
+        .back-link:hover {
+            background: rgba(76, 175, 80, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            font-size: 0.8em;
+            color: #999;
+            margin: 30px 0 20px;
+            opacity: 0;
+            animation: fadeIn 1s 2.2s ease-out forwards;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 25px 20px;
+                margin: 10px auto;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .section h2 {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 98%;
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .app-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2em;
+            }
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUpSection {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.8); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: rgba(0,0,0,0.25);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4CAF50 40%, #81C784 100%);
+            border-radius: 8px;
+            border: 2px solid rgba(0,0,0,0.15);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #388E3C 40%, #66BB6A 100%);
+        }
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #4CAF50 rgba(0,0,0,0.25);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="img/tlow.mp4" type="video/mp4">
+        Twoja przeglądarka nie obsługuje wideo.
+    </video>
+
+    <div class="container">
+        <div class="header">
+            <div class="app-icon">🎯</div>
+            <h1>Polityka Prywatności</h1>
+            <p class="subtitle">Aplikacja "PlayNumbers"</p>
+            <a href="https://wojtoteka.ovh" class="back-link">← Powrót do Wojtoteka.ovh</a>
+        </div>
+
+        <div class="last-updated">
+            <strong>📅 Data ostatniej aktualizacji: 27 sierpnia 2025</strong>
+        </div>
+
+        <div class="section">
+            <h2 style="--emoji: '🔒';">🔒 Wprowadzenie</h2>
+            <p>Witamy w aplikacji <strong>"PlayNumbers"</strong> od <strong>Wojtoteka</strong>! Twoja prywatność jest dla nas najważniejsza. Ta polityka prywatności wyjaśnia, jakie dane zbieramy, jak je wykorzystujemy i chronimy.</p>
+            
+            <div class="highlight">
+                <p><strong>📱 Nasza aplikacja jest zaprojektowana z myślą o prywatności - wszystkie dane są przechowywane wyłącznie lokalnie na Twoim urządzeniu!</strong></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Dane które zbieramy</h2>
+            <p>Aplikacja "PlayNumbers" zbiera i przechowuje następujące dane <strong>wyłącznie lokalnie na Twoim urządzeniu</strong>:</p>
+            <ul>
+                <li><span class="emoji">📊</span> Statystyki gier (liczba gier, wygrane, passa)</li>
+                <li><span class="emoji">📋</span> Historia rozegranych gier</li>
+                <li><span class="emoji">🏆</span> Postęp w dziennych wyzwaniach</li>
+                <li><span class="emoji">⚙️</span> Ustawienia powiadomień</li>
+                <li><span class="emoji">🎮</span> Preferencje poziomów trudności</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Jak wykorzystujemy dane</h2>
+            <p>Wszystkie zbierane dane służą wyłącznie do:</p>
+            <ul>
+                <li><span class="emoji">📈</span> Wyświetlania Twoich statystyk i postępów</li>
+                <li><span class="emoji">🎯</span> Zapewnienia ciągłości rozgrywki między sesjami</li>
+                <li><span class="emoji">🔔</span> Wysyłania lokalnych powiadomień (jeśli włączone)</li>
+                <li><span class="emoji">🏅</span> Śledzenia dziennych wyzwań i pass</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💾 Przechowywanie danych</h2>
+            <div class="highlight">
+                <p><strong>🔐 WAŻNE: Wszystkie dane są przechowywane wyłącznie lokalnie na Twoim urządzeniu w bezpiecznym magazynie aplikacji (SharedPreferences).</strong></p>
+            </div>
+            <ul>
+                <li><span class="emoji">📱</span> Dane nigdy nie opuszczają Twojego urządzenia</li>
+                <li><span class="emoji">🚫</span> Nie wysyłamy danych na żadne serwery zewnętrzne</li>
+                <li><span class="emoji">🔒</span> Nie mamy dostępu do Twoich danych</li>
+                <li><span class="emoji">🗑️</span> Dane zostają usunięte przy odinstalowaniu aplikacji</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔔 Powiadomienia</h2>
+            <p>Aplikacja może wysyłać lokalne powiadomienia na Twoim urządzeniu:</p>
+            <ul>
+                <li><span class="emoji">🌅</span> Dzienne przypomnienie o grze (10:00)</li>
+                <li><span class="emoji">🌇</span> Przypomnienie popołudniowe (15:00)</li>
+                <li><span class="emoji">🌙</span> Ostrzeżenie o utracie passy (21:00)</li>
+            </ul>
+            <p><strong>Możesz w każdej chwili wyłączyć powiadomienia w ustawieniach systemu Android.</strong></p>
+        </div>
+
+        <div class="section">
+            <h2>🛡️ Uprawnienia aplikacji</h2>
+            <p>Aplikacja wymaga następujących uprawnień:</p>
+            <ul>
+                <li><span class="emoji">🔔</span> <strong>POST_NOTIFICATIONS</strong> - do wysyłania powiadomień</li>
+                <li><span class="emoji">⏰</span> <strong>SCHEDULE_EXACT_ALARM</strong> - do planowania powiadomień</li>
+                <li><span class="emoji">⚡</span> <strong>WAKE_LOCK</strong> - do działania powiadomień</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>👶 Dane dzieci</h2>
+            <p>Nasza aplikacja jest odpowiednia dla wszystkich grup wiekowych, w tym dzieci poniżej 13 lat. Gwarantujemy, że:</p>
+            <ul>
+                <li><span class="emoji">👶</span> Nie zbieramy żadnych danych osobowych od dzieci</li>
+                <li><span class="emoji">🚫</span> Nie ma możliwości komunikacji z innymi użytkownikami</li>
+                <li><span class="emoji">🛡️</span> Aplikacja nie zawiera reklam ani linków zewnętrznych</li>
+                <li><span class="emoji">🎮</span> Treść jest całkowicie odpowiednia dla dzieci</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚖️ Twoje prawa</h2>
+            <p>Ponieważ wszystkie dane są przechowywane lokalnie, masz pełną kontrolę:</p>
+            <ul>
+                <li><span class="emoji">👁️</span> <strong>Dostęp</strong> - zawsze widzisz wszystkie swoje dane w aplikacji</li>
+                <li><span class="emoji">🗑️</span> <strong>Usunięcie</strong> - możesz wyczyścić dane w ustawieniach aplikacji</li>
+                <li><span class="emoji">📤</span> <strong>Przenoszenie</strong> - dane są usuwane przy odinstalowaniu</li>
+                <li><span class="emoji">⚙️</span> <strong>Kontrola</strong> - możesz wyłączyć powiadomienia w systemie</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Bezpieczeństwo</h2>
+            <p>Dbamy o bezpieczeństwo Twoich danych:</p>
+            <ul>
+                <li><span class="emoji">🔐</span> Dane są zabezpieczone przez system Android</li>
+                <li><span class="emoji">🚫</span> Brak dostępu do internetu - brak ryzyka wycieku</li>
+                <li><span class="emoji">📱</span> Izolacja danych w przestrzeni aplikacji</li>
+                <li><span class="emoji">🛡️</span> Regularne aktualizacje bezpieczeństwa</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📝 Zmiany w polityce</h2>
+            <p>Jeśli wprowadzamy zmiany w tej polityce prywatności:</p>
+            <ul>
+                <li><span class="emoji">📢</span> Powiadomimy Cię poprzez aktualizację aplikacji</li>
+                <li><span class="emoji">📅</span> Zaktualizujemy datę na górze dokumentu</li>
+                <li><span class="emoji">📋</span> Nowa wersja będzie dostępna w aplikacji</li>
+            </ul>
+        </div>
+
+        <div class="contact-section">
+            <h3>📞 Kontakt</h3>
+            <p>Jeśli masz pytania dotyczące tej polityki prywatności, skontaktuj się z nami:</p>
+            <p><strong>📧 Email:</strong> wojtoteka@gmail.com</p>
+            <p><strong>👨‍💻 Deweloper:</strong> Wojtoteka</p>
+            <p><strong>🌐 Strona:</strong> <a href="https://wojtoteka.ovh" style="color: #81C784;">wojtoteka.ovh</a></p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Smooth animations on scroll
+            const sections = document.querySelectorAll('.section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
