@@ -1,331 +1,803 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wojtoteka</title>
-    <link rel="icon" href="img/logo.png" type="image/png">
-    <style>
-        /* General Resets and Base Styles */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            text-align: center;
-            overflow: hidden;
+<!DOCTYPE html><html><head><title>Night Drive</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[{"file":"music.mp3","version":1,"size":1891727,"properties":{}}]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+// System zapisywania najwyższego wyniku
+window.highscoreManager = {
+  save: function(score) {
+    try {
+      localStorage.setItem('nightdrive_highscore', score.toString());
+      console.log('Zapisano najwyższy wynik:', score);
+    } catch(e) {
+      console.log('Nie można zapisać wyniku:', e);
+    }
+  },
+  
+  load: function() {
+    try {
+      const saved = localStorage.getItem('nightdrive_highscore');
+      const result = saved ? parseInt(saved) : 0;
+      console.log('Wczytano najwyższy wynik:', result);
+      return result;
+    } catch(e) {
+      console.log('Nie można wczytać wyniku:', e);
+      return 0;
+    }
+  }
+};
+
+// Zmienne globalne dostępne od razu
+window.gameReady = false;
+window.pendingHighscore = null;
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      console.log('Gra wystartowała!');
+      window.gameReady = true;
+      
+      // Wczytaj najwyższy wynik przy starcie gry
+      window.player.setGlobal("loadHighscore", function() {
+        const score = window.highscoreManager.load();
+        console.log('loadHighscore wywołane, zwracam:', score);
+        return score;
+      });
+      
+      // Funkcja do zapisywania najwyższego wyniku
+      window.player.setGlobal("saveHighscore", function(score) {
+        console.log('saveHighscore wywołane z wynikiem:', score);
+        window.highscoreManager.save(score);
+        window.pendingHighscore = score;
+      });
+      
+      // Funkcja do sprawdzania większego obszaru kliknięcia dla przycisku "Zagraj Ponownie"
+      window.player.setGlobal("checkRestartButton", function(mouseX, mouseY) {
+        // Większy obszar kliknięcia - całość tekstu "Zagraj Ponownie!"
+        return (mouseX >= -120 && mouseX <= 120 && mouseY >= -75 && mouseY <= -35);
+      });
+      
+      // Funkcja pomocnicza do sprawdzania czy localStorage działa
+      window.player.setGlobal("testLocalStorage", function() {
+        try {
+          localStorage.setItem('test', 'test');
+          localStorage.removeItem('test');
+          return true;
+        } catch(e) {
+          return false;
         }
-
-        #background-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            filter: brightness(50%);
+      });
+      
+      // Dodatkowa funkcja do bezpośredniego dostępu do localStorage
+      window.player.setGlobal("getStoredHighscore", function() {
+        try {
+          const stored = localStorage.getItem('nightdrive_highscore');
+          const result = stored ? parseInt(stored) : 0;
+          console.log('getStoredHighscore zwraca:', result);
+          return result;
+        } catch(e) {
+          console.log('Błąd getStoredHighscore:', e);
+          return 0;
         }
-
-        /* Main Content Container - zmniejszony o ~12% */
-        .container {
-            z-index: 1;
-            width: 85%;
-            max-width: 570px; /* było 650px */
-            padding: 30px 22px; /* było 35px 25px */
-            border-radius: 14px; /* było 16px */
-            background: rgba(0, 0, 0, 0.68);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      });
+      
+      // Funkcja do wymuszenia zapisu
+      window.player.setGlobal("forceSetHighscore", function(score) {
+        try {
+          localStorage.setItem('nightdrive_highscore', score.toString());
+          console.log('forceSetHighscore zapisał:', score);
+          return true;
+        } catch(e) {
+          console.log('Błąd forceSetHighscore:', e);
+          return false;
         }
+      });
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
 
-        /* Profile Picture - zmniejszony o ~12% */
-        .profile-pic {
-            width: 120px; /* było 140px */
-            height: 120px; /* było 140px */
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 18px; /* było 20px */
-            animation: scaleIn 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
-            transition: transform 0.3s ease;
-        }
-
-        .profile-pic:hover {
-            transform: scale(1.05);
-        }
-
-        h1 {
-            font-size: 1.9em; /* było 2.2em */
-            margin: 13px 0; /* było 15px */
-            animation: fadeInUp 0.5s 0.2s ease-out forwards;
-        }
-
-        p {
-            font-size: 0.95em; /* było 1.1em */
-            margin: 10px 0; /* było 12px */
-            color: #ddd;
-            animation: fadeInUp 0.5s 0.4s ease-out forwards;
-        }
-
-        .social-links {
-            margin-top: 18px; /* było 22px - zmniejszone */
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* było 13px - zmniejszone */
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.13);
-            color: white;
-            padding: 13px 13px; /* było 15px - zmniejszone */
-            border-radius: 9px; /* było 10px */
-            width: 100%;
-            margin: 0;
-            font-weight: bold;
-            font-size: 0.85em; /* było 0.9em - zmniejszone */
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: translateY(10px);
-            box-sizing: border-box;
-        }
-
-        .social-links a:hover {
-            background-color: rgba(255, 255, 255, 0.22);
-            color: #fff;
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-        }
-
-        /* Staggered animation for links - poprawione dla 9 linków */
-        .social-links a:nth-child(1) { animation: fadeInUpLink 0.5s 0.6s ease-out forwards; }
-        .social-links a:nth-child(2) { animation: fadeInUpLink 0.5s 0.65s ease-out forwards; }
-        .social-links a:nth-child(3) { animation: fadeInUpLink 0.5s 0.7s ease-out forwards; }
-        .social-links a:nth-child(4) { animation: fadeInUpLink 0.5s 0.75s ease-out forwards; }
-        .social-links a:nth-child(5) { animation: fadeInUpLink 0.5s 0.8s ease-out forwards; }
-        .social-links a:nth-child(6) { animation: fadeInUpLink 0.5s 0.85s ease-out forwards; }
-        .social-links a:nth-child(7) { animation: fadeInUpLink 0.5s 0.9s ease-out forwards; }
-        .social-links a:nth-child(8) { animation: fadeInUpLink 0.5s 0.95s ease-out forwards; }
-        .social-links a:nth-child(9) { animation: fadeInUpLink 0.5s 1.0s ease-out forwards; }
-
-        /* Footer Styles */
-        .footer {
-            font-size: 0.75em; /* było 0.8em */
-            color: white;
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 1s 1.5s ease-out forwards;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
-        /* Mobile tablet adjustments - bez zmian */
-        @media (max-width: 768px) {
-            .container {
-                width: 90%;
-                max-width: 500px;
-                padding: 25px 20px;
-            }
-
-            .profile-pic {
-                width: 110px;
-                height: 110px;
-                margin-bottom: 18px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-                margin: 12px 0;
-            }
-
-            p {
-                font-size: 1em;
-                margin: 10px 0;
-            }
-
-            .social-links {
-                gap: 9px; /* było 12px - zmniejszone */
-                margin-top: 16px; /* było 20px - zmniejszone */
-            }
-
-            .social-links a {
-                padding: 13px 12px; /* było 15px - zmniejszone */
-                font-size: 0.9em; /* było 0.95em - zmniejszone */
-                border-radius: 8px;
-            }
-        }
-
-        /* Mobile phone adjustments - bez zmian */
-        @media (max-width: 480px) {
-            .container {
-                width: 92%;
-                padding: 20px 15px;
-                margin: 15px;
-            }
-
-            .profile-pic {
-                width: 90px;
-                height: 90px;
-                margin-bottom: 15px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-                margin: 10px 0;
-            }
-
-            p {
-                font-size: 0.9em;
-                margin: 8px 0;
-            }
-
-            .social-links {
-                gap: 8px; /* było 10px - zmniejszone */
-                margin-top: 12px; /* było 15px - zmniejszone */
-            }
-
-            .social-links a {
-                padding: 11px 10px; /* było 13px - zmniejszone */
-                font-size: 0.8em; /* było 0.85em - zmniejszone */
-                border-radius: 7px;
-            }
-
-            .footer {
-                font-size: 0.7em;
-                bottom: 10px;
-            }
-        }
-
-        /* Very small screens - bez zmian */
-        @media (max-width: 320px) {
-            .container {
-                width: 95%;
-                padding: 18px 12px;
-            }
-
-            .profile-pic {
-                width: 75px;
-                height: 75px;
-            }
-
-            h1 {
-                font-size: 1.3em;
-            }
-
-            p {
-                font-size: 0.8em;
-            }
-
-            .social-links a {
-                padding: 9px 8px; /* było 11px - zmniejszone */
-                font-size: 0.75em; /* było 0.8em - zmniejszone */
-            }
-        }
-
-        /* Custom scrollbar styles */
-        ::-webkit-scrollbar {
-            width: 10px;
-            background: rgba(0,0,0,0.25);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff9800 40%, #ffcc80 100%);
-            border-radius: 8px;
-            border: 2px solid rgba(0,0,0,0.15);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #ff6d00 40%, #ffb74d 100%);
-        }
-        ::-webkit-scrollbar-corner {
-            background: transparent;
-        }
-        /* Firefox */
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #ff9800 rgba(0,0,0,0.25);
-        }
-
-        /* Keyframe Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUpLink { /* Specific for links to include initial transform */
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-    </style>
-</head>
-<body>
+</script><script id="code" type="text/x-microscript">
 
 
-    <!-- Background video -->
-    <video autoplay muted loop id="background-video">
-        <source src="img/tlow.mp4" type="video/mp4">
-        Twoja przeglądarka nie obsługuje wideo.
-    </video>
+function()
+coin = class 
+  constructor = function(x,y,speed)
+   this.coin_x = x
+   this.coin_y = y
+   this.coin_speed = speed
+   this.coin_colour = "yellow"
+   this.hitbox = 5
+   this.destroyed = false 
+   this.n = 5 //controls coin collected animation
+  end
+  
+  update = function()
+    if destroyed == false then
+     coin_x-=coin_speed+global_time/55
+    end
+  end
+   
+ draw = function()
+   
+  if destroyed == false then
+   n=1
+   screen.setLineWidth(0.8)
+   hitbox = 5+0.5*size
+   x=coin_x 
+   y=coin_y
+   size = 10-y/9
+   //COIN MODEL
+   screen.setAlpha(0.2)
+   screen.fillRound(x,y-1*size,1.5*size,0.5*size,"rgb(0,0,0)")//shadow
+   screen.setAlpha(0.8)
+  elsif destroyed==true and n>=0 then //COLLECT EFFECT
+    n-=0.05
+    size += n*2
+    screen.setAlpha(n)
+  else
+    screen.setAlpha(0)
+  end
+   //screen.drawPolygon(x-hitbox,y,x,y+hitbox,x+hitbox,y,x,y-hitbox,"#FFFFFF")
+   screen.setFont( "Edunline" )
+   screen.drawRound(x,y,1.5*size*sin(system.time()/150),1.5*size,coin_colour)
+   screen.drawRound(x,y,1.5*size,1.5*size*cos(system.time()/150),coin_colour)
+   screen.drawText( '$', x, y, size/1.3, coin_colour )
 
-    <div class="container">
-        <img src="img/glogo.gif" alt="Profile Picture" class="profile-pic">
-        <h1>Wojtoteka</h1>
-        <p>Witaj na mojej stronie! 👋</p>
-        <p>Znajdziesz tu wszystkie ważne linki</p>
+   //COLLISIONS
+   if x-hitbox<=player_x+player_hitbox and x+hitbox>=player_x-player_hitbox then
+     if y+hitbox>=player_y-player_hitbox/4-10 and y-hitbox<=player_y+player_hitbox/4-10 then  
+       destroyed = true
+      end
+    end
+   
+  end
+end
 
-        <div class="social-links">
-            <a href="gry.html" target="_blank">🕹️ Moje gry</a>
-            <a href="https://www.youtube.com/@xMarisnix" target="_blank">📺 YouTube</a>
-            <a href="https://discord.com/users/1328758394588500024" target="_blank">💬 Discord (profil)</a>
-            <a href="http://t.me/wojtoteka" target="_blank">📨 Telegram</a>
-            <a href="https://radio.wojtoteka.ovh/" target="_blank">🎵 Radio Wojtoteka</a>
-            <a href="https://wojtoteka.github.io/WojtotekaFM-web/" target="_blank">🤖 WojtotekaFM Bot</a>
-            <a href="https://ticktack.space/" target="_blank">🤖 Ticktack Bot</a>
-        </div>
-    </div>
 
-    <div class="footer">
-        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
-    </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const yearSpan = document.getElementById('current-year');
-            if (yearSpan) { // Check if the element exists
-                const currentYear = new Date().getFullYear();
-                yearSpan.textContent = currentYear;
-            }
-        });
-    </script>
-</body>
-</html>
+end()
+
+
+
+function()
+enemy = class
+  constructor = function(x,y,speed,colour)
+   this.enemy_x = x
+   this.enemy_y = y
+   this.enemy_speed = speed
+   this.enemy_colour = colour
+   this.enemy_type = 0
+   this.hitbox = 20
+   this.collided = false
+  end
+  
+  update = function()
+   enemy_x-=enemy_speed+global_time/55
+  end
+
+  draw = function()
+   screen.setAlpha(1)
+   screen.setLineWidth(0.8)
+   size = 10-y/9
+   size1 = size
+   size2 = size1/1.1
+   x=enemy_x 
+   y=enemy_y+bounce
+   x2 = enemy_x/(1.07-y2/700) 
+   y2 = enemy_y/1.1 + 5-(enemy_y-20)/10+bounce
+   if not paused then
+     bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+     stored_bounce = bounce
+   else
+     bounce = stored_bounce
+   end
+   //ENEMY MODEL
+   //wheels
+   screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   //body
+   screen.drawRect( x, y, 5*size1, 3*size1,enemy_colour)
+   screen.drawRect( x2, y2, 5*size2, 3*size2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,enemy_colour)
+   
+   //COLLISIONS
+   if y<=-20 then
+    if x-hitbox*2.3<=player_x+player_hitbox and x+hitbox*2.3-size>=player_x-player_hitbox then
+     if y+hitbox/4-10>=player_y-player_hitbox/4-9 and y-hitbox/4-10<=player_y+player_hitbox/4-9 then  
+      collide()
+      end
+    end
+   end
+   if y<=10 and y>-20 then
+    if x-hitbox*1.4<=player_x+player_hitbox and x+hitbox*1.4-size>=player_x-player_hitbox then
+     if y+hitbox/7-10>=player_y-player_hitbox/4-10 and y-hitbox/7-10<=player_y+player_hitbox/4-10 then  
+       collide()
+      end
+    end
+   end
+   if y>10 then
+    if x-hitbox<=player_x+player_hitbox and x+hitbox-size>=player_x-player_hitbox then
+     if y+hitbox/12-8>=player_y-player_hitbox/5-8 and y-hitbox/12-8<=player_y+player_hitbox/5-8 then  
+       collide()
+      end
+    end
+   end
+   
+  collide = function()
+    collided=true
+  end
+  
+  
+  //PREVENT COINS FROM SPAWNING IN ENEMY CARS
+  for c in coins
+   if c!=null then
+   if c.x-c.hitbox<=enemy_x+hitbox and c.x+c.hitbox>=enemy_x-hitbox/1.1 then
+     if c.y+c.hitbox>=enemy_y-hitbox/4-10 and c.y-c.hitbox<=enemy_y+hitbox/4-10 then  
+       if c.destroyed == false then
+        coins.removeElement(c)
+       end
+      end
+    end
+  
+    end
+   end
+   
+  end
+  
+end
+
+random.intInRange = function(MIN,MAX)
+  return floor(random.next() * (floor(MAX) - ceil(MIN) + 1) + ceil(MIN))
+end
+
+
+end()
+
+
+
+function()
+init = function() 
+  TIMER = system.time() // TIMER FOR LOOPING ROAD EFFECT
+  ini_time = system.time() // TIMER FOR ENEMY SPAWNER
+  ini_time2 = system.time() // TIMER FOR COIN SPAWNER
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370 
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  
+  // Wczytaj najwyższy wynik z wbudowanego systemu storage
+  highscore = storage.get("highscore")
+  if highscore == null or highscore == 0 then
+    highscore = 0
+    print("Brak zapisanego wyniku, ustawiam 0")
+  else
+    print("Wczytano najwyższy wynik z storage: " + highscore)
+  end
+  
+  global_time = 0
+  volume=0
+  enemies = []
+  coins = []
+  stars=[]
+  for i=0 to 15
+    local star=object
+    change_pos=function() 
+      x=random.intInRange(0,300) 
+      y=random.intInRange(100,20) 
+     end 
+    end
+    star.change_pos()
+    stars.push(star)
+  end
+  scene = 0
+  paused = false  // Nowa zmienna dla systemu pauzy
+  pause_time = 0  // Czas kiedy gra została spauzowana
+  stored_bounce = 0  // Przechowuje wartość bounce podczas pauzy
+  
+  //FOR TOUCHSCREEN CONTROLS
+  left = 0
+  right = 0
+  up = 0
+  down = 0
+  
+end
+
+
+update = function()
+  // Obsługa przycisku pauzy - tylko kliknięcie, bez klawiszy
+  if scene == 1 then
+    // Przycisk pauzy w prawym górnym rogu
+    if mouse.x>screen.width/2-60 and mouse.x<screen.width/2-10 and mouse.y>screen.height/2-40 and mouse.y<screen.height/2-10 then
+      if mouse.press then
+        paused = not paused
+        if paused then
+          pause_time = system.time()
+          print("Gra spauzowana")
+        else
+          // Przesunięcie timerów po wznowieniu
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona")
+        end
+      end
+    end
+    
+    // Przycisk "KONTYNUUJ" na ekranie pauzy
+    if paused then
+      if mouse.x>-70 and mouse.x<70 and mouse.y>-40 and mouse.y<-10 then
+        if mouse.press then
+          paused = false
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona przez przycisk")
+        end
+      end
+    end
+  end
+  
+  // Muzyka gra tylko gdy gra nie jest spauzowana
+  if paused then
+    audio.playMusic( "music", 0, 1 ) // Wycisz muzykę
+  else
+    audio.playMusic( "music", volume, 1 ) // Graj muzykę
+  end
+  
+  //MENU
+  if scene==0 then
+  ini_time = system.time()
+  ini_time2 = system.time()
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  global_time = 0
+  
+  // Sprawdź najwyższy wynik przy każdym powrocie do menu
+  stored_score = storage.get("highscore")
+  if stored_score != null and stored_score > highscore then
+    highscore = stored_score
+    print("Zaktualizowano najwyższy wynik w menu: " + highscore)
+  end
+  
+  for e in enemies
+   if e!=null then
+     e.update()
+     enemies.removeElement(e)
+   end
+  end
+  for c in coins
+   if c!=null then
+     c.update()
+     coins.removeElement(c)
+   end
+  end
+ end
+  
+  //GAMEPLAY
+  if scene==1 then
+  //TO INCREASE DIFFICULTY AS TIME PASSES
+  if not paused and global_time<80 then
+   global_time+=0.01
+  end
+  
+  //KEY INPUTS
+  if not paused then
+  if keyboard.RIGHT or gamepad.RIGHT or right==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x += player_speed - player_z
+    end
+  end
+  if keyboard.LEFT or gamepad.LEFT or left==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x -= (player_speed - player_z/2)/1.2
+    end
+  end
+  if keyboard.UP or gamepad.UP or up==1 then
+    if player_y<=25 then
+     player_y += player_speed/2 
+     if abs(player_x-player_z)<=240 then
+       player_x += -player_x/110
+     end
+    end
+  end
+  if keyboard.DOWN or gamepad.DOWN or down==1 then
+    if player_y>=-52 then
+     player_y -= player_speed/2
+     if abs(player_x-player_z)<=240 then
+       player_x -= -player_x/110
+     end
+    end
+  end
+  player_z = player_y/30
+  
+  //PREVENT PLAYER FROM GOING OUT OF BOUNDS
+  if player_x-player_z<-240 then
+    player_x+=1
+  end
+  if player_x-player_z>240 then
+    player_x-=1
+  end
+  end
+  
+  //ENEMY
+  current_time = system.time()
+  for e in enemies
+   if e!=null then
+     if not paused then
+       e.update()
+     end
+    if e.enemy_x <=-screen.width/2-90 then
+      enemies.removeElement(e)
+    end
+    if not paused and e.collided then
+      scene = 2
+      volume = 0
+      audio.playSound("explosion",0.5,1,0,0)
+      audio.playSound("defeat",0.9,1,0,0)
+    end
+   end
+  end
+  if not paused and current_time - ini_time >= enemy_spawn_delay then
+     //spawn enemy with random colour
+    enemies.push(new enemy(500,random.intInRange(25,-50),1,
+      "hsl("+random.intInRange(0,359)+", 100%, 50%)"))
+    ini_time = system.time()
+    enemy_spawn_delay = random.intInRange(870-ceil(global_time*2),3900-ceil(global_time*25))
+  end
+  
+  //COINS 
+  current_time2 = system.time()
+  for c in coins 
+   if c!=null then
+     if not paused then
+       c.update()
+     end
+    if c.coin_x <=-screen.width/2-90 then
+      coins.removeElement(c)
+    elsif not paused and c.n<=0.05 then
+      score+=1
+      audio.playSound("coins",1,1,0,0)
+      coins.removeElement(c)
+    end
+   end
+  end
+  if not paused and current_time2 - ini_time2 >= coin_spawn_delay then
+    coins.push(new coin(500,random.intInRange(21,-60),1))
+    ini_time2 = system.time()
+    coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
+  end
+  end
+  
+  //HIGHSCORE SYSTEM
+  if highscore<score then
+    old_highscore = highscore
+    highscore = score
+    print("Nowy rekord! Stary: " + old_highscore + ", Nowy: " + highscore)
+    
+    // Zapisz używając wbudowanego systemu storage mikroStudio
+    storage.set("highscore", highscore)
+    print("Zapisano najwyższy wynik w storage: " + highscore)
+  end
+  
+  //STARS BG
+  if scene == 0 or scene==0.5 or scene==1 then
+   for s in stars
+     if s.x<=-screen.width/2 then 
+      s.change_pos() 
+     end
+     s.x-=1
+   end
+  end
+  
+  //BUTTONS
+  if scene==0 then //START BUTTON IN MENU
+   // Większy obszar kliknięcia dla przycisku START
+   if mouse.x<50 and mouse.x>-50 and mouse.y<-5 and mouse.y>-40 then
+     if mouse.press then
+       scene = 0.5
+     end
+   elsif gamepad.release.A then
+     scene = 0.5
+    end
+  end
+    
+  if scene==2 then //BACK BUTTON IN GAME OVER SCENE
+   // Użyj nowej funkcji do sprawdzania większego obszaru kliknięcia
+   if checkRestartButton != null then
+     if checkRestartButton(mouse.x, mouse.y) and mouse.press then
+       scene = 0
+     end
+   else
+     // Fallback do oryginalnego systemu
+     if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
+       if mouse.press then
+         scene = 0
+       end
+     end
+   end
+   if gamepad.release.A then
+    scene = 0
+    end
+  end
+  
+  //SCENE TRANS BTWN SCENES 1 AND 2
+  if scene==0.5 then
+    if player_x<-90 then
+      player_x+=2
+      volume+=0.005
+    elsif player_x>=-90 then
+      scene = 1
+    end
+  end
+
+  
+end
+
+
+
+
+draw = function()
+  screen.clear()
+  screen.setAlpha(1)
+
+  //ROAD LINES
+  n=100
+  screen.setAlpha(0.5)
+  screen.setLineWidth(0.5)
+  if scene==0 or scene==0.5 or scene==1 then
+   if not paused then
+     TIMER2 = 5*(system.time()-TIMER)/150
+   end
+  end
+  for i=-n/2 to n/2
+   if x<n*-10.41 and not paused then
+    TIMER = system.time()
+   end
+   x = 20*i-TIMER2*3 
+   x2 = 7*i-TIMER2
+   screen.drawLine(x,-90,x2,20,"#FFFFFF") 
+  end
+  //ROAD BORDERS
+  screen.setLineWidth(0.9)
+  screen.drawLine(-screen.width/2,20,screen.width/2,20,"#FFFFFF")
+  screen.drawLine(-screen.width/2,-90,screen.width/2,-90,"#FFFFFF")
+  //ROAD COLOUR
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,100,0,-100,"rgb(198,22,140)","rgb(38,44,57)")
+  screen.fillRect(0,-35,screen.width,110)
+  //BACKGROUND
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,20,0,70,"rgb(142,16,100)","rgb(19,31,57)")//sky
+  screen.fillRect(0,70,screen.width,screen.height/2)
+  screen.setAlpha(0.2)
+  screen.setBlending("additive")
+  screen.setLinearGradient(0,7,0,39,"rgb(255,28,179)","rgb(0,9,28)")//bloom
+  screen.fillRect(0,30,screen.width,20)
+  //for i=-20 to 20
+    //h_y=5*sin(-system.time()/200-(i-1)/3)-3*cos(-system.time()/200-(i-1)/2)+50
+    //h_y2=20
+    //screen.drawLine(i*10,h_y,i*10+55,h_y2,"#FFFFFF")
+  //end
+  //STARS
+  for s in stars
+    screen.fillRect(s.x,s.y,1.5,1.5,"#FFFFFF")
+  end
+  
+  if scene==0.5 or scene==1 or scene==2 then
+  
+  //DRAW PLAYER
+  screen.setLineWidth(1)
+  screen.setAlpha(1)
+  size = 10-y/9
+  size1 = size
+  size2 = size1/1.1
+  //player_hitbox = 10+8
+  //screen.drawPolygon(x-player_hitbox,y,x+player_hitbox,y,x+player_hitbox,y-player_hitbox,x-player_hitbox,y-player_hitbox,"#FFFFFF")
+  x=player_x
+  y=player_y+bounce
+  x2 = player_x/(1.07-y2/700) 
+  y2 = player_y/1.1 + 5-(player_y-20)/10+bounce
+  if not paused then
+    bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+    stored_bounce = bounce
+  else
+    bounce = stored_bounce
+  end
+  //PLAYER MODEL
+  //wheels
+  screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  //body
+  screen.drawRect( x, y, 5*size1, 3*size1, '#FFF')
+  screen.drawRect( x2, y2, 5*size2, 3*size2,"rgb(180,180,180)")
+  screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  
+  //DRAW ENEMIES
+  for e in enemies
+    if e!=null then
+      e.draw()
+    end
+  end
+  
+  //DRAW COINS
+  for c in coins
+    if c!=null then
+     c.draw()
+    end
+  end
+  
+  end
+  
+  //GAME UI
+  if scene==0 then
+    screen.setAlpha(1)
+    screen.setFont("Edunline")
+    screen.drawText("Night Drive",0,50,20,"rgb(255,198,255)")
+    screen.setFont("Zepto")
+    screen.drawText("START!",1,-22,17,"rgb(0,255,255)")
+  end
+  
+  if scene==1 then
+  screen.setFont("Squarewave")
+  screen.drawText(score,-screen.width/2+20,90,20,"rgb(255,198,255)")
+  
+  // Przycisk pauzy w prawym górnym rogu (tylko gdy nie jest spauzowane)
+  if not paused then
+    screen.setAlpha(0.8)
+    pause_x = screen.width/2-35
+    pause_y = screen.height/2-25
+    screen.fillRoundRect(pause_x-15, pause_y-10, 30, 20, 5, "rgba(0,0,0,0.7)")
+    screen.setAlpha(1)
+    screen.setFont("Zepto")
+    screen.drawText("||", pause_x, pause_y, 12, "rgb(255,255,255)")
+  end
+  
+  // Ekran pauzy
+  if paused then
+    screen.setAlpha(0.9)
+    screen.fillRect(0, 0, screen.width, screen.height, "rgb(0,0,0)")
+    screen.setAlpha(1)
+    
+    // Tytuł PAUZA
+    screen.setFont("Edunline")
+    screen.drawText("PAUZA", 0, 40, 35, "rgb(255,255,0)")
+    
+    // Przycisk KONTYNUUJ
+    screen.setFont("Zepto")
+    screen.drawText("KONTYNUUJ", 0, -22, 18, "rgb(0,255,85)")
+    
+    // Instrukcja
+    screen.setFont("Squarewave")
+    screen.drawText("Dotknij przycisk aby wznowić grę", 0, -60, 12, "rgb(200,200,200)")
+  end
+  end
+  
+  if scene==2 then // GAMEOVER SCENE
+    screen.setAlpha(1)
+    screen.setBlending("normal")
+    if b_y > 0 then
+     b_y-=2
+    end
+    screen.fillRect(0,b_y,screen.width,screen.height,"rgb(9,0,28)")
+    
+    screen.setAlpha(0.1*sin(system.time()/25)+0.9)
+    screen.drawText("Koniec Gry!",0,b_y+50,23,"rgb(255,0,0)")
+    screen.setAlpha(1)
+    screen.setFont("Squarewave")
+    screen.drawText("wynik",-4,b_y+8,20,"rgb(0,255,255)")
+    screen.drawText(score,37,b_y+6,15,"rgb(0,255,255)")
+    screen.drawText("Najwyższy Wynik",-49,b_y-12,20,"rgb(255,0,255)")
+    screen.drawText(highscore,38,b_y-14,15,"rgb(255,0,255)")
+    screen.setFont("Zepto")
+    screen.drawText("Zagraj Ponownie!",0,b_y-55,21,"rgb(0,255,85)")
+  end
+  
+  
+  //TOUCHSCREEN CONTROLS
+  if scene==1 and system.inputs.touch then
+  u_x=-screen.width/2+screen.width/8
+  u_y=-screen.height/2+screen.height/5
+  s=19
+  diameter = 19
+  screen.drawRound(u_x-s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y+s-2,u_x,u_y+s+3,u_x+3,u_y+s-2)
+  screen.drawRound(u_x,u_y+s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-s+3,u_y+3,u_x-s-3,u_y,u_x-s+3,u_y-3)
+  screen.drawRound(u_x+s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y-s+2,u_x,u_y-s-3,u_x+3,u_y-s+2)
+  screen.drawRound(u_x,u_y-s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x+s-3,u_y+3,u_x+s+3,u_y,u_x+s-3,u_y-3)
+  if touch.x>=u_x-s-diameter/2 and touch.x<=u_x-s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    left = 1
+  else left = 0
+  end
+  if touch.x>=u_x+s-diameter/2 and touch.x<=u_x+s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    right = 1
+  else right = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y+s-diameter/2 and touch.y<=u_y+s+diameter/2 and touch.touching then
+     up = 1
+  else up = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y-s-diameter/2 and touch.y<=u_y-s+diameter/2 and touch.touching then
+    down = 1
+  else down = 0
+  end
+  end
+  
+end
+
+
+
+end()
+
+
+</script></html>
