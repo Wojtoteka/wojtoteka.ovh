@@ -45,10 +45,95 @@ window.ms_use_server = false ;
 //   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
 //
 
+// System zapisywania najwyższego wyniku
+window.highscoreManager = {
+  save: function(score) {
+    try {
+      localStorage.setItem('nightdrive_highscore', score.toString());
+      console.log('Zapisano najwyższy wynik:', score);
+    } catch(e) {
+      console.log('Nie można zapisać wyniku:', e);
+    }
+  },
+  
+  load: function() {
+    try {
+      const saved = localStorage.getItem('nightdrive_highscore');
+      const result = saved ? parseInt(saved) : 0;
+      console.log('Wczytano najwyższy wynik:', result);
+      return result;
+    } catch(e) {
+      console.log('Nie można wczytać wyniku:', e);
+      return 0;
+    }
+  }
+};
+
+// Zmienne globalne dostępne od razu
+window.gameReady = false;
+window.pendingHighscore = null;
+
 window.addEventListener("load",function() {
   window.player = new Player(function(event) {
     if (event.name == "started") {
-      // signal that the game is started
+      console.log('Gra wystartowała!');
+      window.gameReady = true;
+      
+      // Wczytaj najwyższy wynik przy starcie gry
+      window.player.setGlobal("loadHighscore", function() {
+        const score = window.highscoreManager.load();
+        console.log('loadHighscore wywołane, zwracam:', score);
+        return score;
+      });
+      
+      // Funkcja do zapisywania najwyższego wyniku
+      window.player.setGlobal("saveHighscore", function(score) {
+        console.log('saveHighscore wywołane z wynikiem:', score);
+        window.highscoreManager.save(score);
+        window.pendingHighscore = score;
+      });
+      
+      // Funkcja do sprawdzania większego obszaru kliknięcia dla przycisku "Zagraj Ponownie"
+      window.player.setGlobal("checkRestartButton", function(mouseX, mouseY) {
+        // Większy obszar kliknięcia - całość tekstu "Zagraj Ponownie!"
+        return (mouseX >= -120 && mouseX <= 120 && mouseY >= -75 && mouseY <= -35);
+      });
+      
+      // Funkcja pomocnicza do sprawdzania czy localStorage działa
+      window.player.setGlobal("testLocalStorage", function() {
+        try {
+          localStorage.setItem('test', 'test');
+          localStorage.removeItem('test');
+          return true;
+        } catch(e) {
+          return false;
+        }
+      });
+      
+      // Dodatkowa funkcja do bezpośredniego dostępu do localStorage
+      window.player.setGlobal("getStoredHighscore", function() {
+        try {
+          const stored = localStorage.getItem('nightdrive_highscore');
+          const result = stored ? parseInt(stored) : 0;
+          console.log('getStoredHighscore zwraca:', result);
+          return result;
+        } catch(e) {
+          console.log('Błąd getStoredHighscore:', e);
+          return 0;
+        }
+      });
+      
+      // Funkcja do wymuszenia zapisu
+      window.player.setGlobal("forceSetHighscore", function(score) {
+        try {
+          localStorage.setItem('nightdrive_highscore', score.toString());
+          console.log('forceSetHighscore zapisał:', score);
+          return true;
+        } catch(e) {
+          console.log('Błąd forceSetHighscore:', e);
+          return false;
+        }
+      });
     }
     else if (event.name == "log") {
       // console.info(event.data) ;
@@ -146,7 +231,12 @@ enemy = class
    y=enemy_y+bounce
    x2 = enemy_x/(1.07-y2/700) 
    y2 = enemy_y/1.1 + 5-(enemy_y-20)/10+bounce
-   bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+   if not paused then
+     bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+     stored_bounce = bounce
+   else
+     bounce = stored_bounce
+   end
    //ENEMY MODEL
    //wheels
    screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
@@ -230,7 +320,16 @@ init = function()
   enemy_spawn_delay = 300
   coin_spawn_delay = 0
   score = 0
-  highscore = 0
+  
+  // Wczytaj najwyższy wynik z wbudowanego systemu storage
+  highscore = storage.get("highscore")
+  if highscore == null or highscore == 0 then
+    highscore = 0
+    print("Brak zapisanego wyniku, ustawiam 0")
+  else
+    print("Wczytano najwyższy wynik z storage: " + highscore)
+  end
+  
   global_time = 0
   volume=0
   enemies = []
@@ -247,6 +346,9 @@ init = function()
     stars.push(star)
   end
   scene = 0
+  paused = false  // Nowa zmienna dla systemu pauzy
+  pause_time = 0  // Czas kiedy gra została spauzowana
+  stored_bounce = 0  // Przechowuje wartość bounce podczas pauzy
   
   //FOR TOUCHSCREEN CONTROLS
   left = 0
@@ -258,7 +360,45 @@ end
 
 
 update = function()
-  audio.playMusic( "music", volume, 1 )
+  // Obsługa przycisku pauzy - tylko kliknięcie, bez klawiszy
+  if scene == 1 then
+    // Przycisk pauzy w prawym górnym rogu
+    if mouse.x>screen.width/2-60 and mouse.x<screen.width/2-10 and mouse.y>screen.height/2-40 and mouse.y<screen.height/2-10 then
+      if mouse.press then
+        paused = not paused
+        if paused then
+          pause_time = system.time()
+          print("Gra spauzowana")
+        else
+          // Przesunięcie timerów po wznowieniu
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona")
+        end
+      end
+    end
+    
+    // Przycisk "KONTYNUUJ" na ekranie pauzy
+    if paused then
+      if mouse.x>-70 and mouse.x<70 and mouse.y>-40 and mouse.y<-10 then
+        if mouse.press then
+          paused = false
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona przez przycisk")
+        end
+      end
+    end
+  end
+  
+  // Muzyka gra tylko gdy gra nie jest spauzowana
+  if paused then
+    audio.playMusic( "music", 0, 1 ) // Wycisz muzykę
+  else
+    audio.playMusic( "music", volume, 1 ) // Graj muzykę
+  end
   
   //MENU
   if scene==0 then
@@ -274,6 +414,14 @@ update = function()
   coin_spawn_delay = 0
   score = 0
   global_time = 0
+  
+  // Sprawdź najwyższy wynik przy każdym powrocie do menu
+  stored_score = storage.get("highscore")
+  if stored_score != null and stored_score > highscore then
+    highscore = stored_score
+    print("Zaktualizowano najwyższy wynik w menu: " + highscore)
+  end
+  
   for e in enemies
    if e!=null then
      e.update()
@@ -291,11 +439,12 @@ update = function()
   //GAMEPLAY
   if scene==1 then
   //TO INCREASE DIFFICULTY AS TIME PASSES
-  if global_time<80 then
+  if not paused and global_time<80 then
    global_time+=0.01
   end
   
   //KEY INPUTS
+  if not paused then
   if keyboard.RIGHT or gamepad.RIGHT or right==1 then
     if abs(player_x-player_z)<=240 then
      player_x += player_speed - player_z
@@ -331,16 +480,19 @@ update = function()
   if player_x-player_z>240 then
     player_x-=1
   end
+  end
   
   //ENEMY
   current_time = system.time()
   for e in enemies
    if e!=null then
-     e.update()
+     if not paused then
+       e.update()
+     end
     if e.enemy_x <=-screen.width/2-90 then
       enemies.removeElement(e)
     end
-    if e.collided then
+    if not paused and e.collided then
       scene = 2
       volume = 0
       audio.playSound("explosion",0.5,1,0,0)
@@ -348,7 +500,7 @@ update = function()
     end
    end
   end
-  if current_time - ini_time >= enemy_spawn_delay then
+  if not paused and current_time - ini_time >= enemy_spawn_delay then
      //spawn enemy with random colour
     enemies.push(new enemy(500,random.intInRange(25,-50),1,
       "hsl("+random.intInRange(0,359)+", 100%, 50%)"))
@@ -360,17 +512,19 @@ update = function()
   current_time2 = system.time()
   for c in coins 
    if c!=null then
-     c.update()
+     if not paused then
+       c.update()
+     end
     if c.coin_x <=-screen.width/2-90 then
       coins.removeElement(c)
-    elsif c.n<=0.05 then
+    elsif not paused and c.n<=0.05 then
       score+=1
       audio.playSound("coins",1,1,0,0)
       coins.removeElement(c)
     end
    end
   end
-  if current_time2 - ini_time2 >= coin_spawn_delay then
+  if not paused and current_time2 - ini_time2 >= coin_spawn_delay then
     coins.push(new coin(500,random.intInRange(21,-60),1))
     ini_time2 = system.time()
     coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
@@ -379,7 +533,13 @@ update = function()
   
   //HIGHSCORE SYSTEM
   if highscore<score then
+    old_highscore = highscore
     highscore = score
+    print("Nowy rekord! Stary: " + old_highscore + ", Nowy: " + highscore)
+    
+    // Zapisz używając wbudowanego systemu storage mikroStudio
+    storage.set("highscore", highscore)
+    print("Zapisano najwyższy wynik w storage: " + highscore)
   end
   
   //STARS BG
@@ -394,7 +554,8 @@ update = function()
   
   //BUTTONS
   if scene==0 then //START BUTTON IN MENU
-   if mouse.x<28 and mouse.x>-28and mouse.y<-13 and mouse.y>-31 then
+   // Większy obszar kliknięcia dla przycisku START
+   if mouse.x<50 and mouse.x>-50 and mouse.y<-5 and mouse.y>-40 then
      if mouse.press then
        scene = 0.5
      end
@@ -404,11 +565,20 @@ update = function()
   end
     
   if scene==2 then //BACK BUTTON IN GAME OVER SCENE
-   if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
-     if mouse.press then
+   // Użyj nowej funkcji do sprawdzania większego obszaru kliknięcia
+   if checkRestartButton != null then
+     if checkRestartButton(mouse.x, mouse.y) and mouse.press then
        scene = 0
      end
-   elsif gamepad.release.A then
+   else
+     // Fallback do oryginalnego systemu
+     if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
+       if mouse.press then
+         scene = 0
+       end
+     end
+   end
+   if gamepad.release.A then
     scene = 0
     end
   end
@@ -438,10 +608,12 @@ draw = function()
   screen.setAlpha(0.5)
   screen.setLineWidth(0.5)
   if scene==0 or scene==0.5 or scene==1 then
-   TIMER2 = 5*(system.time()-TIMER)/150
+   if not paused then
+     TIMER2 = 5*(system.time()-TIMER)/150
+   end
   end
   for i=-n/2 to n/2
-   if x<n*-10.41 then
+   if x<n*-10.41 and not paused then
     TIMER = system.time()
    end
    x = 20*i-TIMER2*3 
@@ -488,7 +660,12 @@ draw = function()
   y=player_y+bounce
   x2 = player_x/(1.07-y2/700) 
   y2 = player_y/1.1 + 5-(player_y-20)/10+bounce
-  bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+  if not paused then
+    bounce = 0.3*sin(system.time()/30) //makes it look like its moving
+    stored_bounce = bounce
+  else
+    bounce = stored_bounce
+  end
   //PLAYER MODEL
   //wheels
   screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
@@ -531,6 +708,36 @@ draw = function()
   if scene==1 then
   screen.setFont("Squarewave")
   screen.drawText(score,-screen.width/2+20,90,20,"rgb(255,198,255)")
+  
+  // Przycisk pauzy w prawym górnym rogu (tylko gdy nie jest spauzowane)
+  if not paused then
+    screen.setAlpha(0.8)
+    pause_x = screen.width/2-35
+    pause_y = screen.height/2-25
+    screen.fillRoundRect(pause_x-15, pause_y-10, 30, 20, 5, "rgba(0,0,0,0.7)")
+    screen.setAlpha(1)
+    screen.setFont("Zepto")
+    screen.drawText("||", pause_x, pause_y, 12, "rgb(255,255,255)")
+  end
+  
+  // Ekran pauzy
+  if paused then
+    screen.setAlpha(0.9)
+    screen.fillRect(0, 0, screen.width, screen.height, "rgb(0,0,0)")
+    screen.setAlpha(1)
+    
+    // Tytuł PAUZA
+    screen.setFont("Edunline")
+    screen.drawText("PAUZA", 0, 40, 35, "rgb(255,255,0)")
+    
+    // Przycisk KONTYNUUJ
+    screen.setFont("Zepto")
+    screen.drawText("KONTYNUUJ", 0, -22, 18, "rgb(0,255,85)")
+    
+    // Instrukcja
+    screen.setFont("Squarewave")
+    screen.drawText("Dotknij przycisk aby wznowić grę", 0, -60, 12, "rgb(200,200,200)")
+  end
   end
   
   if scene==2 then // GAMEOVER SCENE
