@@ -1,0 +1,934 @@
+<!DOCTYPE html><html><head><title>Night Drive</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.highscoreManager = {
+  save: function(score) {
+    try {
+      localStorage.setItem('nightdrive_highscore', score.toString());
+      console.log('Zapisano najwyższy wynik:', score);
+    } catch(e) {
+      console.log('Nie można zapisać wyniku:', e);
+    }
+  },
+  
+  load: function() {
+    try {
+      const saved = localStorage.getItem('nightdrive_highscore');
+      const result = saved ? parseInt(saved) : 0;
+      console.log('Wczytano najwyższy wynik:', result);
+      return result;
+    } catch(e) {
+      console.log('Nie można wczytać wyniku:', e);
+      return 0;
+    }
+  }
+};
+
+window.musicManager = {
+  audio: null,
+  isPlaying: false,
+  
+  init: function() {
+    this.audio = new Audio('music/music.mp3');
+    this.audio.loop = true;
+    this.audio.volume = 0.3;
+    
+    this.audio.addEventListener('error', function(e) {
+      console.log('Błąd ładowania muzyki:', e);
+    });
+    
+    this.audio.addEventListener('loadeddata', function() {
+      console.log('Muzyka załadowana pomyślnie');
+    });
+    
+    console.log('System muzyki zainicjalizowany');
+  },
+  
+  play: function() {
+    if (this.audio && !this.isPlaying) {
+      this.audio.play().then(() => {
+        this.isPlaying = true;
+        console.log('Muzyka rozpoczęta');
+      }).catch(e => {
+        console.log('Nie można rozpocząć muzyki:', e);
+      });
+    }
+  },
+  
+  pause: function() {
+    if (this.audio && this.isPlaying) {
+      this.audio.pause();
+      this.isPlaying = false;
+      console.log('Muzyka zatrzymana');
+    }
+  },
+  
+  setVolume: function(volume) {
+    if (this.audio) {
+      this.audio.volume = Math.max(0, Math.min(1, volume));
+    }
+  }
+};
+
+window.gameReady = false;
+window.pendingHighscore = null;
+
+window.addEventListener("load",function() {
+  window.musicManager.init();
+  
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      console.log('Gra wystartowała!');
+      window.gameReady = true;
+      
+      window.player.setGlobal("loadHighscore", function() {
+        const score = window.highscoreManager.load();
+        console.log('loadHighscore wywołane, zwracam:', score);
+        return score;
+      });
+      
+      window.player.setGlobal("saveHighscore", function(score) {
+        console.log('saveHighscore wywołane z wynikiem:', score);
+        window.highscoreManager.save(score);
+        window.pendingHighscore = score;
+      });
+      
+      window.player.setGlobal("checkRestartButton", function(mouseX, mouseY) {
+        return (mouseX >= -120 && mouseX <= 120 && mouseY >= -75 && mouseY <= -35);
+      });
+      
+      window.player.setGlobal("testLocalStorage", function() {
+        try {
+          localStorage.setItem('test', 'test');
+          localStorage.removeItem('test');
+          return true;
+        } catch(e) {
+          return false;
+        }
+      });
+      
+      window.player.setGlobal("getStoredHighscore", function() {
+        try {
+          const stored = localStorage.getItem('nightdrive_highscore');
+          const result = stored ? parseInt(stored) : 0;
+          console.log('getStoredHighscore zwraca:', result);
+          return result;
+        } catch(e) {
+          console.log('Błąd getStoredHighscore:', e);
+          return 0;
+        }
+      });
+      
+      window.player.setGlobal("forceSetHighscore", function(score) {
+        try {
+          localStorage.setItem('nightdrive_highscore', score.toString());
+          console.log('forceSetHighscore zapisał:', score);
+          return true;
+        } catch(e) {
+          console.log('Błąd forceSetHighscore:', e);
+          return false;
+        }
+      });
+      
+      window.player.setGlobal("resetHighscore", function() {
+        try {
+          localStorage.removeItem('nightdrive_highscore');
+          console.log('Najwyższy wynik został zresetowany');
+          return true;
+        } catch(e) {
+          console.log('Błąd resetowania wyniku:', e);
+          return false;
+        }
+      });
+      
+      window.player.setGlobal("startMusic", function() {
+        window.musicManager.play();
+      });
+      
+      window.player.setGlobal("pauseMusic", function() {
+        window.musicManager.pause();
+      });
+      
+      window.player.setGlobal("setMusicVolume", function(volume) {
+        window.musicManager.setVolume(volume);
+      });
+    }
+    else if (event.name == "log") {
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+coin = class 
+  constructor = function(x,y,speed)
+   this.coin_x = x
+   this.coin_y = y
+   this.coin_speed = speed
+   this.coin_colour = "yellow"
+   this.hitbox = 5
+   this.destroyed = false 
+   this.n = 5
+  end
+  
+  update = function()
+    if destroyed == false then
+     coin_x-=coin_speed+global_time/55
+    end
+  end
+   
+ draw = function()
+   
+  if destroyed == false then
+   n=1
+   screen.setLineWidth(0.8)
+   hitbox = 5+0.5*size
+   x=coin_x 
+   y=coin_y
+   size = 10-y/9
+   screen.setAlpha(0.2)
+   screen.fillRound(x,y-1*size,1.5*size,0.5*size,"rgb(0,0,0)")
+   screen.setAlpha(0.8)
+  elsif destroyed==true and n>=0 then
+    n-=0.05
+    size += n*2
+    screen.setAlpha(n)
+  else
+    screen.setAlpha(0)
+  end
+   screen.setFont( "Edunline" )
+   screen.drawRound(x,y,1.5*size*sin(system.time()/150),1.5*size,coin_colour)
+   screen.drawRound(x,y,1.5*size,1.5*size*cos(system.time()/150),coin_colour)
+   screen.drawText( '$', x, y, size/1.3, coin_colour )
+
+   if x-hitbox<=player_x+player_hitbox and x+hitbox>=player_x-player_hitbox then
+     if y+hitbox>=player_y-player_hitbox/4-10 and y-hitbox<=player_y+player_hitbox/4-10 then  
+       destroyed = true
+      end
+    end
+   
+  end
+end
+
+
+
+end()
+
+
+
+function()
+enemy = class
+  constructor = function(x,y,speed,colour)
+   this.enemy_x = x
+   this.enemy_y = y
+   this.enemy_speed = speed
+   this.enemy_colour = colour
+   this.enemy_type = 0
+   this.hitbox = 20
+   this.collided = false
+  end
+  
+  update = function()
+   enemy_x-=enemy_speed+global_time/55
+  end
+
+  draw = function()
+   screen.setAlpha(1)
+   screen.setLineWidth(0.8)
+   size = 10-y/9
+   size1 = size
+   size2 = size1/1.1
+   x=enemy_x 
+   y=enemy_y+bounce
+   x2 = enemy_x/(1.07-y2/700) 
+   y2 = enemy_y/1.1 + 5-(enemy_y-20)/10+bounce
+   if not paused then
+   bounce = 0.3*sin(system.time()/30)
+   stored_bounce = bounce
+   else
+     bounce = stored_bounce
+   end
+   screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,enemy_colour)
+   screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,enemy_colour)
+   screen.drawRect( x, y, 5*size1, 3*size1,enemy_colour)
+   screen.drawRect( x2, y2, 5*size2, 3*size2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,enemy_colour)
+   screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,enemy_colour)
+   
+   //COLLISIONS
+   if y<=-20 then
+    if x-hitbox*2.3<=player_x+player_hitbox and x+hitbox*2.3-size>=player_x-player_hitbox then
+     if y+hitbox/4-10>=player_y-player_hitbox/4-9 and y-hitbox/4-10<=player_y+player_hitbox/4-9 then  
+      collide()
+      end
+    end
+   end
+   if y<=10 and y>-20 then
+    if x-hitbox*1.4<=player_x+player_hitbox and x+hitbox*1.4-size>=player_x-player_hitbox then
+     if y+hitbox/7-10>=player_y-player_hitbox/4-10 and y-hitbox/7-10<=player_y+player_hitbox/4-10 then  
+       collide()
+      end
+    end
+   end
+   if y>10 then
+    if x-hitbox<=player_x+player_hitbox and x+hitbox-size>=player_x-player_hitbox then
+     if y+hitbox/12-8>=player_y-player_hitbox/5-8 and y-hitbox/12-8<=player_y+player_hitbox/5-8 then  
+       collide()
+      end
+    end
+   end
+   
+  collide = function()
+    collided=true
+  end
+  
+  
+  //PREVENT COINS FROM SPAWNING IN ENEMY CARS
+  for c in coins
+   if c!=null then
+   if c.x-c.hitbox<=enemy_x+hitbox and c.x+c.hitbox>=enemy_x-hitbox/1.1 then
+     if c.y+c.hitbox>=enemy_y-hitbox/4-10 and c.y-c.hitbox<=enemy_y+hitbox/4-10 then  
+       if c.destroyed == false then
+        coins.removeElement(c)
+       end
+      end
+    end
+  
+    end
+   end
+   
+  end
+  
+end
+
+random.intInRange = function(MIN,MAX)
+  return floor(random.next() * (floor(MAX) - ceil(MIN) + 1) + ceil(MIN))
+end
+
+
+end()
+
+
+
+function()
+init = function() 
+  TIMER = system.time()
+  ini_time = system.time()
+  ini_time2 = system.time()
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370 
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  
+  highscore = storage.get("highscore")
+  if highscore == null or highscore == 0 then
+    highscore = 0
+    print("Brak zapisanego wyniku, ustawiam 0")
+  else
+    print("Wczytano najwyższy wynik z storage: " + highscore)
+  end
+  
+  global_time = 0
+  enemies = []
+  coins = []
+  stars=[]
+  for i=0 to 15
+    local star=object
+    change_pos=function() 
+      x=random.intInRange(0,300) 
+      y=random.intInRange(100,20) 
+     end 
+    end
+    star.change_pos()
+    stars.push(star)
+  end
+  scene = 0
+  paused = false
+  pause_time = 0
+  stored_bounce = 0
+  
+  show_reset_confirmation = false
+  
+  current_language = "PL"
+  
+  left = 0
+  right = 0
+  up = 0
+  down = 0
+  
+end
+
+
+update = function()
+  getText = function(key)
+    if current_language == "PL" then
+      if key == "start" then return "START!"
+      elsif key == "pause_title" then return "PAUZA"
+      elsif key == "continue" then return "KONTYNUUJ"
+      elsif key == "pause_instruction" then return "Dotknij przycisk aby wznowić grę"
+      elsif key == "game_over" then return "Koniec Gry!"
+      elsif key == "score" then return "wynik"
+      elsif key == "high_score" then return "Najwyższy Wynik"
+      elsif key == "play_again" then return "Zagraj Ponownie!"
+      elsif key == "reset_score" then return "Reset Wyniku"
+      elsif key == "confirm_title" then return "Czy na pewno?"
+      elsif key == "confirm_message" then return "Czy chcesz zresetować najwyższy wynik?"
+      elsif key == "confirm_warning" then return "Ta akcja jest nieodwracalna!"
+      elsif key == "yes" then return "TAK"
+      elsif key == "no" then return "NIE"
+      elsif key == "current_high_score" then return "Najwyższy wynik: "
+      else return key
+      end
+    else
+      if key == "start" then return "START!"
+      elsif key == "pause_title" then return "PAUSED"
+      elsif key == "continue" then return "CONTINUE"
+      elsif key == "pause_instruction" then return "Touch button to resume game"
+      elsif key == "game_over" then return "Game Over!"
+      elsif key == "score" then return "score"
+      elsif key == "high_score" then return "High Score"
+      elsif key == "play_again" then return "Play Again!"
+      elsif key == "reset_score" then return "Reset Score"
+      elsif key == "confirm_title" then return "Are you sure?"
+      elsif key == "confirm_message" then return "Do you want to reset the high score?"
+      elsif key == "confirm_warning" then return "This action is irreversible!"
+      elsif key == "yes" then return "YES"
+      elsif key == "no" then return "NO"
+      elsif key == "current_high_score" then return "High Score: "
+      else return key
+      end
+    end
+  end
+  
+  if scene == 1 then
+    if mouse.x>screen.width/2-60 and mouse.x<screen.width/2-10 and mouse.y>screen.height/2-40 and mouse.y<screen.height/2-10 then
+      if mouse.press then
+        paused = not paused
+        if paused then
+          pause_time = system.time()
+          print("Gra spauzowana")
+          if pauseMusic != null then
+            pauseMusic()
+          end
+        else
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona")
+          if startMusic != null then
+            startMusic()
+          end
+        end
+      end
+    end
+    
+    if paused then
+      if mouse.x>-70 and mouse.x<70 and mouse.y>-40 and mouse.y<-10 then
+        if mouse.press then
+          paused = false
+          local pause_duration = system.time() - pause_time
+          ini_time += pause_duration
+          ini_time2 += pause_duration
+          print("Gra wznowiona przez przycisk")
+          if startMusic != null then
+            startMusic()
+          end
+        end
+      end
+    end
+  end
+  
+  if scene==0 then
+  ini_time = system.time()
+  ini_time2 = system.time()
+  player_x = -screen.width/2-70
+  player_y = -50
+  player_z = 0
+  b_y=370
+  player_hitbox = 20
+  player_speed = 1.8
+  enemy_spawn_delay = 300
+  coin_spawn_delay = 0
+  score = 0
+  global_time = 0
+  
+  stored_score = storage.get("highscore")
+  if stored_score != null and stored_score > highscore then
+    highscore = stored_score
+    print("Zaktualizowano najwyższy wynik w menu: " + highscore)
+  end
+  
+  for e in enemies
+   if e!=null then
+     e.update()
+     enemies.removeElement(e)
+   end
+  end
+  for c in coins
+   if c!=null then
+     c.update()
+     coins.removeElement(c)
+   end
+  end
+ end
+  
+  if scene==1 then
+  if not paused and global_time<80 then
+   global_time+=0.01
+  end
+  
+  if not paused then
+  if keyboard.RIGHT or gamepad.RIGHT or right==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x += player_speed - player_z
+    end
+  end
+  if keyboard.LEFT or gamepad.LEFT or left==1 then
+    if abs(player_x-player_z)<=240 then
+     player_x -= (player_speed - player_z/2)/1.2
+    end
+  end
+  if keyboard.UP or gamepad.UP or up==1 then
+    if player_y<=25 then
+     player_y += player_speed/2 
+     if abs(player_x-player_z)<=240 then
+       player_x += -player_x/110
+     end
+    end
+  end
+  if keyboard.DOWN or gamepad.DOWN or down==1 then
+    if player_y>=-52 then
+     player_y -= player_speed/2
+     if abs(player_x-player_z)<=240 then
+       player_x -= -player_x/110
+     end
+    end
+  end
+  player_z = player_y/30
+  
+  if player_x-player_z<-240 then
+    player_x+=1
+  end
+  if player_x-player_z>240 then
+    player_x-=1
+  end
+  end
+  
+  current_time = system.time()
+  for e in enemies
+   if e!=null then
+     if not paused then
+       e.update()
+     end
+    if e.enemy_x <=-screen.width/2-90 then
+      enemies.removeElement(e)
+    end
+    if not paused and e.collided then
+      scene = 2
+      audio.playSound("explosion",0.5,1,0,0)
+      audio.playSound("defeat",0.9,1,0,0)
+      if pauseMusic != null then
+        pauseMusic()
+      end
+    end
+   end
+  end
+  if not paused and current_time - ini_time >= enemy_spawn_delay then
+    enemies.push(new enemy(500,random.intInRange(25,-50),1,
+      "hsl("+random.intInRange(0,359)+", 100%, 50%)"))
+    ini_time = system.time()
+    enemy_spawn_delay = random.intInRange(870-ceil(global_time*2),3900-ceil(global_time*25))
+  end
+  
+  current_time2 = system.time()
+  for c in coins 
+   if c!=null then
+     if not paused then
+       c.update()
+     end
+    if c.coin_x <=-screen.width/2-90 then
+      coins.removeElement(c)
+    elsif not paused and c.n<=0.05 then
+      score+=1
+      audio.playSound("coins",1,1,0,0)
+      coins.removeElement(c)
+    end
+   end
+  end
+  if not paused and current_time2 - ini_time2 >= coin_spawn_delay then
+    coins.push(new coin(500,random.intInRange(21,-60),1))
+    ini_time2 = system.time()
+    coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
+  end
+  end
+  
+  if highscore<score then
+    old_highscore = highscore
+    highscore = score
+    print("Nowy rekord! Stary: " + old_highscore + ", Nowy: " + highscore)
+    
+    storage.set("highscore", highscore)
+    print("Zapisano najwyższy wynik w storage: " + highscore)
+  end
+  
+  if scene == 0 or scene==0.5 or scene==1 then
+   for s in stars
+     if s.x<=-screen.width/2 then 
+      s.change_pos() 
+     end
+     s.x-=1
+   end
+  end
+  
+  if scene==0 then
+   if mouse.x<50 and mouse.x>-50 and mouse.y<-5 and mouse.y>-40 then
+     if mouse.press then
+       scene = 0.5
+       if startMusic != null then
+         startMusic()
+       end
+     end
+   elsif gamepad.release.A then
+     scene = 0.5
+     if startMusic != null then
+       startMusic()
+     end
+   end
+   
+   if not show_reset_confirmation then
+     if mouse.x>-screen.width/2+10 and mouse.x<-screen.width/2+150 and mouse.y>-screen.height/2+15 and mouse.y<-screen.height/2+55 then
+       if mouse.press then
+         show_reset_confirmation = true
+       end
+     end
+     
+     if mouse.x>screen.width/2-65 and mouse.x<screen.width/2-15 and mouse.y>screen.height/2-50 and mouse.y<screen.height/2-10 then
+       if mouse.press then
+         if current_language == "PL" then
+           current_language = "EN"
+         else
+           current_language = "PL"
+         end
+         print("Zmieniono język na: " + current_language)
+       end
+     end
+   else
+     if mouse.x>-100 and mouse.x<-20 and mouse.y>-55 and mouse.y<-25 then
+       if mouse.press then
+         if resetHighscore != null then
+           resetHighscore()
+         end
+         storage.set("highscore", 0)
+         highscore = 0
+         show_reset_confirmation = false
+         print("Najwyższy wynik został zresetowany!")
+       end
+     end
+     if mouse.x>20 and mouse.x<100 and mouse.y>-55 and mouse.y<-25 then
+       if mouse.press then
+         show_reset_confirmation = false
+       end
+     end
+   end
+  end
+    
+  if scene==2 then
+   if checkRestartButton != null then
+     if checkRestartButton(mouse.x, mouse.y) and mouse.press then
+       scene = 0
+       if pauseMusic != null then
+         pauseMusic()
+       end
+     end
+   else
+     if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
+       if mouse.press then
+         scene = 0
+         if pauseMusic != null then
+           pauseMusic()
+         end
+       end
+     end
+   end
+   if gamepad.release.A then
+    scene = 0
+    if pauseMusic != null then
+      pauseMusic()
+    end
+    end
+  end
+  
+  if scene==0.5 then
+    if player_x<-90 then
+      player_x+=2
+    elsif player_x>=-90 then
+      scene = 1
+    end
+  end
+
+  
+end
+
+
+
+
+draw = function()
+  screen.clear()
+  screen.setAlpha(1)
+
+  n=100
+  screen.setAlpha(0.5)
+  screen.setLineWidth(0.5)
+  if scene==0 or scene==0.5 or scene==1 then
+   if not paused then
+     TIMER2 = 5*(system.time()-TIMER)/150
+   end
+  end
+  for i=-n/2 to n/2
+   if x<n*-10.41 and not paused then
+    TIMER = system.time()
+   end
+   x = 20*i-TIMER2*3 
+   x2 = 7*i-TIMER2
+   screen.drawLine(x,-90,x2,20,"#FFFFFF") 
+  end
+  screen.setLineWidth(0.9)
+  screen.drawLine(-screen.width/2,20,screen.width/2,20,"#FFFFFF")
+  screen.drawLine(-screen.width/2,-90,screen.width/2,-90,"#FFFFFF")
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,100,0,-100,"rgb(198,22,140)","rgb(38,44,57)")
+  screen.fillRect(0,-35,screen.width,110)
+  screen.setAlpha(0.5)
+  screen.setLinearGradient(0,20,0,70,"rgb(142,16,100)","rgb(19,31,57)")
+  screen.fillRect(0,70,screen.width,screen.height/2)
+  screen.setAlpha(0.2)
+  screen.setBlending("additive")
+  screen.setLinearGradient(0,7,0,39,"rgb(255,28,179)","rgb(0,9,28)")
+  screen.fillRect(0,30,screen.width,20)
+  for s in stars
+    screen.fillRect(s.x,s.y,1.5,1.5,"#FFFFFF")
+  end
+  
+  if scene==0.5 or scene==1 or scene==2 then
+  
+  screen.setLineWidth(1)
+  screen.setAlpha(1)
+  size = 10-y/9
+  size1 = size
+  size2 = size1/1.1
+  x=player_x
+  y=player_y+bounce
+  x2 = player_x/(1.07-y2/700) 
+  y2 = player_y/1.1 + 5-(player_y-20)/10+bounce
+  if not paused then
+    bounce = 0.3*sin(system.time()/30)
+    stored_bounce = bounce
+  else
+    bounce = stored_bounce
+  end
+  screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
+  screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
+  screen.drawRect( x, y, 5*size1, 3*size1, '#FFF')
+  screen.drawRect( x2, y2, 5*size2, 3*size2,"rgb(180,180,180)")
+  screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
+  screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  
+  for e in enemies
+    if e!=null then
+      e.draw()
+    end
+  end
+  
+  for c in coins
+    if c!=null then
+     c.draw()
+    end
+  end
+  
+  end
+  
+  if scene==0 then
+    screen.setAlpha(1)
+    
+    if not show_reset_confirmation then
+      screen.setFont("Edunline")
+      screen.drawText("Night Drive",0,50,20,"rgb(255,198,255)")
+      screen.setFont("Zepto")
+      screen.drawText(getText("start"),1,-22,17,"rgb(0,255,255)")
+      
+      screen.setFont("Squarewave")
+      screen.drawText(current_language, screen.width/2-40, screen.height/2-30, 20, "rgb(100,255,255)")
+    end
+    
+    if not show_reset_confirmation then
+      screen.setFont("Squarewave")
+      screen.drawText(getText("reset_score"), -screen.width/2+80, -screen.height/2+35, 15, "rgb(255,200,200)")
+    else
+      screen.setAlpha(0.95)
+      screen.fillRect(0, 0, screen.width, screen.height, "rgba(0,0,0,0.9)")
+      screen.setAlpha(1)
+      
+      screen.setFont("Edunline")
+      screen.drawText(getText("confirm_title"), 0, 25, 28, "rgb(255,255,100)")
+      
+      screen.setFont("Squarewave") 
+      screen.drawText(getText("confirm_message"), 0, -5, 16, "rgb(255,255,255)")
+      screen.drawText(getText("confirm_warning"), 0, -25, 14, "rgb(255,150,150)")
+      
+      screen.setFont("Zepto")
+      screen.drawText(getText("yes"), -60, -40, 18, "rgb(255,100,100)")
+      screen.drawText(getText("no"), 60, -40, 18, "rgb(100,255,100)")
+    end
+    
+    if not show_reset_confirmation then
+      screen.setFont("Squarewave")
+      screen.drawText(getText("current_high_score") + highscore, 0, -88, 14, "rgb(200,200,255)")
+    end
+  end
+  
+  if scene==1 then
+  screen.setFont("Squarewave")
+  screen.drawText(score,-screen.width/2+20,90,20,"rgb(255,198,255)")
+  
+  if not paused then
+    screen.setAlpha(1)
+    screen.setFont("Zepto")
+    screen.drawText("||", screen.width/2-35, screen.height/2-25, 12, "rgb(255,255,255)")
+  end
+  
+  if paused then
+    screen.setAlpha(0.9)
+    screen.fillRect(0, 0, screen.width, screen.height, "rgb(0,0,0)")
+    screen.setAlpha(1)
+    
+    screen.setFont("Edunline")
+    screen.drawText(getText("pause_title"), 0, 40, 35, "rgb(255,255,0)")
+    
+    screen.setFont("Zepto")
+    screen.drawText(getText("continue"), 0, -22, 18, "rgb(0,255,85)")
+    
+    screen.setFont("Squarewave")
+    screen.drawText(getText("pause_instruction"), 0, -60, 12, "rgb(200,200,200)")
+  end
+  end
+  
+  if scene==2 then
+    screen.setAlpha(1)
+    screen.setBlending("normal")
+    if b_y > 0 then
+     b_y-=2
+    end
+    screen.fillRect(0,b_y,screen.width,screen.height,"rgb(9,0,28)")
+    
+    screen.setAlpha(0.1*sin(system.time()/25)+0.9)
+    screen.drawText(getText("game_over"),0,b_y+50,23,"rgb(255,0,0)")
+    screen.setAlpha(1)
+    screen.setFont("Squarewave")
+    screen.drawText(getText("score"),-4,b_y+8,20,"rgb(0,255,255)")
+    screen.drawText(score,37,b_y+6,15,"rgb(0,255,255)")
+    screen.drawText(getText("high_score"),-49,b_y-12,20,"rgb(255,0,255)")
+    screen.drawText(highscore,38,b_y-14,15,"rgb(255,0,255)")
+    screen.setFont("Zepto")
+    screen.drawText(getText("play_again"),0,b_y-55,21,"rgb(0,255,85)")
+  end
+  
+  
+  if scene==1 and system.inputs.touch then
+  u_x=-screen.width/2+screen.width/8
+  u_y=-screen.height/2+screen.height/3.5
+  s=19
+  diameter = 19
+  screen.drawRound(u_x-s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y+s-2,u_x,u_y+s+3,u_x+3,u_y+s-2)
+  screen.drawRound(u_x,u_y+s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-s+3,u_y+3,u_x-s-3,u_y,u_x-s+3,u_y-3)
+  screen.drawRound(u_x+s,u_y,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x-3,u_y-s+2,u_x,u_y-s-3,u_x+3,u_y-s+2)
+  screen.drawRound(u_x,u_y-s,diameter,diameter,"#FFFFFF")
+  screen.drawPolygon(u_x+s-3,u_y+3,u_x+s+3,u_y,u_x+s-3,u_y-3)
+  if touch.x>=u_x-s-diameter/2 and touch.x<=u_x-s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    left = 1
+  else left = 0
+  end
+  if touch.x>=u_x+s-diameter/2 and touch.x<=u_x+s+diameter/2 and touch.y>=u_y-diameter/2 and touch.y<=u_y+diameter/2 and touch.touching then
+    right = 1
+  else right = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y+s-diameter/2 and touch.y<=u_y+s+diameter/2 and touch.touching then
+     up = 1
+  else up = 0
+  end
+  if touch.x>=u_x-diameter/2 and touch.x<=u_x+diameter/2 and touch.y>=u_y-s-diameter/2 and touch.y<=u_y-s+diameter/2 and touch.touching then
+    down = 1
+  else down = 0
+  end
+  end
+  
+end
+
+
+
+end()
+
+
+</script></html>
