@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polityka Prywatności - NightDrive</title>
+    <link rel="icon" href="https://wojtoteka.ovh/Nightdrive/icon192.png" type="image/png">
+    <style>
+        @font-face {
+            font-family: "BitCell";
+            src: url("fonts/BitCell.ttf") format("truetype");
+        }
+        @font-face {
+            font-family: "Edunline";
+            src: url("fonts/Edunline.ttf") format("truetype");
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Verdana, Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #131939 0%, #0d0d20 100%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #c6168c;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 30px rgba(198, 22, 140, 0.3),
+                inset 0 0 20px rgba(198, 22, 140, 0.1);
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                rgba(198, 22, 140, 0.4), 
+                rgba(255, 28, 140, 0.4), 
+                rgba(198, 22, 140, 0.4)
+            );
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        h1 {
+            color: #ffc6ff;
+            text-align: center;
+            font-size: 2.5em;
+            font-family: 'Edunline', Verdana, sans-serif;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 198, 255, 0.6);
+        }
+
+        h2 {
+            color: #c6168c;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'BitCell', Verdana, sans-serif;
+        }
+
+        h3 {
+            color: #ffc6ff;
+            font-size: 1.4em;
+            margin: 30px 0 15px 0;
+            border-left: 4px solid #c6168c;
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(198, 22, 140, 0.2) 0%, transparent 100%);
+            padding: 10px 15px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            text-align: justify;
+        }
+
+        .update-date {
+            text-align: center;
+            font-size: 1.2em;
+            color: #00ffff;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        ul {
+            list-style: none;
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #c6168c;
+            font-size: 0.8em;
+        }
+
+        a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #ffc6ff;
+            text-shadow: 0 0 10px rgba(255, 198, 255, 0.8);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #c6168c 50%, transparent 100%);
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #c6168c;
+            font-size: 1.1em;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid rgba(198, 22, 140, 0.3);
+            font-family: 'BitCell', Verdana, sans-serif;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(198, 22, 140, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border: 2px solid #c6168c;
+            border-radius: 25px;
+            text-decoration: none;
+            font-family: 'BitCell', Verdana, sans-serif;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 198, 255, 0.2);
+            box-shadow: 0 0 20px rgba(198, 22, 140, 0.8);
+            transform: translateY(-2px);
+        }
+
+
+        .smooth-glow {
+            box-shadow: 0 0 20px rgba(198, 22, 140, 0.4);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .smooth-glow:hover {
+            box-shadow: 0 0 30px rgba(198, 22, 140, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="stars"></div>
+
+    <a href="/" class="back-button">← Powrót</a>
+
+    <div class="container smooth-glow">
+        <div class="glow-effect"></div>
+        
+        <h1>Polityka Prywatności</h1>
+        <h2>NightDrive</h2>
+
+        <div class="update-date">
+            Data ostatniej aktualizacji: <strong>25 września 2025</strong>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🛡️ 1. Informacje ogólne</h3>
+        <p>Aplikacja <strong>NightDrive</strong> została zaprojektowana z myślą o Twojej prywatności. Nie zbieramy i nie przetwarzamy żadnych danych osobowych użytkownika poza anonimowym zapisem najlepszego wyniku w pamięci aplikacji. Żadne dane nie są przesyłane na zewnętrzne serwery.</p>
+
+        <h3>📊 2. Jakie dane są zbierane?</h3>
+        <p>Nasza aplikacja przechowuje wyłącznie:</p>
+        <ul>
+            <li><strong>Najlepszy wynik (Highscore)</strong> – zapisywany lokalnie w pamięci na Twoim urządzeniu</li>
+            <li><strong>Brak</strong> danych osobowych, adresów e-mail, numerów telefonu czy informacji o lokalizacji</li>
+        </ul>
+
+        <h3>🎯 3. Cel przetwarzania danych</h3>
+        <p>Jedynym celem zapisywania danych jest umożliwienie Ci pobicia własnego rekordu i zachowania postępu w grze bez konieczności rejestracji czy logowania. Wszystko dzieje się lokalnie na Twoim urządzeniu.</p>
+
+        <h3>⚙️ 4. Sposób przechowywania danych</h3>
+        <p>Dane są przechowywane wyłącznie w twoim telefonie. Oznacza to, że:</p>
+        <ul>
+            <li>Dane nigdy nie opuszczają Twojego urządzenia</li>
+            <li>Nie mamy dostępu do Twoich wyników</li>
+            <li>Nie wysyłamy żadnych informacji do naszych serwerów</li>
+        </ul>
+
+        <h3>🔒 5. Twoje uprawnienia</h3>
+        <p>Jako użytkownik masz pełną kontrolę nad swoimi danymi:</p>
+        <ul>
+            <li><strong>Usunięcie danych:</strong> Możesz w każdej chwili usunąć swój rekord poprzez usunięcie aplikacji z telefonu</li>
+            <li><strong>Reset wyniku:</strong> W ustawieniach gry dostępna jest opcja resetu najlepszego wyniku</li>
+            <li><strong>Pełna anonimowość:</strong> Nie musisz podawać żadnych danych osobowych</li>
+        </ul>
+
+
+        <h3>📧 8. Kontakt</h3>
+        <p>W razie pytań dotyczących Polityki Prywatności lub działania aplikacji, skontaktuj się z nami:</p>
+        <ul>
+            <li>Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
+        </ul>
+
+        <h3>🔄 9. Zmiany w Polityce Prywatności</h3>
+        <p>O wszelkich zmianach w niniejszej Polityce Prywatności poinformujemy poprzez aktualizację tej strony. Zalecamy okresowe sprawdzanie tej strony w celu zapoznania się z ewentualnymi zmianami.</p>
+
+        <div class="divider"></div>
+
+        <div class="footer">
+            <p>Wojtoteka 2025</p>
+        </div>
+    </div>
+
+    <script>
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 80;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 4 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 4) + 's'; 
+                starsContainer.appendChild(star);
+            }
+        }
+
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        window.addEventListener('load', () => {
+            createStars();
+        });
+    </script>
+</body>
+</html>
