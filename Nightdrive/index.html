@@ -16,7 +16,7 @@
 #canvaswrapper {
   text-align: center ;
 }
-</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[]};
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[{"file":"music.mp3","version":1,"size":0,"properties":{}}]};
 var graphics = "M1";
 
 </script><script type="text/javascript">var orientation = 'landscape' ;
@@ -45,6 +45,7 @@ window.ms_use_server = false ;
 //   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
 //
 
+// System zapisywania najwyższego wyniku
 window.highscoreManager = {
   save: function(score) {
     try {
@@ -68,79 +69,37 @@ window.highscoreManager = {
   }
 };
 
-window.musicManager = {
-  audio: null,
-  isPlaying: false,
-  
-  init: function() {
-    this.audio = new Audio('music/music.mp3');
-    this.audio.loop = true;
-    this.audio.volume = 0.3;
-    
-    this.audio.addEventListener('error', function(e) {
-      console.log('Błąd ładowania muzyki:', e);
-    });
-    
-    this.audio.addEventListener('loadeddata', function() {
-      console.log('Muzyka załadowana pomyślnie');
-    });
-    
-    console.log('System muzyki zainicjalizowany');
-  },
-  
-  play: function() {
-    if (this.audio && !this.isPlaying) {
-      this.audio.play().then(() => {
-        this.isPlaying = true;
-        console.log('Muzyka rozpoczęta');
-      }).catch(e => {
-        console.log('Nie można rozpocząć muzyki:', e);
-      });
-    }
-  },
-  
-  pause: function() {
-    if (this.audio && this.isPlaying) {
-      this.audio.pause();
-      this.isPlaying = false;
-      console.log('Muzyka zatrzymana');
-    }
-  },
-  
-  setVolume: function(volume) {
-    if (this.audio) {
-      this.audio.volume = Math.max(0, Math.min(1, volume));
-    }
-  }
-};
-
+// Zmienne globalne dostępne od razu
 window.gameReady = false;
 window.pendingHighscore = null;
 
 window.addEventListener("load",function() {
-  window.musicManager.init();
-  
   window.player = new Player(function(event) {
     if (event.name == "started") {
       console.log('Gra wystartowała!');
       window.gameReady = true;
       
+      // Wczytaj najwyższy wynik przy starcie gry
       window.player.setGlobal("loadHighscore", function() {
         const score = window.highscoreManager.load();
         console.log('loadHighscore wywołane, zwracam:', score);
         return score;
       });
       
+      // Funkcja do zapisywania najwyższego wyniku
       window.player.setGlobal("saveHighscore", function(score) {
         console.log('saveHighscore wywołane z wynikiem:', score);
         window.highscoreManager.save(score);
         window.pendingHighscore = score;
       });
       
+      // Funkcja do sprawdzania większego obszaru kliknięcia dla przycisku "Zagraj Ponownie"
       window.player.setGlobal("checkRestartButton", function(mouseX, mouseY) {
+        // Większy obszar kliknięcia - całość tekstu "Zagraj Ponownie!"
         return (mouseX >= -120 && mouseX <= 120 && mouseY >= -75 && mouseY <= -35);
       });
       
+      // Funkcja pomocnicza do sprawdzania czy localStorage działa
       window.player.setGlobal("testLocalStorage", function() {
         try {
           localStorage.setItem('test', 'test');
@@ -151,6 +110,7 @@ window.addEventListener("load",function() {
         }
       });
       
+      // Dodatkowa funkcja do bezpośredniego dostępu do localStorage
       window.player.setGlobal("getStoredHighscore", function() {
         try {
           const stored = localStorage.getItem('nightdrive_highscore');
@@ -163,6 +123,7 @@ window.addEventListener("load",function() {
         }
       });
       
+      // Funkcja do wymuszenia zapisu
       window.player.setGlobal("forceSetHighscore", function(score) {
         try {
           localStorage.setItem('nightdrive_highscore', score.toString());
@@ -174,6 +135,7 @@ window.addEventListener("load",function() {
         }
       });
       
+      // Funkcja do resetowania najwyższego wyniku
       window.player.setGlobal("resetHighscore", function() {
         try {
           localStorage.removeItem('nightdrive_highscore');
@@ -184,20 +146,9 @@ window.addEventListener("load",function() {
           return false;
         }
       });
-      
-      window.player.setGlobal("startMusic", function() {
-        window.musicManager.play();
-      });
-      
-      window.player.setGlobal("pauseMusic", function() {
-        window.musicManager.pause();
-      });
-      
-      window.player.setGlobal("setMusicVolume", function(volume) {
-        window.musicManager.setVolume(volume);
-      });
     }
     else if (event.name == "log") {
+      // console.info(event.data) ;
     }
   }) ;
   document.body.focus() ;
@@ -375,6 +326,12 @@ init = function()
   enemy_spawn_delay = 300
   coin_spawn_delay = 0
   score = 0
+  coins_in_session = 0
+  current_streak = 0
+  streak_start_time = 0
+  
+  // Uruchom muzykę w tle
+  audio.playMusic("music", 0.3, true)
   
   highscore = storage.get("highscore")
   if highscore == null or highscore == 0 then
@@ -382,6 +339,24 @@ init = function()
     print("Brak zapisanego wyniku, ustawiam 0")
   else
     print("Wczytano najwyższy wynik z storage: " + highscore)
+  end
+  
+  total_coins_collected = storage.get("total_coins")
+  if total_coins_collected == null then
+    total_coins_collected = 0
+    storage.set("total_coins", 0)
+  end
+  
+  longest_streak = storage.get("longest_streak")
+  if longest_streak == null then
+    longest_streak = 0
+    storage.set("longest_streak", 0)
+  end
+  
+  longest_streak_time = storage.get("longest_streak_time")
+  if longest_streak_time == null then
+    longest_streak_time = 0
+    storage.set("longest_streak_time", 0)
   end
   
   global_time = 0
@@ -412,10 +387,21 @@ init = function()
   up = 0
   down = 0
   
+  difficulty_level = 0
+  
 end
 
 
 update = function()
+  formatTime = function(seconds)
+    if seconds < 60 then
+      return seconds + "s"
+    else
+      minutes = floor(seconds / 60)
+      return minutes + "min"
+    end
+  end
+  
   getText = function(key)
     if current_language == "PL" then
       if key == "start" then return "START!"
@@ -426,13 +412,15 @@ update = function()
       elsif key == "score" then return "wynik"
       elsif key == "high_score" then return "Najwyższy Wynik"
       elsif key == "play_again" then return "Zagraj Ponownie!"
-      elsif key == "reset_score" then return "Reset Wyniku"
+      elsif key == "reset_score" then return "Reset Wyników"
       elsif key == "confirm_title" then return "Czy na pewno?"
       elsif key == "confirm_message" then return "Czy chcesz zresetować najwyższy wynik?"
       elsif key == "confirm_warning" then return "Ta akcja jest nieodwracalna!"
       elsif key == "yes" then return "TAK"
       elsif key == "no" then return "NIE"
       elsif key == "current_high_score" then return "Najwyższy wynik: "
+      elsif key == "total_coins" then return "Zebrane monety: "
+      elsif key == "best_streak" then return "Najdłuższa seria: "
       else return key
       end
     else
@@ -444,13 +432,15 @@ update = function()
       elsif key == "score" then return "score"
       elsif key == "high_score" then return "High Score"
       elsif key == "play_again" then return "Play Again!"
-      elsif key == "reset_score" then return "Reset Score"
+      elsif key == "reset_score" then return "Reset Scores"
       elsif key == "confirm_title" then return "Are you sure?"
       elsif key == "confirm_message" then return "Do you want to reset the high score?"
       elsif key == "confirm_warning" then return "This action is irreversible!"
       elsif key == "yes" then return "YES"
       elsif key == "no" then return "NO"
       elsif key == "current_high_score" then return "High Score: "
+      elsif key == "total_coins" then return "Total Coins: "
+      elsif key == "best_streak" then return "Best Streak: "
       else return key
       end
     end
@@ -463,17 +453,11 @@ update = function()
         if paused then
           pause_time = system.time()
           print("Gra spauzowana")
-          if pauseMusic != null then
-            pauseMusic()
-          end
         else
           local pause_duration = system.time() - pause_time
           ini_time += pause_duration
           ini_time2 += pause_duration
           print("Gra wznowiona")
-          if startMusic != null then
-            startMusic()
-          end
         end
       end
     end
@@ -486,9 +470,6 @@ update = function()
           ini_time += pause_duration
           ini_time2 += pause_duration
           print("Gra wznowiona przez przycisk")
-          if startMusic != null then
-            startMusic()
-          end
         end
       end
     end
@@ -506,12 +487,31 @@ update = function()
   enemy_spawn_delay = 300
   coin_spawn_delay = 0
   score = 0
+  coins_in_session = 0
+  current_streak = 0
+  streak_start_time = 0
+  difficulty_level = 0
   global_time = 0
   
   stored_score = storage.get("highscore")
   if stored_score != null and stored_score > highscore then
     highscore = stored_score
     print("Zaktualizowano najwyższy wynik w menu: " + highscore)
+  end
+  
+  stored_coins = storage.get("total_coins")
+  if stored_coins != null then
+    total_coins_collected = stored_coins
+  end
+  
+  stored_streak = storage.get("longest_streak")
+  if stored_streak != null then
+    longest_streak = stored_streak
+  end
+  
+  stored_streak_time = storage.get("longest_streak_time")
+  if stored_streak_time != null then
+    longest_streak_time = stored_streak_time
   end
   
   for e in enemies
@@ -580,20 +580,33 @@ update = function()
       enemies.removeElement(e)
     end
     if not paused and e.collided then
+      current_streak_time = floor((system.time() - streak_start_time) / 1000)
+      if current_streak_time > longest_streak_time then
+        longest_streak_time = current_streak_time
+        storage.set("longest_streak_time", longest_streak_time)
+      end
+      current_streak = 0
       scene = 2
       audio.playSound("explosion",0.5,1,0,0)
       audio.playSound("defeat",0.9,1,0,0)
-      if pauseMusic != null then
-        pauseMusic()
-      end
     end
    end
   end
-  if not paused and current_time - ini_time >= enemy_spawn_delay then
-    enemies.push(new enemy(500,random.intInRange(25,-50),1,
+  
+  difficulty_level = floor(score / 20)
+  base_enemy_delay = 300
+  adjusted_enemy_delay = max(150, base_enemy_delay - (difficulty_level * 10))
+  
+  max_enemies_on_screen = 8
+  
+  if not paused and current_time - ini_time >= enemy_spawn_delay and enemies.length < max_enemies_on_screen then
+    speed_multiplier = 1 + (floor(score / 30) * 0.1)
+    speed_multiplier = min(speed_multiplier, 2.5)
+    enemies.push(new enemy(500,random.intInRange(25,-50),speed_multiplier,
       "hsl("+random.intInRange(0,359)+", 100%, 50%)"))
     ini_time = system.time()
-    enemy_spawn_delay = random.intInRange(870-ceil(global_time*2),3900-ceil(global_time*25))
+    enemy_spawn_delay = random.intInRange(870-ceil(global_time*2)-difficulty_level*10,3900-ceil(global_time*25)-difficulty_level*20)
+    enemy_spawn_delay = max(150, enemy_spawn_delay)
   end
   
   current_time2 = system.time()
@@ -606,12 +619,19 @@ update = function()
       coins.removeElement(c)
     elsif not paused and c.n<=0.05 then
       score+=1
+      coins_in_session+=1
+      current_streak+=1
+      total_coins_collected+=1
+      storage.set("total_coins", total_coins_collected)
       audio.playSound("coins",1,1,0,0)
       coins.removeElement(c)
     end
    end
   end
-  if not paused and current_time2 - ini_time2 >= coin_spawn_delay then
+  
+  max_coins_on_screen = 6
+  
+  if not paused and current_time2 - ini_time2 >= coin_spawn_delay and coins.length < max_coins_on_screen then
     coins.push(new coin(500,random.intInRange(21,-60),1))
     ini_time2 = system.time()
     coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
@@ -640,15 +660,9 @@ update = function()
    if mouse.x<50 and mouse.x>-50 and mouse.y<-5 and mouse.y>-40 then
      if mouse.press then
        scene = 0.5
-       if startMusic != null then
-         startMusic()
-       end
      end
    elsif gamepad.release.A then
      scene = 0.5
-     if startMusic != null then
-       startMusic()
-     end
    end
    
    if not show_reset_confirmation then
@@ -675,9 +689,15 @@ update = function()
            resetHighscore()
          end
          storage.set("highscore", 0)
+         storage.set("total_coins", 0)
+         storage.set("longest_streak", 0)
+         storage.set("longest_streak_time", 0)
          highscore = 0
+         total_coins_collected = 0
+         longest_streak = 0
+         longest_streak_time = 0
          show_reset_confirmation = false
-         print("Najwyższy wynik został zresetowany!")
+         print("Wszystkie statystyki zostały zresetowane!")
        end
      end
      if mouse.x>20 and mouse.x<100 and mouse.y>-55 and mouse.y<-25 then
@@ -692,25 +712,16 @@ update = function()
    if checkRestartButton != null then
      if checkRestartButton(mouse.x, mouse.y) and mouse.press then
        scene = 0
-       if pauseMusic != null then
-         pauseMusic()
-       end
      end
    else
      if mouse.x<28 and mouse.x>-28 and mouse.y<-45 and mouse.y>-65 then
        if mouse.press then
          scene = 0
-         if pauseMusic != null then
-           pauseMusic()
-         end
        end
      end
    end
    if gamepad.release.A then
     scene = 0
-    if pauseMusic != null then
-      pauseMusic()
-    end
     end
   end
   
@@ -719,6 +730,7 @@ update = function()
       player_x+=2
     elsif player_x>=-90 then
       scene = 1
+      streak_start_time = system.time()
     end
   end
 
@@ -818,6 +830,15 @@ draw = function()
       
       screen.setFont("Squarewave")
       screen.drawText(current_language, screen.width/2-40, screen.height/2-30, 20, "rgb(100,255,255)")
+      
+      screen.setFont("Squarewave")
+      screen.drawText(getText("current_high_score") + highscore, 0, -45, 12, "rgb(200,200,255)")
+      screen.drawText(getText("total_coins") + total_coins_collected, 0, -60, 12, "rgb(255,255,100)")
+      if longest_streak_time > 0 then
+        screen.drawText(getText("best_streak") + formatTime(longest_streak_time), 0, -75, 12, "rgb(100,255,150)")
+      else
+        screen.drawText(getText("best_streak") + "0s", 0, -75, 12, "rgb(100,255,150)")
+      end
     end
     
     if not show_reset_confirmation then
@@ -838,11 +859,6 @@ draw = function()
       screen.setFont("Zepto")
       screen.drawText(getText("yes"), -60, -40, 18, "rgb(255,100,100)")
       screen.drawText(getText("no"), 60, -40, 18, "rgb(100,255,100)")
-    end
-    
-    if not show_reset_confirmation then
-      screen.setFont("Squarewave")
-      screen.drawText(getText("current_high_score") + highscore, 0, -88, 14, "rgb(200,200,255)")
     end
   end
   
