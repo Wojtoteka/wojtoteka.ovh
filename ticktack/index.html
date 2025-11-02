@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickTack - Nowoczesny Discord Bot</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons (optional, but good for contact section) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="page-top">
+    <header>
+        <nav>
+            <div class="nav-container">
+                <a href="#page-top">
+                    <img src="logo.png" alt="TickTack Logo" class="logo">
+                </a>
+                <div class="nav-links">
+                    <a href="#features">Funkcje</a>
+                    <a href="#difficulty-levels">AI</a>
+                    <a href="#commands">Komendy</a>
+                    <a href="#contact">Kontakt</a> 
+                    <a href="regulamin.html">Regulamin</a>
+                    <a href="polityka-prywatnosci.html">Polityka Prywatności</a>
+                    <a href="https://discord.com/oauth2/authorize?client_id=1331759180138287135&permissions=2048&integration_type=0&scope=bot">Dodaj Bota</a>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="hero">
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+            
+            <div class="hero-content">
+                <h1>TickTack</h1>
+                <p>Rewolucyjny bot Discord do gry w kółko i krzyżyk z zaawansowanym AI i płynną rozgrywką w prywatnych wiadomościach</p>
+                <a href="https://discord.com/oauth2/authorize?client_id=1331759180138287135&permissions=2048&integration_type=0&scope=bot" class="cta-button">
+                    <span>🚀</span>
+                    Dodaj do Discord
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="features">
+            <h2>Główne Funkcje</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🎮 Rozgrywka PvP</h3>
+                    <p>Wyzywaj znajomych na epicki pojedynek w prywatnych wiadomościach z systemem zaproszeń i timeoutem</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🤖 Inteligentne AI</h3>
+                    <p>Zmierz się z zaawansowanym botem na trzech poziomach trudności - od relaksującej gry po niepokonalne wyzwanie</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💬 Prywatność Gry</h3>
+                    <p>Cała rozgrywka w DM oznacza czyste kanały serwera i pełną koncentrację na grze bez rozpraszania</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="difficulty-levels">
+            <h2>Poziomy Sztucznej Inteligencji</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="emoji">😊</span>
+                    <h3>Łatwy</h3>
+                    <p>Perfekcyjny start dla początkujących graczy - spokojny rytm gry i przyjazne AI</p>
+                    <div class="difficulty-bar easy"></div>
+                </div>
+                <div class="feature-card">
+                    <span class="emoji">🤔</span>
+                    <h3>Średni</h3>
+                    <p>Większe wyzwanie wymagające strategicznego myślenia i przemyślanych ruchów</p>
+                    <div class="difficulty-bar medium"></div>
+                </div>
+                <div class="feature-card">
+                    <span class="emoji">😈</span>
+                    <h3>Trudny</h3>
+                    <p>Zaawansowane algorytmy przewidujące Twoje ruchy - prawdziwe wyzwanie dla ekspertów</p>
+                    <div class="difficulty-bar hard"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gameplay">
+            <h2>Jak to Działa?</h2>
+            <div class="gameplay-showcase">
+                <div class="gameplay-board demo-board">
+                    <div class="board-row">
+                        <div class="board-cell" data-demo="X" style="animation-delay: 0.2s">X</div>
+                        <div class="board-cell" data-demo="O" style="animation-delay: 0.4s">O</div>
+                        <div class="board-cell" data-demo=""></div>
+                    </div>
+                    <div class="board-row">
+                        <div class="board-cell" data-demo=""></div>
+                        <div class="board-cell" data-demo="X" style="animation-delay: 0.6s">X</div>
+                        <div class="board-cell" data-demo=""></div>
+                    </div>
+                    <div class="board-row">
+                        <div class="board-cell" data-demo="O" style="animation-delay: 0.8s">O</div>
+                        <div class="board-cell" data-demo=""></div>
+                        <div class="board-cell" data-demo="X" style="animation-delay: 1s">X</div>
+                    </div>
+                </div>
+                <div class="gameplay-info">
+                    <h3>Prosty Start</h3>
+                    <p>Użyj komendy <code>/gra</code> aby rozpocząć</p>
+                    <p>Wybierz tryb: AI lub wyzwij znajomego</p>
+                    <p>Graj intuicyjnie używając przycisków</p>
+                    <p>Ciesz się płynną rozgrywką w DM</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features-detailed">
+            <h2>Dlaczego Właśnie TickTack?</h2>
+            <div class="detailed-features">
+                <div class="detail-card">
+                    <div class="detail-icon">🎯</div>
+                    <h3>Smart Invitations</h3>
+                    <p>Zaawansowany system zaproszeń z 5-minutowym timeoutem i dynamicznym statusem w czasie rzeczywistym</p>
+                    <div class="detail-hover">
+                        <span class="detail-tip">Pełna kontrola nad każdym zaproszeniem!</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">🧠</div>
+                    <h3>Zaawansowane AI</h3>
+                    <p>Algorytmy uczenia maszynowego z trzema poziomami trudności dostosowanymi do Twoich umiejętności</p>
+                    <div class="detail-hover">
+                        <span class="detail-tip">Od łatwego po niemożliwy do pokonania!</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">🔒</div>
+                    <h3>Prywatność Premium</h3>
+                    <p>Rozgrywka w prywatnych wiadomościach zapewnia zero spamu na kanałach i maksymalną prywatność</p>
+                    <div class="detail-hover">
+                        <span class="detail-tip">Czyste kanały, skupiona rozgrywka!</span>
+                    </div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">⚡</div>
+                    <h3>Błyskawiczna Wydajność</h3>
+                    <p>Natychmiastowe odpowiedzi na każdy ruch dzięki zaawansowanej infrastrukturze hostingowej</p>
+                    <div class="detail-hover">
+                        <span class="detail-tip">Powered by SkillHost.pl!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="commands">
+            <h2>Dostępne Komendy</h2>
+            <div class="commands-list">
+                <div class="command">
+                    <code>/gra</code>
+                    <p>🎮 Rozpocznij pojedynek z AI - wybierz poziom trudności i pokaż swoje umiejętności</p>
+                </div>
+                <div class="command">
+                    <code>/gra @użytkownik</code>
+                    <p>👥 Wyzwij znajomego na epicki pojedynek z systemem zaproszeń i timeoutem</p>
+                </div>
+                <div class="command">
+                    <code>/zakoncz</code>
+                    <p>❌ Natychmiast zakończ aktualną grę lub anuluj wysłane/otrzymane zaproszenie</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Kontakt</h2>
+            <div class="contact-methods">
+                <div class="contact-card">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <h3>Email</h3>
+                    <p><a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></p>
+                </div>
+                <div class="contact-card">
+                    <i class="fab fa-discord contact-icon"></i>
+                    <h3>Serwer Support</h3>
+                    <p><a href="https://discord.gg/EHUJZeRQF2" target="_blank" rel="noopener noreferrer">Discord Server</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="invite" class="cta-section">
+            <h2>Gotowy na Wyzwanie?</h2>
+            <p>Dołącz do tysięcy graczy już teraz i rozpocznij swoją przygodę z TickTack</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1331759180138287135&permissions=2048&integration_type=0&scope=bot" class="cta-button">
+                <span>🎯</span> Dodaj TickTack do Discord
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+             © <span id="currentYear"></span> TickTack Bot |  Stworzony z pasją przez <a href="https://discord.com/users/1328758394588500024" target="_blank" rel="noopener noreferrer" class="footer-link">@Wojtoteka_</a> | <a href="https://skillhost.pl/" target="_blank" rel="noopener noreferrer" class="footer-link-skillhost">Reliable servers provided by <img src="skillhost-f005923d.svg" alt="SkillHost Logo" class="skillhost-logo"></a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            <a href="regulamin.html" class="footer-link">Regulamin</a> | 
+            <a href="polityka-prywatnosci.html" class="footer-link">Polityka Prywatności</a>
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
