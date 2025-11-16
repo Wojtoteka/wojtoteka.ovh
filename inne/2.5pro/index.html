@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TakeMC - Serwer Minecraft</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">TakeMC</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html#hero">Strona główna</a></li>
+                <li><a href="index.html#gamemodes">Tryby gry</a></li>
+                <li><a href="rules.html">Regulamin</a></li>
+                <li><a href="gallery.html">Galeria</a></li>
+                <li><a href="shop.html">Sklep</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Witaj na TakeMC!</h1>
+                <p>Najlepszy serwer Minecraft 1.21.5 z trybami Oneblock, Skyblock i BoxPVP.</p>
+                <div class="ip-container">
+                    <p>Dołącz do nas: <span id="ip-address">mc.takemc.pl</span></p>
+                    <button onclick="copyIp()">
+                        <i class="fa-solid fa-copy"></i> Skopiuj IP
+                    </button>
+                    <span id="copy-tooltip">Skopiowano!</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="gamemodes">
+            <h2>Nasze tryby gry</h2>
+            <div class="gamemodes-container">
+                <div class="gamemode-card">
+                    <i class="fa-solid fa-cube"></i>
+                    <h3>Oneblock</h3>
+                    <p>Zacznij przygodę na jednym bloku, który odnawia się po zniszczeniu. Rozwijaj swoją wyspę i osiągnij sukces!</p>
+                </div>
+                <div class="gamemode-card">
+                    <i class="fa-solid fa-cloud"></i>
+                    <h3>Skyblock</h3>
+                    <p>Klasyczny tryb przetrwania na latającej wyspie. Zarządzaj zasobami, wykonuj zadania i zbuduj swoje imperium w chmurach.</p>
+                </div>
+                <div class="gamemode-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>BoxPVP</h3>
+                    <p>Walcz z innymi graczami na specjalnej arenie. Zbieraj ekwipunek, zdobywaj punkty i zostań królem pola bitwy!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>O serwerze</h2>
+            <p>TakeMC to serwer stworzony z pasji do Minecrafta. Naszym celem jest dostarczenie graczom najlepszych wrażeń z gry. Posiadamy zoptymalizowane tryby, aktywną administrację i przyjazną społeczność. Regularnie organizujemy eventy i dbamy o to, by na serwerze nigdy nie było nudno. Dołącz do nas już dziś i stań się częścią naszej społeczności!</p>
+        </section>
+
+        <section id="news">
+            <h2>Aktualności</h2>
+            <div class="news-container">
+                <div class="news-item">
+                    <h3>Nowa edycja Skyblock!</h3>
+                    <p class="news-date">15 listopada 2025</p>
+                    <p>Wystartowała nowa, ekscytująca edycja trybu Skyblock! Czekają na Was nowe zadania, odświeżona ekonomia i masa nagród. Nie zwlekaj, zacznij przygodę już teraz!</p>
+                    <a href="#" class="btn">Czytaj więcej</a>
+                </div>
+                <div class="news-item">
+                    <h3>Wielki event PVP</h3>
+                    <p class="news-date">10 listopada 2025</p>
+                    <p>Przygotujcie swój najlepszy ekwipunek! W najbliższą sobotę odbędzie się wielki turniej na trybie BoxPVP. Do wygrania unikalne rangi i przedmioty. Zapisy na naszym Discordzie!</p>
+                    <a href="#" class="btn">Czytaj więcej</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="stats">
+            <h2>Statystyki serwera</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <i class="fa-solid fa-users"></i>
+                    <h3 class="stat-number" data-target="127">0</h3>
+                    <p>Graczy online</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-server"></i>
+                    <h3 class="stat-number" data-target="3">0</h3>
+                    <p>Dostępne tryby</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h3 class="stat-number" data-target="8452">0</h3>
+                    <p>Zarejestrowanych graczy</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery-preview">
+            <h2>Nasza Galeria</h2>
+            <div class="gallery-container">
+                <img src="https://via.placeholder.com/400x300.png/34495e/ecf0f1?text=Spawn" alt="Zdjęcie z serwera 1">
+                <img src="https://via.placeholder.com/400x300.png/34495e/ecf0f1?text=Wyspa+Gracza" alt="Zdjęcie z serwera 2">
+                <img src="https://via.placeholder.com/400x300.png/34495e/ecf0f1?text=Arena+PVP" alt="Zdjęcie z serwera 3">
+                <img src="https://via.placeholder.com/400x300.png/34495e/ecf0f1?text=Event" alt="Zdjęcie z serwera 4">
+            </div>
+            <a href="gallery.html" class="btn">Zobacz pełną galerię</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TakeMC</h3>
+                <p>Najlepsze miejsce do gry w Minecraft. Dołącz do naszej społeczności i zacznij przygodę!</p>
+            </div>
+            <div class="footer-section">
+                <h3>Szybkie linki</h3>
+                <ul>
+                    <li><a href="rules.html">Regulamin</a></li>
+                    <li><a href="gallery.html">Galeria</a></li>
+                    <li><a href="shop.html">Sklep</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Social Media</h3>
+                <div class="social-media">
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TakeMC. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

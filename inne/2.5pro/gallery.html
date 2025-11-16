@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria - TakeMC</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Dodatkowe style dla galerii */
+        .full-gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Modal (pełnoekranowy podgląd) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 1200px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">TakeMC</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona główna</a></li>
+                <li><a href="index.html#gamemodes">Tryby gry</a></li>
+                <li><a href="rules.html">Regulamin</a></li>
+                <li><a href="gallery.html">Galeria</a></li>
+                <li><a href="shop.html">Sklep</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Galeria Serwera</h1>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="full-gallery-container">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Spawn" alt="Spawn">
+                    <div class="gallery-overlay">Spawn</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Wyspa+Oneblock" alt="Wyspa Oneblock">
+                    <div class="gallery-overlay">Wyspa Oneblock</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Arena+BoxPVP" alt="Arena BoxPVP">
+                    <div class="gallery-overlay">Arena BoxPVP</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Event+Parkour" alt="Event Parkour">
+                    <div class="gallery-overlay">Event Parkour</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Sklep+Serwerowy" alt="Sklep Serwerowy">
+                    <div class="gallery-overlay">Sklep Serwerowy</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/600x400.png/34495e/ecf0f1?text=Zachód+słońca" alt="Zachód słońca">
+                    <div class="gallery-overlay">Zachód słońca</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+        </div>
+    </main>
+
+    <footer>
+        <!-- Stopka taka sama jak w index.html -->
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Skrypt do modala galerii
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const galleryItems = document.querySelectorAll(".gallery-item");
+        const span = document.getElementsByClassName("close")[0];
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                modal.style.display = "block";
+                modalImg.src = this.querySelector('img').src;
+            });
+        });
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

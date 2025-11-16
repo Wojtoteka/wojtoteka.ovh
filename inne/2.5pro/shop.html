@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklep - TakeMC</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .shop-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .shop-item {
+            background: var(--card-background);
+            border-radius: 15px;
+            text-align: center;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .shop-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .shop-item .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+        .shop-item .price span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        .shop-item h3 {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+        .shop-item ul {
+            list-style: none;
+            padding: 1rem 0;
+            text-align: left;
+            min-height: 150px;
+        }
+        .shop-item ul li {
+            margin-bottom: 0.5rem;
+            padding-left: 20px;
+            position: relative;
+        }
+        .shop-item ul li::before {
+            content: '\f00c'; /* Ikonka "check" z Font Awesome */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #2ecc71;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">TakeMC</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona główna</a></li>
+                <li><a href="index.html#gamemodes">Tryby gry</a></li>
+                <li><a href="rules.html">Regulamin</a></li>
+                <li><a href="gallery.html">Galeria</a></li>
+                <li><a href="shop.html">Sklep</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Sklep Serwerowy</h1>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="shop-container">
+                <div class="shop-item">
+                    <h3>Ranga VIP</h3>
+                    <div class="price">20.00 <span>PLN</span></div>
+                    <ul>
+                        <li>Specjalny prefix [VIP] na czacie</li>
+                        <li>Dostęp do /kit vip co 24h</li>
+                        <li>Możliwość pisania na kolorowo</li>
+                        <li>Rezerwacja slota na serwerze</li>
+                    </ul>
+                    <a href="#" class="btn">Kup teraz</a>
+                </div>
+                <div class="shop-item">
+                    <h3>Ranga SVIP</h3>
+                    <div class="price">40.00 <span>PLN</span></div>
+                    <ul>
+                        <li>Wszystkie korzyści rangi VIP</li>
+                        <li>Specjalny prefix [SVIP] na czacie</li>
+                        <li>Dostęp do /kit svip co 24h</li>
+                        <li>Dostęp do /fly na spawnie</li>
+                        <li>Więcej działek na Skyblock</li>
+                    </ul>
+                    <a href="#" class="btn">Kup teraz</a>
+                </div>
+                <div class="shop-item">
+                    <h3>Klucz do skrzyni</h3>
+                    <div class="price">5.00 <span>PLN</span></div>
+                    <ul>
+                        <li>Otwórz magiczną skrzynię!</li>
+                        <li>Szansa na unikalne przedmioty</li>
+                        <li>Możliwość wylosowania rangi</li>
+                        <li>Gwarantowane cenne itemy</li>
+                    </ul>
+                    <a href="#" class="btn">Kup teraz</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Stopka taka sama jak w index.html -->
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
