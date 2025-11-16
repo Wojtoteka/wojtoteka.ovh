@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TakeMC - Najlepszy Serwer Minecraft 1.21.5</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>Take<span>MC</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Start</a></li>
+                <li><a href="#modes">Tryby Gry</a></li>
+                <li><a href="#features">Funkcje</a></li>
+                <li><a href="#ranking">Ranking</a></li>
+                <li><a href="#shop">Sklep</a></li>
+                <li><a href="#connect">Połącz</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="TakeMC">TakeMC</h1>
+            <p class="hero-subtitle">Najlepszy Serwer Minecraft 1.21.5</p>
+            <div class="server-ip">
+                <span class="ip-label">IP Serwera:</span>
+                <span class="ip-address" id="serverIp">mc.takemc.pl</span>
+                <button class="copy-btn" onclick="copyIP()">📋 Kopiuj</button>
+            </div>
+            <div class="hero-buttons">
+                <a href="#modes" class="btn btn-primary">Odkryj Tryby</a>
+                <a href="#connect" class="btn btn-secondary">Jak Dołączyć</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <p>Przewiń w dół</p>
+        </div>
+    </section>
+
+    <!-- Game Modes Section -->
+    <section id="modes" class="modes">
+        <div class="container">
+            <h2 class="section-title">Tryby Gry</h2>
+            <p class="section-subtitle">Wybierz swój ulubiony tryb i rozpocznij przygodę!</p>
+            
+            <div class="modes-grid">
+                <div class="mode-card" data-aos="fade-up">
+                    <div class="mode-icon">🟦</div>
+                    <h3>OneBlock</h3>
+                    <p>Rozpocznij swoją przygodę z jednego bloku! Rozbudowuj swoją wyspę, odkrywaj nowe fazy i zdobywaj unikalne przedmioty.</p>
+                    <ul class="mode-features">
+                        <li>✨ Unikalne fazy</li>
+                        <li>🎁 Specjalne nagrody</li>
+                        <li>🏆 System osiągnięć</li>
+                        <li>👥 Gildie i współpraca</li>
+                    </ul>
+                </div>
+
+                <div class="mode-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mode-icon">☁️</div>
+                    <h3>SkyBlock</h3>
+                    <p>Klasyczny SkyBlock z nowoczesnymi udogodnieniami. Buduj, farmuj i zostań najbogatszym graczem na serwerze!</p>
+                    <ul class="mode-features">
+                        <li>🌟 Niestandardowe enchanty</li>
+                        <li>💰 Zaawansowana ekonomia</li>
+                        <li>🔧 Własne crafty</li>
+                        <li>🎯 Misje i questy</li>
+                    </ul>
+                </div>
+
+                <div class="mode-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="mode-icon">⚔️</div>
+                    <h3>BoxPvP</h3>
+                    <p>Intensywne walki PvP w zamkniętych arenach! Zdobywaj zestawy, walcz z innymi graczami i wspinaj się w rankingu.</p>
+                    <ul class="mode-features">
+                        <li>⚡ Dynamiczne areny</li>
+                        <li>🎒 Różnorodne zestawy</li>
+                        <li>📊 System rankingowy</li>
+                        <li>🏅 Turnieje i eventy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Dlaczego TakeMC?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-item" data-aos="zoom-in">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Wydajność</h3>
+                    <p>Potężny hardware zapewniający płynną rozgrywkę bez lagów</p>
+                </div>
+                
+                <div class="feature-item" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Bezpieczeństwo</h3>
+                    <p>Zaawansowana ochrona przed cheatami i griefowaniem</p>
+                </div>
+                
+                <div class="feature-item" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="feature-icon">👨‍💼</div>
+                    <h3>Aktywna Administracja</h3>
+                    <p>Pomocny team dostępny 24/7 dla społeczności</p>
+                </div>
+                
+                <div class="feature-item" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="feature-icon">🎉</div>
+                    <h3>Eventy</h3>
+                    <p>Regularne wydarzenia z atrakcyjnymi nagrodami</p>
+                </div>
+                
+                <div class="feature-item" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="feature-icon">💎</div>
+                    <h3>Unikalne Funkcje</h3>
+                    <p>Autorskie pluginy i systemy niedostępne nigdzie indziej</p>
+                </div>
+                
+                <div class="feature-item" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Społeczność</h3>
+                    <p>Przyjazna i pomocna społeczność graczy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats">
+        <div class="container">
+            <h2 class="section-title">Statystyki Serwera</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="flip-left">
+                    <div class="stat-number" data-target="1500">0</div>
+                    <div class="stat-label">Aktywnych Graczy</div>
+                </div>
+                
+                <div class="stat-card" data-aos="flip-left" data-aos-delay="100">
+                    <div class="stat-number" data-target="99">0</div>
+                    <div class="stat-label">Uptime %</div>
+                </div>
+                
+                <div class="stat-card" data-aos="flip-left" data-aos-delay="200">
+                    <div class="stat-number" data-target="3">0</div>
+                    <div class="stat-label">Tryby Gry</div>
+                </div>
+                
+                <div class="stat-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label">Wsparcie 24/7</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Galeria</h2>
+            <p class="section-subtitle">Zobacz jak wygląda rozgrywka na TakeMC</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="zoom-in">
+                    <div class="gallery-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="gallery-overlay">
+                            <h3>OneBlock</h3>
+                            <p>Zaawansowane wyspy graczy</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="gallery-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="gallery-overlay">
+                            <h3>SkyBlock</h3>
+                            <p>Epickie budowle</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="gallery-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="gallery-overlay">
+                            <h3>BoxPvP</h3>
+                            <p>Intensywne walki</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="gallery-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <div class="gallery-overlay">
+                            <h3>Eventy</h3>
+                            <p>Specjalne wydarzenia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ranking Section -->
+    <section id="ranking" class="ranking">
+        <div class="container">
+            <h2 class="section-title">Top Gracze</h2>
+            <p class="section-subtitle">Najlepsi gracze naszego serwera</p>
+            
+            <div class="ranking-tabs">
+                <button class="ranking-tab active" data-tab="oneblock">OneBlock</button>
+                <button class="ranking-tab" data-tab="skyblock">SkyBlock</button>
+                <button class="ranking-tab" data-tab="boxpvp">BoxPvP</button>
+            </div>
+
+            <div class="ranking-content">
+                <div class="ranking-list active" id="oneblock-ranking">
+                    <div class="ranking-item" data-aos="fade-right">
+                        <div class="rank-position gold">🥇 1</div>
+                        <div class="rank-player">
+                            <div class="player-avatar">👤</div>
+                            <div class="player-info">
+                                <h4>ProGamer123</h4>
+                                <p>Poziom 156</p>
+                            </div>
+                        </div>
+                        <div class="rank-score">15,234 pkt</div>
+                    </div>
+                    <div class="ranking-item" data-aos="fade-right" data-aos-delay="100">
+                        <div class="rank-position silver">🥈 2</div>
+                        <div class="rank-player">
+                            <div class="player-avatar">👤</div>
+                            <div class="player-info">
+                                <h4>MineKing99</h4>
+                                <p>Poziom 142</p>
+                            </div>
+                        </div>
+                        <div class="rank-score">14,891 pkt</div>
+                    </div>
+                    <div class="ranking-item" data-aos="fade-right" data-aos-delay="200">
+                        <div class="rank-position bronze">🥉 3</div>
+                        <div class="rank-player">
+                            <div class="player-avatar">👤</div>
+                            <div class="player-info">
+                                <h4>CraftMaster</h4>
+                                <p>Poziom 138</p>
+                            </div>
+                        </div>
+                        <div class="rank-score">13,567 pkt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="shop">
+        <div class="container">
+            <h2 class="section-title">Sklep VIP</h2>
+            <p class="section-subtitle">Wesprzyj serwer i zyskaj ekskluzywne korzyści</p>
+            
+            <div class="shop-grid">
+                <div class="shop-card" data-aos="flip-up">
+                    <div class="shop-badge">Starter</div>
+                    <h3>VIP</h3>
+                    <div class="shop-price">
+                        <span class="price-amount">19.99</span>
+                        <span class="price-currency">PLN</span>
+                    </div>
+                    <ul class="shop-features">
+                        <li>✓ Kolorowy nick</li>
+                        <li>✓ 2x więcej slotów</li>
+                        <li>✓ Dostęp do /fly</li>
+                        <li>✓ Kit VIP co 24h</li>
+                        <li>✓ Priorytet w kolejce</li>
+                    </ul>
+                    <button class="shop-btn">Kup Teraz</button>
+                </div>
+
+                <div class="shop-card featured" data-aos="flip-up" data-aos-delay="100">
+                    <div class="shop-badge popular">Popularny</div>
+                    <h3>MVP</h3>
+                    <div class="shop-price">
+                        <span class="price-amount">39.99</span>
+                        <span class="price-currency">PLN</span>
+                    </div>
+                    <ul class="shop-features">
+                        <li>✓ Wszystko z VIP</li>
+                        <li>✓ Animowany nick</li>
+                        <li>✓ 5x więcej slotów</li>
+                        <li>✓ Dostęp do /feed</li>
+                        <li>✓ Kit MVP co 12h</li>
+                        <li>✓ Unikalne efekty</li>
+                        <li>✓ Pet premium</li>
+                    </ul>
+                    <button class="shop-btn">Kup Teraz</button>
+                </div>
+
+                <div class="shop-card" data-aos="flip-up" data-aos-delay="200">
+                    <div class="shop-badge">Ultimate</div>
+                    <h3>LEGEND</h3>
+                    <div class="shop-price">
+                        <span class="price-amount">69.99</span>
+                        <span class="price-currency">PLN</span>
+                    </div>
+                    <ul class="shop-features">
+                        <li>✓ Wszystko z MVP</li>
+                        <li>✓ Własny prefix</li>
+                        <li>✓ Unlimited sloty</li>
+                        <li>✓ Wszystkie komendy</li>
+                        <li>✓ Kit LEGEND co 6h</li>
+                        <li>✓ Ekskluzywne skiny</li>
+                        <li>✓ Prywatny kanał Discord</li>
+                        <li>✓ Dostęp do Beta testów</li>
+                    </ul>
+                    <button class="shop-btn">Kup Teraz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News/Events Section -->
+    <section id="news" class="news">
+        <div class="container">
+            <h2 class="section-title">Aktualności & Eventy</h2>
+            <p class="section-subtitle">Bądź na bieżąco z najnowszymi wydarzeniami</p>
+            
+            <div class="news-grid">
+                <div class="news-card" data-aos="fade-up">
+                    <div class="news-date">15 Lis 2025</div>
+                    <div class="news-category event">Event</div>
+                    <h3>Wielki Turniej BoxPvP</h3>
+                    <p>Zapisz się do największego turnieju sezonu! Pula nagród wynosi 10,000 PLN w nagrodach!</p>
+                    <a href="#" class="news-link">Czytaj więcej →</a>
+                </div>
+
+                <div class="news-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="news-date">12 Lis 2025</div>
+                    <div class="news-category update">Aktualizacja</div>
+                    <h3>Nowe Fazy w OneBlock</h3>
+                    <p>Dodaliśmy 10 nowych faz do trybu OneBlock z unikalnymi nagrodami i wyzwaniami!</p>
+                    <a href="#" class="news-link">Czytaj więcej →</a>
+                </div>
+
+                <div class="news-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="news-date">10 Lis 2025</div>
+                    <div class="news-category info">Informacja</div>
+                    <h3>Reset SkyBlock</h3>
+                    <p>Zbliża się sezonowy reset SkyBlock. Sprawdź co się zmieni i przygotuj się na nowy sezon!</p>
+                    <a href="#" class="news-link">Czytaj więcej →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Często Zadawane Pytania</h2>
+            <p class="section-subtitle">Znajdź odpowiedzi na najczęstsze pytania</p>
+            
+            <div class="faq-list">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h3>Czy serwer jest darmowy?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tak! Gra na TakeMC jest całkowicie darmowa. Oferujemy również opcjonalne rangi VIP dla graczy, którzy chcą wesprzeć serwer i zyskać dodatkowe korzyści.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        <h3>Czy mogę grać na Premium i Non-Premium?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tak, nasz serwer obsługuje zarówno konta Premium (oryginalne Minecraft), jak i Non-Premium (cracki). Każdy może dołączyć i grać!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question">
+                        <h3>Jak mogę zgłosić gracza łamiącego zasady?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Możesz zgłosić gracza używając komendy /report na serwerze lub poprzez nasz Discord. Administracja reaguje na zgłoszenia 24/7.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question">
+                        <h3>Jak mogę zostać członkiem zespołu?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Rekrutacje ogłaszamy regularnie na Discord. Szukamy Helper'ów, Moderatorów i Builder'ów. Musisz spełniać wymagania i wypełnić formularz aplikacyjny.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                    <div class="faq-question">
+                        <h3>Czy mój progres zostanie zachowany po restarcie?</h3>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Tak, wszystkie dane graczy są regularnie backupowane. Twój progres, przedmioty i budowle są bezpieczne.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section id="connect" class="connect">
+        <div class="container">
+            <h2 class="section-title">Jak Dołączyć?</h2>
+            
+            <div class="connect-content">
+                <div class="connect-steps">
+                    <div class="step" data-aos="fade-right">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Uruchom Minecraft</h3>
+                            <p>Upewnij się, że masz wersję 1.21.5</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-aos="fade-right" data-aos-delay="100">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Dodaj Serwer</h3>
+                            <p>Wybierz "Multiplayer" i "Add Server"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-aos="fade-right" data-aos-delay="200">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Wpisz IP</h3>
+                            <p>Użyj adresu: <strong>mc.takemc.pl</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="step" data-aos="fade-right" data-aos-delay="300">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Graj!</h3>
+                            <p>Dołącz do serwera i baw się dobrze!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="connect-info" data-aos="fade-left">
+                    <div class="info-box">
+                        <h3>Informacje o Serwerze</h3>
+                        <div class="info-item">
+                            <span class="info-label">IP:</span>
+                            <span class="info-value">mc.takemc.pl</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Wersja:</span>
+                            <span class="info-value">1.21.5</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tryby:</span>
+                            <span class="info-value">OneBlock, SkyBlock, BoxPvP</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status:</span>
+                            <span class="info-value status-online">🟢 Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Take<span>MC</span></h2>
+                    <p>Najlepszy serwer Minecraft 1.21.5</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Szybkie Linki</h3>
+                    <ul>
+                        <li><a href="#home">Start</a></li>
+                        <li><a href="#modes">Tryby Gry</a></li>
+                        <li><a href="#features">Funkcje</a></li>
+                        <li><a href="#connect">Połącz</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>Społeczność</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Discord</a>
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">YouTube</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 TakeMC. Wszystkie prawa zastrzeżone.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

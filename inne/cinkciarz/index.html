@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<!-- Mirrored from cinkciarz.pl/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 09 Nov 2025 22:22:07 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinkciarz – Historia trwa. Conotoxia - Story Continues</title>
+  <style>
+    body, .top-links, .tooltip, .tooltiptext {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* TO NAPRAWIA CENTROWANIE GŁÓWNEGO HASŁA */
+  height: 100vh;
+  padding: 0 20px;
+  overflow: hidden;
+}
+    header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+    header img {
+      height: 40px;
+      filter: invert(1) brightness(2);
+    }
+/* --- Flagi - Language Switcher --- */
+.language-switcher {
+  position: absolute;
+  top: 20px;      /* Wyrównanie do górnej krawędzi logo */
+  left: 110px;      /* Przesunięcie w prawo, aby flagi były obok logo */
+  display: flex;
+  flex-direction: row; /* Ustawienie flag w poziomie */
+  gap: 15px;      /* Odstęp między flagami */
+  height: 40px;    /* Wysokość kontenera taka sama jak logo */
+  align-items: center; /* Wyrównanie flag idealnie w pionie */
+}
+.flag {
+  width: 40px;
+  height: 27px; /* Ustawienie proporcji */
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.3s;
+  object-fit: cover;
+}
+.flag:hover {
+  border-color: #fff;
+}
+/* --- Koniec Flagi --- */
+    .top-links {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 40px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #fff;
+    }
+    .top-links .tooltip {
+      position: relative;
+      color: #fff;
+      cursor: pointer;
+    }
+    .top-links .tooltiptext {
+      visibility: hidden;
+      width: 480px;
+      background-color: #111;
+      color: #fff;
+      text-align: left;
+      border-radius: 5px;
+      padding: 15px;
+      position: absolute;
+      z-index: 1;
+      top: 60px;
+      right: 0;
+      font-size: 1.1em;
+      line-height: 1.5em;
+      box-shadow: 0px 0px 6px rgba(255,255,255,0.3);
+      transition: opacity 0.3s ease-in-out;
+      opacity: 0;
+    }
+    .top-links .tooltip.show .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+h1 {
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 5em; /* <-- ZMNIEJSZ TĘ WARTOŚĆ */
+}
+    .hidden {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .top-links {
+        font-size: 1.2em;
+      }
+      .top-links .tooltiptext {
+        width: 90%;
+        font-size: 1em;
+      }
+    }
+    @media (max-width: 480px) {
+      .top-links {
+        font-size: 1em;
+      }
+      .top-links .tooltiptext {
+        width: 95%;
+        font-size: 0.9em;
+      }
+    }
+.footer-text {
+  position: fixed;
+  /* Zwiększona wartość, aby podnieść tekst wyżej */
+  bottom: calc(12em + 60px); /* <-- SUWAK DO REGULACJI WYSOKOŚCI */
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  color: #fff; 
+  font-size: 0.9em;
+  text-align: center;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Dostosowanie pozycji na urządzeniach mobilnych */
+@media (max-width: 768px) {
+  .footer-text {
+    bottom: calc(30vh + 20px); /* Pozycjonowanie 20px nad terminalem (wersja mobilna) */
+    font-size: 0.8em;
+  }
+}
+    /* Terminal */
+    .terminal {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 12em; /* domyślnie ok. 8 linii */
+      background: #000;
+      color: #0f0;
+      font-family: "Courier New", Courier, monospace;
+      padding: 10px;
+      border-top: 1px solid #0f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-align: left;
+    }
+    @media (max-width: 768px) {
+      .terminal {
+        height: 30vh; /* na mobile max 30% wysokości ekranu */
+      }
+    }
+    .line {
+      white-space: pre;
+    }
+    .cursor {
+      display: inline-block;
+      color: #0f0;
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+      50% { color: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="data:image/png;base64,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" alt="Cinkciarz Logo">
+  </header>
+
+  <div class="language-switcher">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDUiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoOHYyLjVIMHoiLz48cGF0aCBmaWxsPSJyZWQiIGQ9Ik0wIDIuNWg4djIuNUgweiIvPjwvc3ZnPg==" alt="Polish Flag" class="flag" onclick="setLanguage('pl')">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3ODAgNTIwIj4KPHJlY3Qgd2lkdGg9Ijc4MCIgaGVpZ2h0PSI1MjAiIGZpbGw9IiNiMjIyMzQiLz4KPHJlY3QgeT0iNDAiIHdpZHRoPSI3ODAiIGhlaWdodD0iNDAiIGZpbGw9IiNmZmYiLz4KPHJlY3QgeT0iMTIwIiB3aWR0aD0iNzgwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIi8+CjxyZWN0IHk9IjIwMCIgd2lkdGg9Ijc4MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZiIvPgo8cmVjdCB5PSIyODAiIHdpZHRoPSI3ODAiIGhlaWdodD0iNDAiIGZpbGw9IiNmZmYiLz4KPHJlY3QgeT0iMzYwIiB3aWR0aD0iNzgwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZmZmIi8+CjxyZWN0IHk9IjQ0MCIgd2lkdGg9Ijc4MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZiIvPgo8cmVjdCB3aWR0aD0iMzYwIiBoZWlnaHQ9IjI4MCIgZmlsbD0iIzNkM2E2MyIvPgo8L3N2Zz4=" alt="US Flag" class="flag" onclick="setLanguage('en')">
+  </div>
+
+  <div class="top-links">
+    <span class="tooltip" id="reg">
+      <span class="lang pl">Rejestracja</span>
+      <span class="lang en hidden">Sign up</span>
+      <span class="tooltiptext" id="reg-text"></span>
+    </span>
+    <span class="tooltip" id="log">
+      <span class="lang pl">Logowanie</span>
+      <span class="lang en hidden">Login</span>
+      <span class="tooltiptext" id="log-text"></span>
+    </span>
+  </div>
+
+  <h1>
+    <span class="lang pl">To jeszcze nie koniec historii.</span>
+    <span class="lang en hidden">This is not the end. The story continues.</span>
+  </h1>
+<div class="footer-text">
+  <span class="lang pl">
+    ©2025 Cinkciarz.pl and Conotoxia.com<br>
+    My zbudowaliśmy fintech. Polska KNF i Prokuratura zbudowały sprawę o oszustwo.
+  </span>
+  <span class="lang en hidden">
+    ©2025 Cinkciarz.pl and Conotoxia.com<br>
+    We built a fintech. Poland’s KNF and Prosecutor’s Office built a fraud case.
+  </span>
+</div>
+  <div class="terminal" id="terminal"></div>
+
+  <script>
+    // --- ZMIENNA PRZECHOWUJĄCA AKTUALNY JĘZYK ---
+    let currentLanguage = 'pl';
+
+    // --- TREŚCI W DWÓCH JĘZYKACH ---
+    const tooltips = {
+      reg: {
+        pl: [
+          "KNF: U nas rejestracja tylko dla znajomych z układu.",
+          "KNF: Chcesz się zarejestrować? Najpierw koperta.",
+          "KNF: Fałszujemy przepisy szybciej niż Ty formularze.",
+          "KNF: Komisja Niszczenia Firm.",
+          "KNF: Twoje dane? U nas już dawno sprzedane.",
+          "KNF: Najpierw rejestrujemy kłamstwa, potem firmy.",
+          "KNF: Twój biznes to nasza zabawka.",
+          "KNF: złamali więcej przepisów niż zdołali napisać.",
+          "KNF: korupcja ubrana w garnitur urzędnika.",
+          "KNF: paragrafy łamiemy szybciej niż zapałki.",
+          "KNF: praworządność? U nas tylko w prezentacjach."
+        ],
+        en: [
+          "KNF: Registration is only for our buddies in the system.",
+          "KNF: Want to register? Envelope first.",
+          "KNF: We forge regulations faster than you fill out forms.",
+          "KNF: Commission for Destroying Businesses.",
+          "KNF: Your data? Already sold long ago.",
+          "KNF: First we register lies, then companies.",
+          "KNF: Your business is our toy.",
+          "KNF: they broke more laws than they ever drafted.",
+          "KNF: corruption dressed as a regulator.",
+          "KNF: we break legal codes faster than matches.",
+          "KNF: rule of law? Only in our slideshows."
+        ]
+      },
+      log: {
+        pl: [
+          "Prokuratura: Zaloguj się do naszej fikcji.",
+          "Prokuratura: Fałszywe logi, prawdziwe wyroki.",
+          "Prokuratura: Dowody? Dopisaliśmy wczoraj.",
+          "Prokuratura: Manipulacja zalogowana pomyślnie.",
+          "Prokuratura: Zaloguj się, wyrok już czeka.",
+          "Prokuratura: Dowody opcjonalne, oskarżenie obowiązkowe.",
+          "Prokuratura: Nasz system loguje tylko winnych.",
+          "Prokuratura: Prawda? Nie mamy takiego pola w formularzu.",
+          "Prokuratura: Witaj w Matrixie fałszerstw.",
+          "Prokuratura: dowody mnożone kalkulatorem, nie faktami.",
+          "Prokuratura: dopisali cyfry, dopisali winę.",
+          "Prokuratura: fałsz stał się procedurą.",
+          "Prokuratura: manipulacja to nasz akt oskarżenia.",
+          "Prokuratura: materiał dowodowy – wersja edytowalna.",
+          "Prokuratura: winny na wejściu, dowody dorobimy później."
+        ],
+        en: [
+          "Prosecutor’s Office: Log into our fiction.",
+          "Prosecutor’s Office: Fake logs, real verdicts.",
+          "Prosecutor’s Office: Evidence? We added it yesterday.",
+          "Prosecutor’s Office: Manipulation logged in successfully.",
+          "Prosecutor’s Office: Log in, the verdict is already waiting.",
+          "Prosecutor’s Office: Evidence optional, accusation mandatory.",
+          "Prosecutor’s Office: Our system logs only the guilty.",
+          "Prosecutor’s Office: Truth? We don’t have that field in the form.",
+          "Prosecutor’s Office: Welcome to the forgery Matrix.",
+          "Prosecutor’s Office: evidence multiplied by calculator, not by facts.",
+          "Prosecutor’s Office: they added digits, they added guilt.",
+          "Prosecutor’s Office: forgery became procedure.",
+          "Prosecutor’s Office: manipulation is our indictment.",
+          "Prosecutor’s Office: evidence – editable version.",
+          "Prosecutor’s Office: guilty on entry, evidence supplied later."
+        ]
+      }
+    };
+
+const commands = {
+  pl: [
+    "> login: guest",
+    "> password: •••••••",
+    "DOSTĘP PRZYZNANY",
+    "⚖️ > Państwo prawa w ogniu",
+    "🕊️ > Prawa człowieka deptane",
+    "👔 > Urzędnicy. Prokuratorzy. Sędziowie.",
+    "🏦 > Kartele bankowe",
+    "🌀 > Manipulacje. Blokady. Eliminacja.",
+    "💸 > Cinkciarz.pl / Conotoxia.com",
+    "🔥 > Walka trwa...",
+    "⚠️ > KNF, prokuratorzy, sędziowie i kartele bankowe w zmowie.",
+    "📉 > Sfałszowane dowody. Złamane prawa. Pogwałcone przepisy.",
+    "🌍 > Zorganizowany atak na jeden z najszybciej rosnących fintechów w Europie",
+    "🛒 > Wkrótce: naklejki, limitowane koszulki, czapki, audiobook i książka.",
+    "🎬 > Wkrótce: na Twojej ulubionej platformie streamingowej.",
+    "--- RESTART SYSTEMU ---"
+  ],
+  en: [
+    "> login: guest",
+    "> password: •••••••",
+    "ACCESS GRANTED",
+    "⚖️ > Rule of law under attack",
+    "🕊️ > Human rights crushed",
+    "👔 > Regulators. Prosecutors. Judges.",
+    "🏦 > Banking Cartels",
+    "🌀 > Manipulation. Blockades. Takedown.",
+    "💸 > Cinkciarz.pl / Conotoxia.com",
+    "🔥 > The fight continues...",
+    "⚠️ > KNF, prosecutors, judges and banking cartels colluded.",
+    "📉 > Evidence falsified. Human rights violated. Laws broken.",
+    "🌍 > Coordinated attack on one of Europe’s fastest-growing fintech",
+    "🛒 > Coming soon: stickers, limited t-shirts, hats, audiobook & book.",
+    "🎬 > Coming soon: on your favorite streaming platform.",
+    "--- REBOOTING SYSTEM ---"
+  ]
+};
+
+    // --- Logika Tooltipów ---
+    function setupTooltip(spanId, textId, messages) {
+      let index = 0;
+      let interval = null;
+      const span = document.getElementById(spanId);
+      const text = document.getElementById(textId);
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      if (isTouchDevice) {
+        span.addEventListener("click", () => {
+          clearTimeout(text.hideTimeout);
+          text.parentElement.classList.add("show");
+          // Użyj `messages[currentLanguage]` aby pobrać teksty dla aktywnego języka
+          const currentMessages = messages[currentLanguage];
+          text.innerHTML = currentMessages[index];
+          index = (index + 1) % currentMessages.length;
+
+          text.hideTimeout = setTimeout(() => {
+            text.parentElement.classList.remove("show");
+          }, 4000);
+        });
+      } else {
+        function startLoop() {
+          const currentMessages = messages[currentLanguage];
+          index = Math.floor(Math.random() * currentMessages.length);
+          text.parentElement.classList.add("show");
+          text.innerHTML = currentMessages[index];
+
+          interval = setInterval(() => {
+            index = (index + 1) % currentMessages.length;
+            text.innerHTML = currentMessages[index];
+          }, 5000);
+        }
+
+        function stopLoop() {
+          clearInterval(interval);
+          text.parentElement.classList.remove("show");
+        }
+
+        span.addEventListener("mouseenter", startLoop);
+        span.addEventListener("mouseleave", stopLoop);
+      }
+    }
+
+    setupTooltip("reg", "reg-text", tooltips.reg);
+    setupTooltip("log", "log-text", tooltips.log);
+
+// --- Logika Terminala ---
+const terminal = document.getElementById("terminal");
+let cmdIndex = 0;
+// Zmienne do przechowywania ID interwałów, aby można je było zatrzymać
+let typerInterval, matrixInterval, flasherInterval;
+
+function stopAllAnimations() {
+    clearInterval(typerInterval);
+    clearInterval(matrixInterval);
+    clearInterval(flasherInterval);
+}
+
+function typeLine(cmd, callback) {
+  let i = 0;
+  const line = document.createElement("div");
+  line.className = "line";
+  terminal.appendChild(line);
+
+  typerInterval = setInterval(() => {
+    line.innerHTML = cmd.slice(0, i) + '<span class="cursor">█</span>';
+    i++;
+    if (i > cmd.length) {
+      clearInterval(typerInterval);
+      line.innerHTML = cmd;
+      if (terminal.children.length > 8) {
+        terminal.removeChild(terminal.firstChild);
+      }
+      if (callback) setTimeout(callback, 800);
+    }
+  }, 50);
+}
+
+function matrixEffect(duration, callback) {
+  let elapsed = 0;
+  matrixInterval = setInterval(() => {
+    const line = document.createElement("div");
+    line.className = "line";
+    const chars = "01░▒▓█";
+    const randomString = Array.from({length: 40}, () =>
+      chars.charAt(Math.floor(Math.random() * chars.length))
+    ).join("");
+    line.innerHTML = randomString;
+    terminal.appendChild(line);
+    if (terminal.children.length > 8) {
+      terminal.removeChild(terminal.firstChild);
+    }
+    elapsed += 200;
+    if (elapsed >= duration) {
+      clearInterval(matrixInterval);
+      flashEffect(callback);
+    }
+  }, 200);
+}
+
+function flashEffect(callback) {
+  let flashes = 0;
+  flasherInterval = setInterval(() => {
+    terminal.style.background = flashes % 2 === 0 ? "#0f0" : "#000";
+    flashes++;
+    if (flashes > 6) {
+      clearInterval(flasherInterval);
+      terminal.style.background = "#000";
+      terminal.innerHTML = "";
+      if (callback) callback();
+    }
+  }, 150);
+}
+
+function loop() {
+  // Pobierz komendy dla aktualnie wybranego języka
+  const currentCommands = commands[currentLanguage];
+  if (cmdIndex < currentCommands.length) {
+    typeLine(currentCommands[cmdIndex], () => {
+      cmdIndex++;
+      loop();
+    });
+  } else {
+    // Po zakończeniu wszystkich komend, uruchom efekt i zacznij od nowa
+    matrixEffect(3000, () => {
+      cmdIndex = 0;
+      loop();
+    });
+  }
+}
+
+// --- FUNKCJA ZMIANY JĘZYKA ---
+function setLanguage(lang) {
+    if (currentLanguage === lang && terminal.children.length > 0) return; 
+
+    currentLanguage = lang;
+
+    // Przełącz widoczność statycznych elementów tekstowych
+    document.querySelectorAll('.lang').forEach(el => {
+        if (el.classList.contains(lang)) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    });
+
+    // Zatrzymaj wszystkie animacje i zrestartuj terminal z nowym językiem
+    stopAllAnimations();
+    terminal.innerHTML = "";
+    cmdIndex = 0;
+    // Ta linia jest kluczowa - uruchamia pętlę od nowa
+    setTimeout(loop, 100);
+}
+
+// --- INICJALIZACJA ---
+// Czekamy na załadowanie strony i uruchamiamy TYLKO setLanguage.
+// Funkcja setLanguage sama w sobie uruchomi pętlę 'loop'.
+document.addEventListener('DOMContentLoaded', () => {
+    setLanguage('pl');
+});
+
+  </script>
+  
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDOUzs0GIVpifEQmcIPw_Cm1lvqodRcqkQ",
+      authDomain: "ckplback.firebaseapp.com",
+      projectId: "ckplback",
+      storageBucket: "ckplback.firebasestorage.app",
+      messagingSenderId: "551000759943",
+      appId: "1:551000759943:web:693195aff7bb588c576222",
+      measurementId: "G-ZNWRZFEY4E"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</body>
+
+<!-- Mirrored from cinkciarz.pl/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 09 Nov 2025 22:22:07 GMT -->
+</html>

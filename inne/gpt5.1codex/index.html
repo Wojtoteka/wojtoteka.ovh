@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TakeMC — Serwer Minecraft 1.21.5</title>
+    <meta
+      name="description"
+      content="TakeMC to polski serwer Minecraft 1.21.5 oferujący tryby Oneblock, Skyblock i BoxPvP. Dołącz do gry pod adresem mc.takemc.pl."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="stars"></canvas>
+    <header class="hero">
+      <nav class="nav">
+        <div class="logo">TakeMC</div>
+        <div class="nav-tags">
+          <span>Wersja 1.21.5</span>
+          <span>Oneblock</span>
+          <span>Skyblock</span>
+          <span>BoxPvP</span>
+        </div>
+        <a class="nav-cta" href="#dolacz">Zagraj teraz</a>
+      </nav>
+      <div class="hero-ornaments">
+        <span class="orb orb-1" data-parallax="-0.15"></span>
+        <span class="orb orb-2" data-parallax="0.25"></span>
+        <span class="orb orb-3" data-parallax="-0.35"></span>
+      </div>
+      <div class="hero-content">
+        <p class="eyebrow">Polski serwer premium</p>
+        <h1>Dołącz do społeczności, która gra bez przerwy.</h1>
+        <p class="lead">
+          TakeMC to wyjątkowe połączenie kreatywności i rywalizacji. Zbuduj własną
+          wyspę na Oneblocku, sięgnij chmur na Skyblocku lub sprawdź swoje
+          refleksy w BoxPvP — wszystko na stabilnej wersji 1.21.5.
+        </p>
+        <div class="cta">
+          <button id="copyIp" class="primary">Skopiuj IP: mc.takemc.pl</button>
+          <span class="hint">Kliknij, aby skopiować IP serwera</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <p class="card-title">Status serwera</p>
+        <div class="status-ping">
+          <span class="dot"></span>
+          <span>Online</span>
+        </div>
+        <p class="card-ip">mc.takemc.pl</p>
+        <p class="card-version">Minecraft Java 1.21.5</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="section status-strip" aria-label="Statystyki serwera">
+        <div class="status-grid">
+          <article class="stat-card">
+            <p class="label">Średnia online</p>
+            <p class="stat-value" data-target="450">0</p>
+            <p class="stat-desc">graczy aktywnych dziennie</p>
+          </article>
+          <article class="stat-card">
+            <p class="label">Stabilność</p>
+            <p class="stat-value" data-target="99.7">0</p>
+            <p class="stat-desc">% uptime w ostatnim miesiącu</p>
+          </article>
+          <article class="stat-card">
+            <p class="label">Nowe wyspy</p>
+            <p class="stat-value" data-target="180">0</p>
+            <p class="stat-desc">Oneblock/Skyblock tygodniowo</p>
+          </article>
+          <article class="stat-card">
+            <p class="label">Średni ping</p>
+            <p class="stat-value" data-target="36">0</p>
+            <p class="stat-desc">ms w regionie PL/DE</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section modes" id="tryby">
+        <div class="section-heading">
+          <p class="eyebrow">Tryby gry</p>
+          <h2>Wybierz swój styl rozgrywki</h2>
+          <p>Każdy tryb został zaprojektowany pod kątem długiej gry bez lagów.</p>
+        </div>
+        <div class="cards">
+          <article class="card" data-delay="0">
+            <h3>Oneblock</h3>
+            <p>
+              Jeden blok, nieskończone możliwości. Rozwijaj się etapami, od klasycznej farmy po futurystyczną bazę.
+            </p>
+            <ul>
+              <li>Etapy progresji dopasowane do poziomu gracza</li>
+              <li>Aktywne wyzwania społeczności</li>
+              <li>Natychmiastowe odradzanie zasobów</li>
+            </ul>
+          </article>
+          <article class="card" data-delay="100">
+            <h3>Skyblock</h3>
+            <p>
+              Wyspa wysoko nad światem. Zbalansowana ekonomia i rynek między graczami motywują do współpracy.
+            </p>
+            <ul>
+              <li>Codzienne eventy i drop party</li>
+              <li>Automatyczne farmy &amp; generator misji</li>
+              <li>Ranking wysp aktualizowany na żywo</li>
+            </ul>
+          </article>
+          <article class="card" data-delay="200">
+            <h3>BoxPvP</h3>
+            <p>
+              Szybka arena dla głodnych adrenaliny. Osobne zestawy, system combo i anty-cheat nowej generacji.
+            </p>
+            <ul>
+              <li>Mapy tematyczne zmieniane co tydzień</li>
+              <li>Konfiguracja zestawów PvP w menu</li>
+              <li>Natychmiastowy respawn i statystyki</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section showcase" id="galeria">
+        <div class="section-heading">
+          <p class="eyebrow">Podgląd świata</p>
+          <h2>Zobacz, jak wygląda spawn i specjalne strefy</h2>
+          <p>Nowe buildy pojawiają się co tydzień wraz z sezonami i eventami.</p>
+        </div>
+        <div class="showcase-grid">
+          <figure
+            class="showcase-card"
+            style="--bg:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80')"
+          >
+            <div class="tag">Oneblock</div>
+            <figcaption>
+              <h3>Centralna platforma</h3>
+              <p>Handluj materiałami i zlecaj misje NPC w neonowej strefie.</p>
+            </figcaption>
+          </figure>
+          <figure
+            class="showcase-card"
+            style="--bg:url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80')"
+          >
+            <div class="tag">Skyblock</div>
+            <figcaption>
+              <h3>Rynek wysp</h3>
+              <p>Transparentna ekonomia z możliwością aukcji między drużynami.</p>
+            </figcaption>
+          </figure>
+          <figure
+            class="showcase-card"
+            style="--bg:url('https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?auto=format&fit=crop&w=1200&q=80')"
+          >
+            <div class="tag">BoxPvP</div>
+            <figcaption>
+              <h3>Arena Neo</h3>
+              <p>Dynamiczne przeszkody, power-upy i zestawy aktualizowane co sezon.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section timeline" id="funkcje">
+        <div class="section-heading">
+          <p class="eyebrow">Dlaczego TakeMC?</p>
+          <h2>Stawiamy na jakość i społeczność</h2>
+        </div>
+        <div class="timeline-grid">
+          <div class="timeline-item">
+            <p class="label">Stabilna infrastruktura</p>
+            <p>Wiele instancji i system antylagów zapewniają stałe FPS i niski ping.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="label">Kosmiczne animacje</p>
+            <p>Interfejs serwera dopracowany wizualnie, aby każda interakcja była przyjemna.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="label">Nagrody lojalnościowe</p>
+            <p>Za codzienne logowanie zbierasz punkty wymienne na kosmetyki lub boosty.</p>
+          </div>
+          <div class="timeline-item">
+            <p class="label">Moderacja 24/7</p>
+            <p>Ekipa adminów i botów monitorujących czat pilnuje porządku o każdej porze.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section community" id="spolecznosc">
+        <div class="community-card">
+          <p class="eyebrow">Wydarzenia tygodnia</p>
+          <h2>Eventy, które podkręcają serwer</h2>
+          <ul class="event-list">
+            <li>
+              <span>Piątek 19:00</span>
+              <strong>Turniej BoxPvP "Last Stand"</strong>
+            </li>
+            <li>
+              <span>Sobota 12:00</span>
+              <strong>Skyblock Build-Off (nagrody VIP)</strong>
+            </li>
+            <li>
+              <span>Niedziela 17:30</span>
+              <strong>Maraton Oneblock + drop party</strong>
+            </li>
+          </ul>
+        </div>
+        <div class="feedback-card">
+          <p class="eyebrow">Głos społeczności</p>
+          <h3>Opinie graczy</h3>
+          <div class="quotes">
+            <figure class="quote active">
+              <blockquote>
+                "Najlepszy balans między survivalem a zabawą. Eventy trzymają przy serwerze całe tygodnie."
+              </blockquote>
+              <figcaption>@KoxBuilder</figcaption>
+            </figure>
+            <figure class="quote">
+              <blockquote>
+                "BoxPvP działa płynnie nawet przy pełnym serwerze, a anty-cheat naprawdę reaguje."
+              </blockquote>
+              <figcaption>@PvPMonk</figcaption>
+            </figure>
+            <figure class="quote">
+              <blockquote>
+                "Ekonomia na Skyblocku nie psuje gry — admini serio słuchają feedbacku."
+              </blockquote>
+              <figcaption>@Islanderka</figcaption>
+            </figure>
+          </div>
+          <div class="quote-nav" aria-label="Przełącz opinie">
+            <button class="dot active" data-index="0" aria-label="Opinia 1"></button>
+            <button class="dot" data-index="1" aria-label="Opinia 2"></button>
+            <button class="dot" data-index="2" aria-label="Opinia 3"></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="faq">
+        <div class="section-heading">
+          <p class="eyebrow">FAQ</p>
+          <h2>Najczęstsze pytania</h2>
+        </div>
+        <div class="faq-list">
+          <article class="faq-item">
+            <button>
+              <span>Czy potrzebuję premium Minecrafta?</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="faq-content">
+              Tak, TakeMC wspiera wersję Java Edition 1.21.5. Dzięki temu utrzymujemy wysoką jakość i bezpieczeństwo.
+            </div>
+          </article>
+          <article class="faq-item">
+            <button>
+              <span>Jak zdobyć rangę VIP?</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="faq-content">
+              Rangi są dostępne za punkty lojalnościowe z eventów lub poprzez sklep w grze (komenda /sklep).
+            </div>
+          </article>
+          <article class="faq-item">
+            <button>
+              <span>Czy mogę grać z przyjaciółmi?</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="faq-content">
+              Jasne! Twórz drużyny Skyblock, wspólne wyspy Oneblock i party PvP. System czatu pozwala na prywatne kanały.
+            </div>
+          </article>
+          <article class="faq-item">
+            <button>
+              <span>Gdzie zgłosić błąd lub cheatera?</span>
+              <span class="icon">+</span>
+            </button>
+            <div class="faq-content">
+              Najszybciej na Discordzie w kanale #zgloszenia lub bezpośrednio przez komendę /helpop w grze.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section join" id="dolacz">
+        <div class="join-card">
+          <h2>Wejdź do gry w 3 krokach</h2>
+          <ol>
+            <li>Uruchom Minecraft Java Edition wersja 1.21.5</li>
+            <li>Dodaj serwer o adresie <strong>mc.takemc.pl</strong></li>
+            <li>Wybierz tryb Oneblock, Skyblock lub BoxPvP</li>
+          </ol>
+          <button id="copyIpBottom" class="primary ghost">Skopiuj IP</button>
+        </div>
+        <div class="discord-card">
+          <p>Dołącz także na Discord, aby zgarnąć newsy i nagrody społecznościowe.</p>
+          <a class="discord-link" href="https://discord.com/" target="_blank" rel="noreferrer">Dołącz na Discord</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> TakeMC. Niezależny serwer społeczności Minecraft.</p>
+      <p>Kontakt: team@takemc.pl</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TakeMC - Oficjalna Strona</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-stars"></div>
+  <div class="bg-gradient"></div>
+
+  <header class="nav">
+    <div class="nav-logo">Take<span>MC</span></div>
+    <nav>
+      <a href="#home">Start</a>
+      <a href="#modes">Tryby</a>
+      <a href="#howto">Jak dołączyć</a>
+      <a href="#team">Administracja</a>
+      <a href="#faq">FAQ</a>
+      <a href="#vote">Głosuj</a>
+      <a href="#discord">Discord</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <p class="hero-pill">Minecraft Java • Wersja 1.21.5</p>
+        <h1>Dołącz do <span>TakeMC</span></h1>
+        <p class="hero-subtitle">Oneblock • Skyblock • BoxPvP – jedna społeczność, nieskończona zabawa.</p>
+
+        <div class="hero-actions">
+          <button class="btn primary" id="copyIpBtn">Skopiuj IP: <span>mc.takemc.pl</span></button>
+          <button class="btn ghost" onclick="document.getElementById('modes').scrollIntoView({behavior:'smooth'})">Zobacz tryby</button>
+        </div>
+
+        <div class="hero-info">
+          <div class="info-card">
+            <span class="label">Adres IP</span>
+            <span class="value">mc.takemc.pl</span>
+          </div>
+          <div class="info-card">
+            <span class="label">Wersja</span>
+            <span class="value">1.21.5</span>
+          </div>
+          <div class="info-card">
+            <span class="label">Status</span>
+            <span class="value status" id="statusText">Sprawdzanie...</span>
+          </div>
+          <div class="info-card">
+            <span class="label">Gracze online</span>
+            <span class="value" id="playersOnline">– / –</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <div class="cube cube-main"></div>
+        <div class="cube cube-small cube-one"></div>
+        <div class="cube cube-small cube-two"></div>
+        <div class="cube cube-small cube-three"></div>
+      </div>
+    </section>
+
+    <section id="modes" class="section section-light">
+      <h2>Tryby gry</h2>
+      <p class="section-subtitle">Wybierz swój ulubiony styl rozgrywki na TakeMC.</p>
+      <div class="modes-grid">
+        <article class="mode-card">
+          <h3>Oneblock</h3>
+          <p>Rozpocznij z jednym blokiem pod nogami i rozbuduj swoją wyspę blok po bloku. Idealny tryb dla kreatywnych graczy.</p>
+          <ul>
+            <li>Losujące się bloki</li>
+            <li>Wyjątkowe wyspy i wyzwania</li>
+            <li>Gra solo lub ze znajomymi</li>
+          </ul>
+        </article>
+
+        <article class="mode-card">
+          <h3>Skyblock</h3>
+          <p>Klasyczny Skyblock w nowoczesnym wydaniu. Rozwijaj swoją wyspę, ulepszaj generatory i rywalizuj w rankingu.</p>
+          <ul>
+            <li>Ekonomia serwera</li>
+            <li>Questy i misje dzienne</li>
+            <li>Rywalizacja między wyspami</li>
+          </ul>
+        </article>
+
+        <article class="mode-card">
+          <h3>BoxPvP</h3>
+          <p>Dynamiczne walki w arenach PvP, zestawy, combo i adrenalina. Pokaż swoje umiejętności i wspinaj się w rankingu.</p>
+          <ul>
+            <li>Różne zestawy (kit-y)</li>
+            <li>Statystyki i rankingi</li>
+            <li>Eventy PvP</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="howto" class="section">
+      <h2>Jak dołączyć na serwer?</h2>
+      <p class="section-subtitle">Kilka prostych kroków i grasz razem z nami.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <h3>Uruchom Minecrafta</h3>
+          <p>Wersja gry: <strong>1.21.5</strong> (Java Edition). Możesz użyć ulubionego launchera.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <h3>Dodaj serwer</h3>
+          <p>Wejdź w tryb gry wieloosobowej i dodaj nowy serwer z adresem <strong>mc.takemc.pl</strong>.</p>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <h3>Wejdź i wybierz tryb</h3>
+          <p>Po wejściu na serwer wybierz tryb: Oneblock, Skyblock lub BoxPvP – i zacznij zabawę!</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="team" class="section section-light">
+      <h2>Administracja serwera</h2>
+      <p class="section-subtitle">Osoby, które dbają o porządek i rozwój TakeMC.</p>
+      <div class="team-grid">
+        <article class="team-card">
+          <h3>Owner</h3>
+          <p class="nick">TakeOwner</p>
+          <p>Odpowiada za wizję serwera, major update'y i ogólny rozwój projektu.</p>
+        </article>
+        <article class="team-card">
+          <h3>Admin</h3>
+          <p class="nick">AdminKox</p>
+          <p>Pilnuje regulaminu, rozwiązuje większe problemy techniczne i wspiera graczy.</p>
+        </article>
+        <article class="team-card">
+          <h3>Moderator</h3>
+          <p class="nick">Modzik</p>
+          <p>Reaguje na zgłoszenia, pomaga nowym graczom i nadzoruje chat.</p>
+        </article>
+        <article class="team-card">
+          <h3>Helper</h3>
+          <p class="nick">Helperka</p>
+          <p>Odpowiada na pytania, tłumaczy zasady trybów i wspiera społeczność.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ – najczęstsze pytania</h2>
+      <p class="section-subtitle">Masz problem? Sprawdź, czy odpowiedź nie jest już tutaj.</p>
+      <div class="faq-grid">
+        <details class="faq-item" open>
+          <summary>Nie mogę wejść na serwer, co robić?</summary>
+          <p>Upewnij się, że grasz na wersji <strong>1.21.5 Java Edition</strong> i że adres serwera to dokładnie <strong>mc.takemc.pl</strong>. Sprawdź też swoje połączenie internetowe.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Czy serwer jest premium czy non-premium?</summary>
+          <p>Tutaj możesz wpisać informację, czy serwer wspiera konta premium, non-premium lub oba typy kont.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Jak zdobywać pieniądze na Skyblocku?</summary>
+          <p>Najczęściej przez farmienie surowców, sprzedaż w sklepie serwerowym oraz wykonywanie misji. Dostosuj tę odpowiedź do swojej ekonomii.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Jak zgłosić cheatera albo błąd?</summary>
+          <p>Najlepiej na serwerze Discord lub bezpośrednio do administracji na czacie, podając nick gracza, tryb oraz krótki opis sytuacji.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="vote" class="section section-light">
+      <h2>Wesprzyj serwer</h2>
+      <p class="section-subtitle">Głosowanie pomaga rozwijać TakeMC i przyciągać nowych graczy.</p>
+      <div class="support-grid">
+        <div class="support-card">
+          <h3>Głosowanie</h3>
+          <p>Dodaj tutaj linki do stron z głosowaniem, aby gracze mogli łatwo wspierać serwer.</p>
+          <a class="btn small" href="#" target="_blank">Dodaj link do głosowania</a>
+        </div>
+        <div class="support-card">
+          <h3>Sklep (opcjonalnie)</h3>
+          <p>Możesz dodać link do sklepu serwera z rangami, dodatkami i innymi bonusami.</p>
+          <a class="btn small ghost" href="#" target="_blank">Przykładowy sklep</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="discord" class="section">
+      <h2>Dołącz na Discord</h2>
+      <p class="section-subtitle">Bądź na bieżąco z eventami, aktualizacjami i ogłoszeniami.</p>
+      <div class="discord-box">
+        <p>Masz serwer Discord? Podmień link poniżej na swój i zaproś graczy.</p>
+        <a href="#" target="_blank" class="btn primary">Dołącz na Discord</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> TakeMC • Niezależny serwer Minecraft. Niepowiązany z Mojang AB ani Microsoft.</p>
+  </footer>
+
+  <div id="toast" class="toast">Skopiowano IP serwera!</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
