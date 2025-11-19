@@ -14,11 +14,11 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
             color: #fff;
             text-align: center;
-            overflow-x: hidden; /* Tylko poziome przewijanie jest wyłączone */
-            scroll-behavior: smooth; /* Extra: Smooth scroll */
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
         }
 
-        /* Background video */
+        
         #background-video {
             position: fixed;
             top: 0;
@@ -53,8 +53,8 @@
             gap: 30px;
             margin-top: 20px;
             width: 100%;
-            justify-content: center; /* Zmienione z start na center */
-            justify-items: center; /* Dodane dla lepszego wyśrodkowania */
+            justify-content: center;
+            justify-items: center; 
         }
 
         .game {
@@ -66,9 +66,9 @@
             transition: transform 0.2s;
             background-color: rgba(0, 0, 0, 0.6);
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Added shadow for depth */
-            opacity: 0; /* Start hidden for animation */
-            transform: scale(0.95); /* Start slightly smaller for scaleIn */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+            opacity: 0; 
+            transform: scale(0.95); 
             animation: scaleInCard 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
         }
 
@@ -103,39 +103,39 @@
             background-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Staggered animation for game cards */
+       
         .games .game:nth-child(1) { animation-delay: 0.4s; }
         .games .game:nth-child(2) { animation-delay: 0.55s; }
         .games .game:nth-child(3) { animation-delay: 0.7s; }
         .games .game:nth-child(4) { animation-delay: 0.85s; }
-        .games .game:nth-child(5) { animation-delay: 1.0s; } /* Dodane opóźnienie dla piątej karty */
-        /* Add more if needed */
+        .games .game:nth-child(5) { animation-delay: 1.0s; } 
+       
 
         .footer {
             text-align: center;
             font-size: 0.75em;
             color: white;
-            position: relative; /* Changed from absolute/fixed to flow after content if container is main scroll */
-            padding: 20px 0; /* Padding for spacing */
+            position: relative; 
+            padding: 20px 0; 
             opacity: 0;
-            animation: fadeIn 1s 1.5s ease-out forwards; /* Delay after cards animation */
-            width: 100%; /* Ensure it takes full width if needed */
+            animation: fadeIn 1s 1.5s ease-out forwards; 
+            width: 100%; 
         }
 
-        /* Ustawienia dla małych ekranów */
+        
         @media (max-width: 768px) {
             body {
-                display: block; /* Usuń flex na body, aby zawartość była przewijalna */
+                display: block; 
             }
 
             .container {
-                padding: 0; /* Usunięty całkowicie padding */
+                padding: 0; 
                 margin: 0;
-                width: 100vw; /* Użycie viewport width */
+                width: 100vw; 
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
-                align-items: center; /* Wyśrodkowanie zawartości */
+                align-items: center; 
             }
 
             .header {
@@ -153,7 +153,7 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
                 margin: 20px 0;
-                padding: 0 15px; /* Padding tylko dla grida */
+                padding: 0 15px; 
                 width: 100%;
                 max-width: 100%;
                 justify-content: center;
@@ -163,23 +163,23 @@
 
             .game {
                 min-width: unset;
-                width: 100%; /* Pełna szerokość dostępnego miejsca */
-                max-width: 350px; /* Maksymalna szerokość */
+                width: 100%; 
+                max-width: 350px; 
                 margin: 0;
                 padding: 15px;
                 box-sizing: border-box;
             }
         }
 
-        /* Dodatkowe poprawki dla bardzo małych ekranów */
+        
         @media (max-width: 480px) {
             .games {
-                padding: 0 10px; /* Jeszcze mniejszy padding */
+                padding: 0 10px;
                 gap: 15px;
             }
 
             .game {
-                max-width: none; /* Usunięta maksymalna szerokość */
+                max-width: none; 
                 padding: 12px;
             }
 
@@ -189,7 +189,7 @@
             }
         }
 
-        /* Bardzo małe ekrany */
+        
         @media (max-width: 360px) {
             .games {
                 padding: 0 5px;
@@ -205,7 +205,7 @@
             }
         }
 
-        /* Keyframe Animations */
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -222,10 +222,10 @@
             }
         }
 
-        @keyframes scaleInCard { /* Renamed to avoid conflict if scaleIn was different */
+        @keyframes scaleInCard { 
             from {
                 opacity: 0;
-                transform: scale(0.90); /* Start a bit smaller */
+                transform: scale(0.90); 
             }
             to {
                 opacity: 1;
@@ -233,7 +233,7 @@
             }
         }
 
-        /* Custom scrollbar styles */
+        
         ::-webkit-scrollbar {
             width: 10px;
             background: rgba(0,0,0,0.25);
@@ -249,7 +249,7 @@
         ::-webkit-scrollbar-corner {
             background: transparent;
         }
-        /* Firefox */
+        
         html {
             scrollbar-width: thin;
             scrollbar-color: #ff9800 rgba(0,0,0,0.25);
@@ -301,7 +301,7 @@
             </div>
         </div>
 
-        <!-- Footer moved outside .container to be styled independently if needed, or at the bottom of it -->
+        
         <div class="footer">
             <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
         </div>
@@ -318,3 +318,4 @@
     </script>
 </body>
 </html>
+
