@@ -18,10 +18,10 @@
             color: #fff;
             text-align: center;
             overflow: hidden;
-            scroll-behavior: smooth; /* Extra: Smooth scroll */
+            scroll-behavior: smooth; 
         }
 
-        /* Background video */
+        
         #background-video {
             position: absolute;
             top: 0;
@@ -35,10 +35,10 @@
 
         .container {
             z-index: 1;
-            background: rgba(0, 0, 0, 0.6); /* Unified style */
-            padding: 20px; /* Unified style */
-            border-radius: 10px; /* Unified style */
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5); /* Unified style */
+            background: rgba(0, 0, 0, 0.6); 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5); 
             max-width: 600px;
             animation: scaleIn 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
         }
@@ -46,16 +46,16 @@
         h1 {
             font-size: 5em;
             margin: 0;
-            animation: fadeInUp 0.5s 0.2s ease-out forwards; /* New animation */
+            animation: fadeInUp 0.5s 0.2s ease-out forwards; 
         }
 
         p {
             font-size: 1.2em;
             margin: 15px 0;
-            animation: fadeInUp 0.5s 0.4s ease-out forwards; /* New animation */
+            animation: fadeInUp 0.5s 0.4s ease-out forwards; 
         }
-        /* Stagger animation for multiple paragraphs */
-        .container p:nth-of-type(2) { /* Second paragraph */
+       
+        .container p:nth-of-type(2) { 
             animation-delay: 0.5s;
         }
 
@@ -66,11 +66,11 @@
             bottom: 10px;
             width: 100%;
             text-align: center;
-            opacity: 0; /* Start hidden for animation */
-            animation: fadeIn 1s 1.0s ease-out forwards; /* Delayed fade in */
+            opacity: 0; 
+            animation: fadeIn 1s 1.0s ease-out forwards; 
         }
 
-        /* Keyframe Animations */
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -98,7 +98,7 @@
             }
         }
 
-        /* Custom scrollbar styles */
+        
         ::-webkit-scrollbar {
             width: 10px;
             background: rgba(0,0,0,0.25);
@@ -114,7 +114,7 @@
         ::-webkit-scrollbar-corner {
             background: transparent;
         }
-        /* Firefox */
+        
         html {
             scrollbar-width: thin;
             scrollbar-color: #ff9800 rgba(0,0,0,0.25);
@@ -148,3 +148,4 @@
 
 </body>
 </html>
+
