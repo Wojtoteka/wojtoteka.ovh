@@ -6,7 +6,6 @@
     <title>Wojtoteka</title>
     <link rel="icon" href="img/logo.png" type="image/png">
     <style>
-        /* General Resets and Base Styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -31,24 +30,24 @@
             filter: brightness(50%);
         }
 
-        /* Main Content Container - zmniejszony o ~12% */
+        
         .container {
             z-index: 1;
             width: 85%;
-            max-width: 570px; /* było 650px */
-            padding: 30px 22px; /* było 35px 25px */
-            border-radius: 14px; /* było 16px */
+            max-width: 570px; 
+            padding: 30px 22px; 
+            border-radius: 14px; 
             background: rgba(0, 0, 0, 0.68);
             box-shadow: 0 8px 32px rgba(0,0,0,0.45);
         }
 
-        /* Profile Picture - zmniejszony o ~12% */
+  
         .profile-pic {
-            width: 120px; /* było 140px */
-            height: 120px; /* było 140px */
+            width: 120px; 
+            height: 120px; 
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 18px; /* było 20px */
+            margin-bottom: 18px; 
             animation: scaleIn 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
             transition: transform 0.3s ease;
         }
@@ -58,24 +57,24 @@
         }
 
         h1 {
-            font-size: 1.9em; /* było 2.2em */
-            margin: 13px 0; /* było 15px */
+            font-size: 1.9em; 
+            margin: 13px 0; 
             animation: fadeInUp 0.5s 0.2s ease-out forwards;
         }
 
         p {
-            font-size: 0.95em; /* było 1.1em */
-            margin: 10px 0; /* było 12px */
+            font-size: 0.95em; 
+            margin: 10px 0; 
             color: #ddd;
             animation: fadeInUp 0.5s 0.4s ease-out forwards;
         }
 
         .social-links {
-            margin-top: 18px; /* było 22px - zmniejszone */
+            margin-top: 18px; 
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* było 13px - zmniejszone */
+            gap: 10px; 
         }
         
         .social-links a {
@@ -85,12 +84,12 @@
             text-decoration: none;
             background-color: rgba(255, 255, 255, 0.13);
             color: white;
-            padding: 13px 13px; /* było 15px - zmniejszone */
-            border-radius: 9px; /* było 10px */
+            padding: 13px 13px; 
+            border-radius: 9px; 
             width: 100%;
             margin: 0;
             font-weight: bold;
-            font-size: 0.85em; /* było 0.9em - zmniejszone */
+            font-size: 0.85em; 
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             transform: translateY(10px);
@@ -104,7 +103,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
         }
 
-        /* Staggered animation for links - poprawione dla 9 linków */
+        
         .social-links a:nth-child(1) { animation: fadeInUpLink 0.5s 0.6s ease-out forwards; }
         .social-links a:nth-child(2) { animation: fadeInUpLink 0.5s 0.65s ease-out forwards; }
         .social-links a:nth-child(3) { animation: fadeInUpLink 0.5s 0.7s ease-out forwards; }
@@ -115,9 +114,9 @@
         .social-links a:nth-child(8) { animation: fadeInUpLink 0.5s 0.95s ease-out forwards; }
         .social-links a:nth-child(9) { animation: fadeInUpLink 0.5s 1.0s ease-out forwards; }
 
-        /* Footer Styles */
+        
         .footer {
-            font-size: 0.75em; /* było 0.8em */
+            font-size: 0.75em; 
             color: white;
             position: absolute;
             bottom: 15px;
@@ -129,7 +128,7 @@
             box-sizing: border-box;
         }
 
-        /* Mobile tablet adjustments - bez zmian */
+        
         @media (max-width: 768px) {
             .container {
                 width: 90%;
@@ -154,18 +153,18 @@
             }
 
             .social-links {
-                gap: 9px; /* było 12px - zmniejszone */
-                margin-top: 16px; /* było 20px - zmniejszone */
+                gap: 9px; 
+                margin-top: 16px; 
             }
 
             .social-links a {
-                padding: 13px 12px; /* było 15px - zmniejszone */
-                font-size: 0.9em; /* było 0.95em - zmniejszone */
+                padding: 13px 12px; 
+                font-size: 0.9em; 
                 border-radius: 8px;
             }
         }
 
-        /* Mobile phone adjustments - bez zmian */
+        
         @media (max-width: 480px) {
             .container {
                 width: 92%;
@@ -190,13 +189,13 @@
             }
 
             .social-links {
-                gap: 8px; /* było 10px - zmniejszone */
-                margin-top: 12px; /* było 15px - zmniejszone */
+                gap: 8px; 
+                margin-top: 12px; 
             }
 
             .social-links a {
-                padding: 11px 10px; /* było 13px - zmniejszone */
-                font-size: 0.8em; /* było 0.85em - zmniejszone */
+                padding: 11px 10px; 
+                font-size: 0.8em; 
                 border-radius: 7px;
             }
 
@@ -206,7 +205,7 @@
             }
         }
 
-        /* Very small screens - bez zmian */
+        
         @media (max-width: 320px) {
             .container {
                 width: 95%;
@@ -227,12 +226,12 @@
             }
 
             .social-links a {
-                padding: 9px 8px; /* było 11px - zmniejszone */
-                font-size: 0.75em; /* było 0.8em - zmniejszone */
+                padding: 9px 8px; 
+                font-size: 0.75em; 
             }
         }
 
-        /* Custom scrollbar styles */
+       
         ::-webkit-scrollbar {
             width: 10px;
             background: rgba(0,0,0,0.25);
@@ -248,13 +247,13 @@
         ::-webkit-scrollbar-corner {
             background: transparent;
         }
-        /* Firefox */
+        
         html {
             scrollbar-width: thin;
             scrollbar-color: #ff9800 rgba(0,0,0,0.25);
         }
 
-        /* Keyframe Animations */
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -271,7 +270,7 @@
             }
         }
 
-        @keyframes fadeInUpLink { /* Specific for links to include initial transform */
+        @keyframes fadeInUpLink { 
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -318,7 +317,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const yearSpan = document.getElementById('current-year');
-            if (yearSpan) { // Check if the element exists
+            if (yearSpan) { 
                 const currentYear = new Date().getFullYear();
                 yearSpan.textContent = currentYear;
             }
@@ -326,6 +325,7 @@
     </script>
 </body>
 </html>
+
 
 
 
