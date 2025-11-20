@@ -197,7 +197,6 @@
             transform: translateY(-2px);
         }
 
-
         .smooth-glow {
             box-shadow: 0 0 20px rgba(198, 22, 140, 0.4);
             transition: box-shadow 0.3s ease;
@@ -205,6 +204,14 @@
 
         .smooth-glow:hover {
             box-shadow: 0 0 30px rgba(198, 22, 140, 0.6);
+        }
+
+        .info-box {
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 4px solid #00ffff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
         }
 
         @media (max-width: 768px) {
@@ -240,59 +247,217 @@
         <h2>NightDrive</h2>
 
         <div class="update-date">
-            Data ostatniej aktualizacji: <strong>25 września 2025</strong>
+            Data ostatniej aktualizacji: <strong>20 listopada 2025</strong>
         </div>
 
         <div class="divider"></div>
 
-        <h3>🛡️ 1. Informacje ogólne</h3>
-        <p>Aplikacja <strong>NightDrive</strong> została zaprojektowana z myślą o Twojej prywatności. Nie zbieramy i nie przetwarzamy żadnych danych osobowych użytkownika poza anonimowym zapisem najlepszego wyniku w pamięci aplikacji. Żadne dane nie są przesyłane na zewnętrzne serwery.</p>
-
-        <h3>📊 2. Jakie dane są zbierane?</h3>
-        <p>Nasza aplikacja przechowuje wyłącznie:</p>
+        <h3>🛡️ 1. Administrator danych</h3>
+        <p>Administratorem Twoich danych osobowych w rozumieniu Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych (RODO) jest:</p>
         <ul>
-            <li><strong>Najlepszy wynik (Highscore)</strong> – zapisywany lokalnie w pamięci na Twoim urządzeniu</li>
-            <li><strong>Brak</strong> danych osobowych, adresów e-mail, numerów telefonu czy informacji o lokalizacji</li>
-        </ul>
-
-        <h3>🎯 3. Cel przetwarzania danych</h3>
-        <p>Jedynym celem zapisywania danych jest umożliwienie Ci pobicia własnego rekordu i zachowania postępu w grze bez konieczności rejestracji czy logowania. Wszystko dzieje się lokalnie na Twoim urządzeniu.</p>
-
-        <h3>⚙️ 4. Sposób przechowywania danych</h3>
-        <p>Dane są przechowywane wyłącznie w twoim telefonie. Oznacza to, że:</p>
-        <ul>
-            <li>Dane nigdy nie opuszczają Twojego urządzenia</li>
-            <li>Nie mamy dostępu do Twoich wyników</li>
-            <li>Nie wysyłamy żadnych informacji do naszych serwerów</li>
-        </ul>
-
-        <h3>🔒 5. Twoje uprawnienia</h3>
-        <p>Jako użytkownik masz pełną kontrolę nad swoimi danymi:</p>
-        <ul>
-            <li><strong>Usunięcie danych:</strong> Możesz w każdej chwili usunąć swój rekord poprzez usunięcie aplikacji z telefonu</li>
-            <li><strong>Reset wyniku:</strong> W ustawieniach gry dostępna jest opcja resetu najlepszego wyniku</li>
-            <li><strong>Pełna anonimowość:</strong> Nie musisz podawać żadnych danych osobowych</li>
-        </ul>
-
-
-        <h3>📧 8. Kontakt</h3>
-        <p>W razie pytań dotyczących Polityki Prywatności lub działania aplikacji, skontaktuj się z nami:</p>
-        <ul>
+            <li><strong>Wojtoteka</strong></li>
+            <li>Wrocław, Polska</li>
             <li>Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
+            <li>Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
         </ul>
 
-        <h3>🔄 9. Zmiany w Polityce Prywatności</h3>
-        <p>O wszelkich zmianach w niniejszej Polityce Prywatności poinformujemy poprzez aktualizację tej strony. Zalecamy okresowe sprawdzanie tej strony w celu zapoznania się z ewentualnymi zmianami.</p>
+        <h3>📊 2. Informacje ogólne o aplikacji</h3>
+        <p>Aplikacja <strong>NightDrive</strong> to darmowa gra mobilna dostępna w sklepie Google Play Store. Została zaprojektowana z najwyższym priorytetem ochrony Twojej prywatności i działa w pełni <strong>offline</strong> – nie wymaga połączenia z internetem i nie komunikuje się z żadnymi zewnętrznymi serwerami.</p>
+
+        <div class="info-box">
+            <p><strong>💡 Kluczowa informacja:</strong> Aplikacja NightDrive działa w 100% lokalnie na Twoim urządzeniu. Nie zbieramy, nie przesyłamy i nie przechowujemy żadnych danych na naszych serwerach, ponieważ ich nie posiadamy.</p>
+        </div>
+
+        <h3>🔍 3. Jakie dane są zbierane?</h3>
+        <p>Aplikacja przechowuje wyłącznie następujące dane statystyczne gry w pamięci lokalnej Twojego urządzenia (localStorage):</p>
+        <ul>
+            <li><strong>Najlepszy wynik (Highscore)</strong> – najwyższy osiągnięty przez Ciebie wynik w punktach</li>
+            <li><strong>Czas gry</strong> – najdłuższy czas przetrwania w grze</li>
+            <li><strong>Łączna liczba zebranych monet</strong> – suma wszystkich monet zebranych podczas wszystkich sesji gry</li>
+        </ul>
+
+        <p><strong>Nie zbieramy:</strong></p>
+        <ul>
+            <li>❌ Danych osobowych (imię, nazwisko, PESEL)</li>
+            <li>❌ Adresów email</li>
+            <li>❌ Numerów telefonu</li>
+            <li>❌ Informacji o lokalizacji GPS</li>
+            <li>❌ Danych o urządzeniu</li>
+            <li>❌ Adresów IP</li>
+            <li>❌ Danych analitycznych</li>
+            <li>❌ Informacji o zachowaniu użytkownika</li>
+        </ul>
+
+        <h3>⚖️ 4. Podstawa prawna i cel przetwarzania</h3>
+        <p>Zapisywanie statystyk gry odbywa się na podstawie:</p>
+        <ul>
+            <li><strong>Art. 6 ust. 1 lit. f RODO</strong> – prawnie uzasadniony interes administratora, jakim jest zapewnienie prawidłowego działania funkcjonalności gry (możliwość śledzenia postępów i osiągnięć)</li>
+        </ul>
+
+        <p><strong>Cel przetwarzania:</strong></p>
+        <p>Jedynym celem zapisywania danych jest umożliwienie Ci:</p>
+        <ul>
+            <li>Śledzenia własnych postępów w grze</li>
+            <li>Pobicia własnego rekordu</li>
+            <li>Zachowania statystyk bez konieczności rejestracji lub logowania</li>
+        </ul>
+
+        <h3>💾 5. Sposób i miejsce przechowywania danych</h3>
+        <p>Wszystkie dane są przechowywane wyłącznie w mechanizmie <strong>localStorage</strong> Twojej przeglądarki/aplikacji na urządzeniu mobilnym. Oznacza to, że:</p>
+        <ul>
+            <li>✅ Dane nigdy nie opuszczają Twojego urządzenia</li>
+            <li>✅ Nie mamy dostępu do Twoich wyników</li>
+            <li>✅ Nie wysyłamy żadnych informacji na zewnętrzne serwery</li>
+            <li>✅ Dane są całkowicie pod Twoją kontrolą</li>
+            <li>✅ Aplikacja działa w pełni offline</li>
+        </ul>
+
+        <h3>⏰ 6. Okres przechowywania danych</h3>
+        <p>Dane przechowywane w localStorage pozostają na Twoim urządzeniu:</p>
+        <ul>
+            <li>Do momentu <strong>ręcznego usunięcia</strong> przez Ciebie (opcja "Reset Wyników" w menu gry)</li>
+            <li>Do momentu <strong>odinstalowania aplikacji</strong> z urządzenia</li>
+            <li>Do momentu <strong>wyczyszczenia danych aplikacji</strong> w ustawieniach systemu Android</li>
+        </ul>
+
+        <h3>🔒 7. Twoje prawa zgodnie z RODO</h3>
+        <p>Jako użytkownik aplikacji przysługują Ci następujące prawa:</p>
+        <ul>
+            <li><strong>Prawo dostępu do danych (Art. 15 RODO):</strong> Możesz w każdej chwili sprawdzić swoje statystyki w menu gry</li>
+            <li><strong>Prawo do usunięcia danych / prawo do bycia zapomnianym (Art. 17 RODO):</strong> Możesz usunąć wszystkie zapisane statystyki poprzez opcję "Reset Wyników" w menu głównym gry lub odinstalowanie aplikacji</li>
+            <li><strong>Prawo do sprzeciwu (Art. 21 RODO):</strong> Możesz w dowolnym momencie zaprzestać korzystania z aplikacji</li>
+            <li><strong>Prawo do przenoszenia danych (Art. 20 RODO):</strong> Dane są zapisane lokalnie na Twoim urządzeniu, więc masz do nich pełny dostęp</li>
+            <li><strong>Prawo do wniesienia skargi:</strong> Masz prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stanisława Moniuszki 1A, 00-014 Warszawa), jeśli uważasz, że przetwarzanie Twoich danych narusza przepisy RODO</li>
+        </ul>
+
+        <h3>🚫 8. Brak przekazywania danych osobom trzecim</h3>
+        <p>Twoje dane <strong>NIE SĄ i NIE BĘDĄ</strong> przekazywane jakimkolwiek osobom trzecim, ponieważ:</p>
+        <ul>
+            <li>Aplikacja nie posiada połączenia z internetem</li>
+            <li>Nie ma integracji z serwisami zewnętrznymi</li>
+            <li>Nie współpracujemy z firmami analitycznymi (np. Google Analytics)</li>
+            <li>Nie współpracujemy z sieciami reklamowymi</li>
+            <li>Nie ma żadnych trackerów ani narzędzi śledzących</li>
+        </ul>
+
+        <h3>🌐 9. Brak działania online i funkcji społecznościowych</h3>
+        <p>Aplikacja NightDrive:</p>
+        <ul>
+            <li>❌ Nie wymaga rejestracji ani logowania</li>
+            <li>❌ Nie posiada trybu multiplayer</li>
+            <li>❌ Nie ma tabel wyników (leaderboards)</li>
+            <li>❌ Nie posiada funkcji udostępniania w social media</li>
+            <li>❌ Nie umożliwia komunikacji między użytkownikami</li>
+        </ul>
+
+        <p><strong>Uwaga:</strong> Użytkownicy mogą samodzielnie wykonywać zrzuty ekranu (screenshoty) swoich wyników i udostępniać je prywatnie. Jest to funkcjonalność systemu Android, na którą nie mamy wpływu i za którą nie ponosimy odpowiedzialności.</p>
+
+        <h3>🍪 10. Pliki cookies i localStorage</h3>
+        <p>Aplikacja <strong>NIE UŻYWA plików cookies</strong>.</p>
+        <p>Wykorzystujemy wyłącznie mechanizm <strong>localStorage</strong>, który:</p>
+        <ul>
+            <li>Jest przechowywany lokalnie na Twoim urządzeniu</li>
+            <li>Nie jest wysyłany do żadnych serwerów</li>
+            <li>Służy wyłącznie do zapisywania statystyk gry</li>
+            <li>Możesz go wyczyścić w każdej chwili</li>
+        </ul>
+
+        <h3>👶 11. Ochrona danych dzieci</h3>
+        <p>Aplikacja NightDrive jest odpowiednia dla wszystkich grup wiekowych, w tym dla dzieci. Ponieważ:</p>
+        <ul>
+            <li>Nie zbieramy żadnych danych osobowych</li>
+            <li>Aplikacja działa w pełni offline</li>
+            <li>Brak funkcji społecznościowych i komunikacji</li>
+            <li>Brak reklam i płatności</li>
+        </ul>
+        <p>Rodzice mogą bez obaw pozwolić dzieciom na korzystanie z aplikacji.</p>
+
+        <h3>💰 12. Brak monetyzacji, reklam i płatności</h3>
+        <p>Aplikacja NightDrive jest <strong>w 100% darmowa</strong> i:</p>
+        <ul>
+            <li>✅ Nie zawiera reklam</li>
+            <li>✅ Nie ma płatności w grze (in-app purchases)</li>
+            <li>✅ Nie ma subskrypcji</li>
+            <li>✅ Nie zbiera danych do celów marketingowych</li>
+        </ul>
+        <p>W chwili obecnej nie planujemy wprowadzania żadnych form monetyzacji.</p>
+
+        <h3>🔐 13. Bezpieczeństwo danych</h3>
+        <p>Ponieważ wszystkie dane są przechowywane wyłącznie lokalnie na Twoim urządzeniu:</p>
+        <ul>
+            <li>Bezpieczeństwo danych zależy od zabezpieczeń Twojego urządzenia mobilnego</li>
+            <li>Zalecamy korzystanie z aktualnej wersji systemu Android</li>
+            <li>Zalecamy zabezpieczenie urządzenia hasłem/PIN-em/odciskiem palca</li>
+            <li>Administrator nie ponosi odpowiedzialności za utratę danych spowodowaną uszkodzeniem, zgubieniem lub kradzieżą urządzenia</li>
+        </ul>
+
+        <h3>📧 14. Kontakt w sprawach prywatności</h3>
+        <p>W razie jakichkolwiek pytań dotyczących:</p>
+        <ul>
+            <li>Polityki Prywatności</li>
+            <li>Ochrony danych osobowych</li>
+            <li>Korzystania z przysługujących Ci praw</li>
+            <li>Działania aplikacji</li>
+        </ul>
+
+        <p><strong>Skontaktuj się z nami:</strong></p>
+        <ul>
+            <li>📧 Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
+            <li>📝 Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
+        </ul>
+        <p>Odpowiemy na Twoje zapytanie w ciągu 30 dni, zgodnie z wymogami RODO.</p>
+
+        <h3>🔄 15. Zmiany w Polityce Prywatności</h3>
+        <p>Zastrzegamy sobie prawo do wprowadzania zmian w niniejszej Polityce Prywatności w celu dostosowania jej do:</p>
+        <ul>
+            <li>Zmieniających się przepisów prawa</li>
+            <li>Nowych funkcjonalności aplikacji</li>
+            <li>Najlepszych praktyk w zakresie ochrony prywatności</li>
+        </ul>
+
+        <p>O wszelkich istotnych zmianach poinformujemy poprzez:</p>
+        <ul>
+            <li>Aktualizację daty na górze dokumentu</li>
+        </ul>
+
+        <p>Zalecamy okresowe sprawdzanie tej strony w celu zapoznania się z ewentualnymi aktualizacjami.</p>
+
+        <h3>⚖️ 16. Przepisy prawa</h3>
+        <p>Niniejsza Polityka Prywatności została przygotowana zgodnie z:</p>
+        <ul>
+            <li><strong>RODO</strong> – Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679</li>
+            <li><strong>Ustawa o ochronie danych osobowych</strong> z dnia 10 maja 2018 r.</li>
+            <li><strong>Ustawa o świadczeniu usług drogą elektroniczną</strong> z dnia 18 lipca 2002 r.</li>
+        </ul>
+
+        <h3>✅ 17. Podsumowanie</h3>
+        <div class="info-box">
+            <p><strong>🎮 NightDrive to gra offline, która szanuje Twoją prywatność:</strong></p>
+            <ul style="margin-top: 10px;">
+                <li>✅ Żadne dane nie opuszczają Twojego urządzenia</li>
+                <li>✅ Brak połączenia z internetem</li>
+                <li>✅ Brak cookies i trackerów</li>
+                <li>✅ Brak reklam i płatności</li>
+                <li>✅ 100% kontroli nad swoimi danymi</li>
+                <li>✅ Możliwość usunięcia danych w każdej chwili</li>
+            </ul>
+        </div>
 
         <div class="divider"></div>
 
         <div class="footer">
-            <p>Wojtoteka 2025</p>
+            <p><strong>Wojtoteka © 2025</strong></p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                Wrocław, Polska
+            </p>
+            <p style="font-size: 0.85em; margin-top: 15px; color: #00ffff;">
+                Niniejsza Polityka Prywatności została przygotowana zgodnie z wymogami RODO<br>
+                i odpowiada realnemu sposobowi działania aplikacji NightDrive
+            </p>
         </div>
     </div>
 
     <script>
-
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const numStars = 80;
@@ -307,7 +472,6 @@
                 starsContainer.appendChild(star);
             }
         }
-
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
