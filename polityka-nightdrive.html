@@ -446,7 +446,7 @@
         <div class="divider"></div>
 
         <div class="footer">
-            <p><strong>Wojtoteka © 2025</strong></p>
+            <p><strong>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></strong></p>
             <p style="font-size: 0.9em; margin-top: 10px;">
                 Wrocław, Polska
             </p>
@@ -489,6 +489,14 @@
         window.addEventListener('load', () => {
             createStars();
         });
+        document.addEventListener("DOMContentLoaded", function() {
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) { 
+                const currentYear = new Date().getFullYear();
+                yearSpan.textContent = currentYear;
+            }
+        });
+        
     </script>
 </body>
 </html>
