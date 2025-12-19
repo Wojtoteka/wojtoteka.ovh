@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gry</title>
+    <meta name="description" content="Zagraj w moje darmowe gry online - Night Drive, GloomCraft, 4 in a Row i więcej!">
+    <meta name="keywords" content="gry online, darmowe gry, Night Drive, GloomCraft, Fishing Party">
+    <title>Gry - Wojtoteka</title>
     <link rel="icon" href="img/logo.png" type="image/png">
     
     <style>
@@ -41,10 +43,24 @@
             padding: 20px;
         }
 
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
         .header h1 {
             font-size: 2.5em;
             color: #fff;
             animation: fadeInUp 0.5s 0.2s ease-out forwards;
+            opacity: 0;
         }
 
         .games {
@@ -92,15 +108,18 @@
             display: inline-block;
             text-decoration: none;
             color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.8), rgba(255, 204, 128, 0.8));
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
             font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
 
         .game a:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(255, 109, 0, 0.9), rgba(255, 183, 77, 0.9));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.5);
         }
 
        
@@ -266,6 +285,7 @@
 
     <div class="container">
         <div class="header">
+            <a href="index.html" class="back-link">← Powrót do strony głównej</a>
             <h1>Wybierz w jaką grę chcesz zagrać</h1>
         </div>
 
@@ -314,8 +334,8 @@
                 const currentYear = new Date().getFullYear();
                 yearSpan.textContent = currentYear;
             }
+
         });
     </script>
 </body>
 </html>
-
