@@ -1,3 +1,37 @@
+// ==UserScript==
+// @name         Z-Client Blooket
+// @namespace    https://wojtoteka.ovh/
+// @version      1.0.0
+// @description  Zaawansowany klient cheatów dla Blooket z polskim interfejsem
+// @updateURL    https://wojtoteka.ovh/hack/z-client.js
+// @downloadURL  https://wojtoteka.ovh/hack/z-client.js
+// @author       Wojtoteka
+// @match        https://dashboard.blooket.com/*
+// @match        https://www.blooket.com/*
+// @match        https://play.blooket.com/*
+// @match        https://towerdefense2.blooket.com/*
+// @match        https://monsterbrawl.blooket.com/*
+// @match        https://towerdefense.blooket.com/*
+// @match        https://cafe.blooket.com/*
+// @match        https://factory.blooket.com/*
+// @match        https://crazykingdom.blooket.com/*
+// @match        https://towerofdoom.blooket.com/*
+// @match        https://goldquest.blooket.com/*
+// @match        https://cryptohack.blooket.com/*
+// @match        https://fishingfrenzy.blooket.com/*
+// @match        https://deceptivedinos.blooket.com/*
+// @match        https://battleroyale.blooket.com/*
+// @match        https://racing.blooket.com/*
+// @match        https://blookrush.blooket.com/*
+// @match        https://classic.blooket.com/*
+// @match        https://pirate.blooket.com/*
+// @icon         https://wojtoteka.ovh/Blooket/Blooket.png
+// @grant        none
+// @require      https://unpkg.com/idb-keyval@6.0.3/dist/umd.js
+// @run-at       document-end
+// @license      MIT
+// ==/UserScript==
+
 console.log("%c Z-Client Aktywowany %c\n Stworzony przez Wojtoteka", "color: #a78bfa; font-size: 3rem", "color: #8b5cf6; font-size: 1rem");
 console.log("%c Z-Client.js", "color: #a78bfa; font-size: 1rem");
 console.log("%c https://wojtoteka.ovh/ | GitHub: https://github.com/Wojtoteka", "color: #a78bfa; font-size: 1rem", "color: #8b5cf6; font-size: 1rem");
