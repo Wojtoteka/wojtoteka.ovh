@@ -1,0 +1,16 @@
+# robots.txt dla Wojtoteka.ovh
+User-agent: *
+Allow: /
+
+# Blokowanie podstron błędów przed indeksowaniem
+Disallow: /404.html
+Disallow: /503.html
+Disallow: /soon.html
+Disallow: /budowa.html
+
+# Blokowanie sekcji for fun / wtajemniczonych
+Disallow: /hack/
+Disallow: /inne/
+
+# Sitemap
+Sitemap: https://wojtoteka.ovh/sitemap.xml
