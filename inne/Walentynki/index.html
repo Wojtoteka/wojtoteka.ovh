@@ -414,7 +414,7 @@
 
   <body>
     <div id="invite-screen">
-      <h1>Hej Natalka!<br>Zostaniesz moją Walentynką? 🌹</h1>
+      <h1>Hej Natalka!<br>Zostaniesz moją <span style="white-space: nowrap;">Walentynką? 🌹</span></h1>
       <div class="invite-buttons">
           <button id="yes-btn">TAK!</button>
           <button id="no-btn">Nie</button>
@@ -560,7 +560,6 @@
       hbd.innerHTML = `<span>${hbd.innerHTML
         .trim()
         .split("")
-        .map((char) => (char === " " ? "&nbsp;" : char))
         .join("</span><span>")}</span`;
 
       const ideaTextTrans = {
