@@ -553,14 +553,17 @@
       const textBoxChars = document.getElementsByClassName("hbd-chatbox")[0];
       const hbd = document.getElementsByClassName("wish-hbd")[0];
 
-      textBoxChars.innerHTML = `<span>${textBoxChars.innerHTML
-        .split("")
-        .join("</span><span>")}</span`;
-
-      hbd.innerHTML = `<span>${hbd.innerHTML
+      textBoxChars.innerHTML = textBoxChars.innerHTML
         .trim()
-        .split("")
-        .join("</span><span>")}</span`;
+        .split(" ")
+        .map(word => word.split("").map(char => `<span>${char}</span>`).join(""))
+        .join(" ");
+
+      hbd.innerHTML = hbd.innerHTML
+        .trim()
+        .split(" ")
+        .map(word => word.split("").map(char => `<span>${char}</span>`).join(""))
+        .join(" ");
 
       const ideaTextTrans = {
         opacity: 0,
