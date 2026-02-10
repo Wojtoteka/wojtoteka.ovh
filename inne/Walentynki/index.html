@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Szczęśliwych Walentynek!</title>
+    <link rel="shortcut icon" type="image/png" href="./img/heart.svg" />
+    <style>
+      html {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Work Sans", sans-serif;
+      }
+
+      .container {
+        height: 100vh;
+        width: 100vh;
+        margin: 0 auto;
+        text-align: center;
+        visibility: hidden;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container div.six {
+        top: 10vh;
+        z-index: 1;
+      }
+
+      .container div.seven,
+      .container div.eight {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+      }
+
+      .container > div {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 20vh;
+      }
+
+      .one {
+        font-size: 4.5rem;
+      }
+
+      .one > img {
+        vertical-align: middle;
+        margin-bottom: 10px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      .two {
+        font-size: 1.2rem;
+        font-weight: lighter;
+      }
+
+      .three {
+        font-size: 3rem;
+      }
+
+      .four .text-box {
+        width: 600px;
+        margin: 0 auto;
+        border: 3px solid #aaa;
+        border-radius: 5px;
+        padding: 10px;
+        position: relative;
+      }
+
+      .text-box p {
+        margin: 0;
+        text-align: left;
+      }
+
+      .text-box span {
+        visibility: hidden;
+      }
+
+      .text-box .fake-btn {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        color: #fff;
+        background-color: rgb(21, 161, 237);
+        padding: 5px 8px;
+        border-radius: 3px;
+      }
+
+      .five p {
+        font-size: 2rem;
+        position: absolute;
+        left: 0;
+        right: 0;
+      }
+
+      .idea-3 strong {
+        padding: 3px 5px;
+        border-radius: 3px;
+        display: inline-block;
+      }
+
+      .five .idea-5 {
+        font-size: 4rem;
+      }
+
+      .idea-5 span,
+      .idea-6 span,
+      .wish-hbd span {
+        display: inline-block;
+      }
+
+      .idea-6 span {
+        font-size: 15rem;
+      }
+
+      .six {
+        position: relative;
+      }
+
+      .six img {
+        display: inline-block;
+        max-width: 45%;
+        height: auto;
+      }
+
+      .six .hat {
+        position: absolute;
+        width: 80px;
+        top: -35px;
+        left: 41.5%;
+        /* transform: scale(0.1); */
+      }
+
+      .baloons img {
+        display: inline-block;
+        position: absolute;
+        width: 200px;
+      }
+
+      .baloons img:nth-child(even) {
+        left: 10%;
+      }
+
+      .baloons img:nth-child(odd) {
+        right: 10%;
+      }
+
+      .baloons img:nth-child(3n + 0) {
+        left: 30%;
+      }
+
+      .eight svg {
+        width: 25px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        z-index: -1;
+      }
+
+      .eight svg:nth-child(1) {
+        top: 7vh;
+        left: 5vw;
+        fill: #bd6ecf;
+      }
+
+      .eight svg:nth-child(2) {
+        top: 23vh;
+        left: 35vw;
+        fill: #7dd175;
+      }
+
+      .eight svg:nth-child(3) {
+        top: 33vh;
+        left: 23vw;
+        fill: #349d8b;
+      }
+
+      .eight svg:nth-child(4) {
+        top: 43vh;
+        left: 57vw;
+        fill: #347a9d;
+      }
+
+      .eight svg:nth-child(5) {
+        top: 68vh;
+        left: 7vw;
+        fill: #c66053;
+      }
+
+      .eight svg:nth-child(6) {
+        top: 42vh;
+        left: 77vw;
+        fill: #bfaa40;
+      }
+
+      .eight svg:nth-child(7) {
+        top: 68vh;
+        left: 83vw;
+        fill: #e3bae8;
+      }
+
+      .eight svg:nth-child(8) {
+        top: 86vh;
+        left: 37vw;
+        fill: #8762cb;
+      }
+
+      .eight svg:nth-child(9) {
+        top: 94vh;
+        left: 87vw;
+        fill: #9a90da;
+      }
+
+      .wish-hbd {
+        font-size: 3em;
+        margin: 0;
+        /* text-transform: uppercase; */
+      }
+
+      .wish h5 {
+        font-weight: lighter;
+        font-size: 2rem;
+        margin: 10px 0 0;
+      }
+
+      .nine p {
+        font-size: 2rem;
+        font-weight: lighter;
+      }
+
+      #replay {
+        z-index: 3;
+        cursor: pointer;
+      }
+
+      /* Media Queries */
+      @media screen and (max-height: 1000px) {
+        .six .hat {
+          left: 40%;
+        }
+      }
+
+      @media screen and (max-height: 800px) {
+        .six .hat {
+          left: 37%;
+        }
+      }
+
+      @media screen and (max-height: 700px) {
+        .six .hat {
+          left: 32%;
+        }
+      }
+
+      @media screen and (max-height: 850px) and (max-width: 450px) {
+        .six .hat {
+          left: 32%;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        .container {
+          width: 90%;
+        }
+
+        .four .text-box {
+          width: 90%;
+        }
+
+        .text-box .fake-btn {
+          right: 5px;
+          bottom: -38px;
+        }
+
+        .idea-5 span {
+          display: block;
+        }
+
+        .idea-6 span {
+          font-size: 10rem;
+        }
+
+        .six .hat {
+          width: 50px;
+          top: -20px;
+        }
+
+        .wish-hbd {
+          font-size: 2.3em;
+        }
+
+        .wish h5 {
+          font-size: 1.4rem;
+        }
+
+        .nine p {
+          font-size: 1.5rem;
+          font-weight: lighter;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="invite-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: 'Work Sans', sans-serif;">
+      <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #333;">Hej Natalka!<br>Zostaniesz moją Walentynką? 🌹</h1>
+      <div style="display: flex; gap: 20px;">
+          <button id="yes-btn" style="padding: 15px 40px; font-size: 1.5rem; background-color: #ff69b4; color: white; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);">TAK!</button>
+          <button id="no-btn" style="padding: 15px 40px; font-size: 1.5rem; background-color: #ccc; color: white; border: none; border-radius: 50px; cursor: pointer;">Nie</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="one">
+        <h1 class="one">
+          Hej
+          <span id="name">Natalko</span>
+        </h1>
+      </div>
+      <div class="three">
+        <p>Idą Walentynki...</p>
+      </div>
+      <div class="four">
+        <div class="text-box">
+          <p class="hbd-chatbox">
+            Chciałem Cię o coś zapytać...
+          </p>
+          <p class="fake-btn">Wyślij</p>
+        </div>
+      </div>
+      <div class="five">
+        <p class="idea-1">Chciałem napisać zwykłą wiadomość...</p>
+        <p class="idea-2">Ale stwierdziłem, że to za mało.</p>
+        <p class="idea-3">
+          Wiedziałem, że muszę zrobić coś <strong>lepszego</strong>.
+        </p>
+        <p class="idea-4">Bo...</p>
+        <p class="idea-5">
+          Jesteś jedną z najfajniejszych dziewczyn, jakie znam
+          <span>:)</span>
+        </p>
+        <p class="idea-6">
+          <span>W</span>
+          <span>I</span>
+          <span>Ę</span>
+          <span>C</span>
+        </p>
+      </div>
+      <div class="six">
+        <img src="img/vector.jpg" alt="" class = "girl-dp" id="imagePath" />
+        <div class="wish">
+          <h3 class="wish-hbd">Więc... Zostaniesz moją Walentynką?</h3>
+        </div>
+      </div>
+      <div class="seven">
+        <div class="baloons">
+          <img src="img/balloon.svg" alt="" />
+          <!-- <img src="img/music-note.svg" alt="" /> -->
+          <img src="img/smiling.svg" />
+          <img src="img/heart.svg" />
+          <!-- <img src="img/happy.svg" alt="" /> -->
+          <img src="img/balloon.svg" alt="" />
+          <!-- <img src="img/music-note.svg" alt="" /> -->
+          <!-- <img src="img/smiling.svg" /> -->
+          <img src="img/heart.svg" />
+          <img src="img/balloon.svg" alt="" />
+          <img src="img/music-note.svg" alt="" />
+          <img src="img/heart.svg" />
+          <img src="img/balloon.svg" alt="" />
+          <!-- <img src="img/music-note.svg" alt="" /> -->
+          <!-- <img src="img/smiling.svg" /> -->
+          
+          <img src="img/heart.svg" />
+          <img src="img/balloon.svg" alt="" />
+          <img src="img/heart.svg" />
+          <img src="img/heart.svg" />
+          <img src="img/music-note.svg" alt="" />
+          <img src="img/smiling.svg" />
+         
+          <img src="img/happy.svg" alt="" />
+          <img src="img/balloon.svg" alt="" />
+          <img src="img/heart.svg" />
+          <!-- <img src="img/music-note.svg" alt="" /> -->
+          <!-- <img src="img/heart.svg" />
+          
+          <img src="img/happy.svg" alt="" />
+          <img src="img/balloon.svg" alt="" />
+          <img src="img/music-note.svg" alt="" /> -->
+          <img src="img/smiling.svg" />
+          <!-- <img src="img/heart.svg" /> -->
+          <!-- <img src="img/happy.svg" alt="" /> -->
+        </div>
+      </div>
+      <div class="eight">
+        <svg viewBox="0 0 40 40" xmlnssvg/heart.svg.org/2000/svg">
+        <circle cx="20" cy="20" r="20" />
+      </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="20" />
+        </svg>
+      </div>
+      <div class="nine">
+        <p class="last-smile">:)</p>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+  <script>
+    // Data for customization (inlined from customize.json)
+    const customizeData = {
+      "name": "Natalka",
+      "greetingText": "Hej, mam małe pytanie...",
+      "wishText": "Mam nadzieję, że się zgodzisz! 😎",
+      "imagePath": "img/vector.jpg"
+    };
+
+    // Animation Timeline
+    const animationTimeline = () => {
+      // Spit chars that needs to be animated individually
+      const textBoxChars = document.getElementsByClassName("hbd-chatbox")[0];
+      const hbd = document.getElementsByClassName("wish-hbd")[0];
+
+      textBoxChars.innerHTML = `<span>${textBoxChars.innerHTML
+        .split("")
+        .join("</span><span>")}</span`;
+
+      hbd.innerHTML = `<span>${hbd.innerHTML
+        .trim()
+        .split("")
+        .map((char) => (char === " " ? "&nbsp;" : char))
+        .join("</span><span>")}</span`;
+
+      const ideaTextTrans = {
+        opacity: 0,
+        y: -20,
+        rotationX: 5,
+        skewX: "15deg",
+      };
+
+      const ideaTextTransLeave = {
+        opacity: 0,
+        y: 20,
+        rotationY: 5,
+        skewX: "-15deg",
+      };
+
+      const tl = new TimelineMax();
+
+      tl.to(".container", 0.1, {
+        visibility: "visible",
+      })
+        .from(".one", 0.7, {
+          opacity: 0,
+          y: 10,
+        })
+        .from(".two", 0.4, {
+          opacity: 0,
+          y: 10,
+        })
+        .to(
+          ".one",
+          0.7,
+          {
+            opacity: 0,
+            y: 10,
+          },
+          "+=2.5"
+        )
+        .to(
+          ".two",
+          0.7,
+          {
+            opacity: 0,
+            y: 10,
+          },
+          "-=1"
+        )
+        .from(".three", 0.7, {
+          opacity: 0,
+          y: 10,
+          // scale: 0.7
+        })
+        .to(
+          ".three",
+          0.7,
+          {
+            opacity: 0,
+            y: 10,
+          },
+          "+=2"
+        )
+        .from(".four", 0.7, {
+          scale: 0.2,
+          opacity: 0,
+        })
+        .from(".fake-btn", 0.3, {
+          scale: 0.2,
+          opacity: 0,
+        })
+        .staggerTo(
+          ".hbd-chatbox span",
+          0.5,
+          {
+            visibility: "visible",
+          },
+          0.05
+        )
+        .to(".fake-btn", 0.1, {
+          backgroundColor: "rgb(127, 206, 248)",
+        })
+        .to(
+          ".four",
+          0.5,
+          {
+            scale: 0.2,
+            opacity: 0,
+            y: -150,
+          },
+          "+=0.7"
+        )
+        .from(".idea-1", 0.7, ideaTextTrans)
+        .to(".idea-1", 0.7, ideaTextTransLeave, "+=1.5")
+        .from(".idea-2", 0.7, ideaTextTrans)
+        .to(".idea-2", 0.7, ideaTextTransLeave, "+=1.5")
+        .from(".idea-3", 0.7, ideaTextTrans)
+        .to(".idea-3 strong", 0.5, {
+          scale: 1.2,
+          x: 10,
+          backgroundColor: "rgb(21, 161, 237)",
+          color: "#fff",
+        })
+        .to(".idea-3", 0.7, ideaTextTransLeave, "+=1.5")
+        .from(".idea-4", 0.7, ideaTextTrans)
+        .to(".idea-4", 0.7, ideaTextTransLeave, "+=1.5")
+        .from(
+          ".idea-5",
+          0.7,
+          {
+            rotationX: 15,
+            rotationZ: -10,
+            skewY: "-5deg",
+            y: 50,
+            z: 10,
+            opacity: 0,
+          },
+          "+=0.5"
+        )
+        .to(
+          ".idea-5 span",
+          0.7,
+          {
+            rotation: 90,
+            x: 8,
+          },
+          "+=0.4"
+        )
+        .to(
+          ".idea-5",
+          0.7,
+          {
+            scale: 0.2,
+            opacity: 0,
+          },
+          "+=2"
+        )
+        .staggerFrom(
+          ".idea-6 span",
+          0.8,
+          {
+            scale: 3,
+            opacity: 0,
+            rotation: 15,
+            ease: Expo.easeOut,
+          },
+          0.2
+        )
+        .staggerTo(
+          ".idea-6 span",
+          0.8,
+          {
+            scale: 3,
+            opacity: 0,
+            rotation: -15,
+            ease: Expo.easeOut,
+          },
+          0.2,
+          "+=1"
+        )
+        .staggerFromTo(
+          ".baloons img",
+          2.5,
+          {
+            opacity: 0.9,
+            y: 1400,
+          },
+          {
+            opacity: 1,
+            y: -1000,
+          },
+          0.2
+        )
+        .from(
+          ".girl-dp",
+          0.5,
+          {
+            scale: 3.5,
+            opacity: 0,
+            x: 25,
+            y: -25,
+            rotationZ: -45,
+          },
+          "-=2"
+        )
+        .from(".hat", 0.5, {
+          x: -100,
+          y: 350,
+          rotation: -180,
+          opacity: 0,
+        })
+        .staggerFrom(
+          ".wish-hbd span",
+          0.7,
+          {
+            opacity: 0,
+            y: -50,
+            // scale: 0.3,
+            rotation: 150,
+            skewX: "30deg",
+            ease: Elastic.easeOut.config(1, 0.5),
+          },
+          0.1
+        )
+        .staggerFromTo(
+          ".wish-hbd span",
+          0.7,
+          {
+            scale: 1.4,
+            rotationY: 150,
+          },
+          {
+            scale: 1,
+            rotationY: 0,
+            color: "#ff69b4",
+            ease: Expo.easeOut,
+          },
+          0.1,
+          "party"
+        )
+        .from(
+          ".wish h5",
+          0.5,
+          {
+            opacity: 0,
+            y: 10,
+            skewX: "-15deg",
+      
+          },
+          "party"
+        )
+        .staggerTo(
+          ".eight svg",
+          1.5,
+          {
+            visibility: "visible",
+            opacity: 0,
+            scale: 80,
+            repeat: 3,
+            repeatDelay: 1.4,
+          },
+          0.3
+        )
+        .to(".six", 0.5, {
+          opacity: 0,
+          y: 30,
+          zIndex: "-1",
+        })
+        .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
+        .to(
+          ".last-smile",
+          0.5,
+          {
+            rotation: 90,
+          },
+          "+=1"
+        );
+
+      // tl.seek("currentStep");
+      // tl.timeScale(2);
+
+      // Restart Animation on click
+      const replyBtn = document.getElementById("replay");
+      replyBtn.addEventListener("click", () => {
+        tl.restart();
+      });
+    };
+
+    // Import the data to customize and insert them into page
+    const fetchData = () => {
+      // Use the local customizeData object instead of fetch
+      Object.keys(customizeData).map((customData) => {
+        if (customizeData[customData] !== "") {
+          if (customData === "imagePath") {
+            document
+              .getElementById(customData)
+              .setAttribute("src", customizeData[customData]);
+          } else {
+            document.getElementById(customData).innerText = customizeData[customData];
+          }
+        }
+      });
+    };
+
+    // Run fetch and animation in sequence
+    const resolveFetch = () => {
+      return new Promise((resolve, reject) => {
+        fetchData();
+        resolve("Fetch done!");
+      });
+    };
+
+    // Interaction Logic for the Invite Screen
+    const initInvite = () => {
+      const inviteScreen = document.getElementById('invite-screen');
+      const yesBtn = document.getElementById('yes-btn');
+      const noBtn = document.getElementById('no-btn');
+
+      // "No" button logic - disappears on interaction
+      const hideNoButton = () => {
+          noBtn.style.display = 'none'; 
+      };
+
+      noBtn.addEventListener('click', hideNoButton);
+
+      // "Yes" button logic
+      yesBtn.addEventListener('click', () => {
+          // Fade out the invite screen
+          inviteScreen.style.transition = 'opacity 1s';
+          inviteScreen.style.opacity = '0';
+          
+          // Start the main animation
+          resolveFetch().then(animationTimeline());
+          
+          // Remove element from DOM after fade
+          setTimeout(() => {
+              inviteScreen.style.display = 'none';
+          }, 1000);
+      });
+    };
+
+    // Start the invite interaction instead of auto-playing
+    initInvite();
+  </script>
+</html>
