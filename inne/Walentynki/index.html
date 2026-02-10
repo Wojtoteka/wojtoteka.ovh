@@ -18,7 +18,8 @@
 
       .container {
         height: 100vh;
-        width: 100vh;
+        width: 100%;
+        max-width: 800px;
         margin: 0 auto;
         text-align: center;
         visibility: hidden;
@@ -67,7 +68,8 @@
       }
 
       .four .text-box {
-        width: 600px;
+        width: 80%;
+        max-width: 600px;
         margin: 0 auto;
         border: 3px solid #aaa;
         border-radius: 5px;
@@ -242,6 +244,66 @@
         cursor: pointer;
       }
 
+      /* Invite Screen Styles */
+      #invite-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        font-family: 'Work Sans', sans-serif;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      #invite-screen h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #333;
+        line-height: 1.3;
+      }
+
+      .invite-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      #invite-screen button {
+        padding: 15px 40px;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        min-width: 120px;
+        /* prevent touch highlight */
+        -webkit-tap-highlight-color: transparent; 
+      }
+
+      #yes-btn {
+        background-color: #ff69b4;
+        color: white;
+        transition: transform 0.2s;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+      }
+      
+      #yes-btn:active {
+        transform: scale(0.95);
+      }
+
+      #no-btn {
+        background-color: #ccc;
+        color: white;
+      }
+
       /* Media Queries */
       @media screen and (max-height: 1000px) {
         .six .hat {
@@ -268,8 +330,29 @@
       }
 
       @media screen and (max-width: 500px) {
+        #invite-screen h1 {
+          font-size: 1.8rem;
+        }
+
+        #invite-screen button {
+          padding: 12px 30px;
+          font-size: 1.2rem;
+        }
+
         .container {
-          width: 90%;
+          width: 95%;
+        }
+
+        .one {
+          font-size: 2.5rem;
+        }
+
+        .two {
+          font-size: 1rem;
+        }
+
+        .three {
+          font-size: 2rem;
         }
 
         .four .text-box {
@@ -280,42 +363,61 @@
           right: 5px;
           bottom: -38px;
         }
+        
+        .five p {
+          font-size: 1.5rem;
+          padding: 0 10px;
+        }
 
+        .five .idea-5 {
+          font-size: 2rem;
+        }
+        
         .idea-5 span {
           display: block;
         }
 
         .idea-6 span {
-          font-size: 10rem;
+          font-size: 5rem;
+        }
+        
+        .six img {
+            width: 80%;
+            max-width: 80%;
         }
 
         .six .hat {
           width: 50px;
           top: -20px;
+          left: 50%;
+          transform: translateX(-50%) rotate(-180deg);
+          margin-left: -15px; 
         }
 
         .wish-hbd {
-          font-size: 2.3em;
+          font-size: 1.8em;
+          padding: 0 10px;
         }
 
         .wish h5 {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
         }
 
         .nine p {
           font-size: 1.5rem;
           font-weight: lighter;
+          padding: 0 10px;
         }
       }
     </style>
   </head>
 
   <body>
-    <div id="invite-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; font-family: 'Work Sans', sans-serif;">
-      <h1 style="font-size: 2.5rem; text-align: center; margin-bottom: 2rem; color: #333;">Hej Natalka!<br>Zostaniesz moją Walentynką? 🌹</h1>
-      <div style="display: flex; gap: 20px;">
-          <button id="yes-btn" style="padding: 15px 40px; font-size: 1.5rem; background-color: #ff69b4; color: white; border: none; border-radius: 50px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);">TAK!</button>
-          <button id="no-btn" style="padding: 15px 40px; font-size: 1.5rem; background-color: #ccc; color: white; border: none; border-radius: 50px; cursor: pointer;">Nie</button>
+    <div id="invite-screen">
+      <h1>Hej Natalka!<br>Zostaniesz moją Walentynką? 🌹</h1>
+      <div class="invite-buttons">
+          <button id="yes-btn">TAK!</button>
+          <button id="no-btn">Nie</button>
       </div>
     </div>
     <div class="container">
@@ -340,7 +442,7 @@
         <p class="idea-1">Chciałem napisać zwykłą wiadomość...</p>
         <p class="idea-2">Ale stwierdziłem, że to za mało.</p>
         <p class="idea-3">
-          Wiedziałem, że muszę zrobić coś <strong>lepszego</strong>.
+          Wiedziałem, że zasługujesz na coś lepszego <strong>lepszego</strong>.
         </p>
         <p class="idea-4">Bo...</p>
         <p class="idea-5">
