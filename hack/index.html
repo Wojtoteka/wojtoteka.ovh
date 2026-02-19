@@ -3,85 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wojtoteka Hack</title>
-    <link rel="icon" href="https://github.com/Wojtoteka/wojtoteka.ovh/blob/main/img/logo.png?raw=true" type="image/png">
+
+    <!-- SEO Meta Tags -->
+    <title>Hack Tools - Skrypty Tampermonkey | Wojtoteka</title>
+    <meta name="description" content="Darmowe skrypty Tampermonkey do Blooket i Quizizz od Wojtoteka. Pobierz hack tools i userscripts.">
+    <meta name="keywords" content="Wojtoteka hack, Blooket hack, Quizizz hack, Tampermonkey, userscript, skrypty">
+    <meta name="author" content="Wojtoteka">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://wojtoteka.ovh/hack/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wojtoteka.ovh/hack/">
+    <meta property="og:title" content="Hack Tools - Wojtoteka">
+    <meta property="og:description" content="Darmowe skrypty Tampermonkey do Blooket i Quizizz. Hack tools od Wojtoteka.">
+    <meta property="og:image" content="https://wojtoteka.ovh/img/logo.png">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:site_name" content="Wojtoteka">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Hack Tools - Wojtoteka">
+    <meta name="twitter:description" content="Darmowe skrypty Tampermonkey do Blooket i Quizizz.">
+    <meta name="twitter:image" content="https://wojtoteka.ovh/img/logo.png">
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#ff9800">
+    <link rel="icon" href="../img/logo.png" type="image/png">
+
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            color: white;
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            min-height: 100%;
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            background: #050505;
+        }
+
+        /* Video bg */
+        #background-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            object-fit: cover;
+            filter: brightness(25%) saturate(1.2) hue-rotate(-5deg);
+        }
+
+        /* Overlays */
+        .vignette {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.65) 100%);
+        }
+
+        .scan-lines {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 100, 0.012) 2px,
+                rgba(0, 255, 100, 0.012) 4px
+            );
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px 50px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Back link */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8em;
+            padding: 7px 14px;
+            border-radius: 99px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeSlide 0.5s 0.2s ease forwards;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            background: rgba(255,152,0,0.1);
+            border-color: rgba(255,152,0,0.25);
+            transform: translateX(-2px);
+        }
+
+        /* Header */
+        .header {
             text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-icon {
+            font-size: 2.6em;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeSlide 0.6s 0.15s ease forwards;
+        }
+
+        .header h1 {
+            font-size: 2.6em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #fff;
+            opacity: 0;
+            animation: fadeSlide 0.6s 0.25s ease forwards;
+        }
+
+        .header h1 span {
+            background: linear-gradient(135deg, #00e676, #00bfa5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-sub {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.35);
+            margin-top: 8px;
+            opacity: 0;
+            animation: fadeSlide 0.5s 0.4s ease forwards;
+        }
+
+        .requirement {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 14px;
+            padding: 6px 16px;
+            border-radius: 99px;
+            background: rgba(255,152,0,0.08);
+            border: 1px solid rgba(255,152,0,0.15);
+            font-size: 0.72em;
+            color: rgba(255,183,77,0.75);
+            opacity: 0;
+            animation: fadeSlide 0.5s 0.5s ease forwards;
+        }
+
+        .requirement a {
+            color: #ffb74d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .requirement a:hover {
+            color: #fff;
+        }
+
+        /* Script cards */
+        .scripts {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .script-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.88);
+            padding: 16px 20px;
+            border-radius: 16px;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(20px) saturate(1.3);
+            -webkit-backdrop-filter: blur(20px) saturate(1.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            transform: translateY(15px);
+            position: relative;
             overflow: hidden;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            z-index: 2;
-        }
-
-        header img {
-            height: 50px;
-            vertical-align: middle;
-        }
-
-        .content {
+        .script-card::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            border-radius: 0 3px 3px 0;
+            background: linear-gradient(180deg, #00e676, #00bfa5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .content h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
+        .script-card:hover::before {
+            opacity: 1;
         }
 
-        .content a {
-            display: block;
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #00ffcc;
+        .script-card:hover {
+            background: rgba(0, 230, 118, 0.06);
+            border-color: rgba(0, 230, 118, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 230, 118, 0.08);
+            color: #fff;
+        }
+
+        .script-card:active {
+            transform: translateY(-1px) scale(0.99);
+        }
+
+        .script-card:nth-child(1) { animation: fadeSlide 0.5s 0.55s ease forwards; }
+        .script-card:nth-child(2) { animation: fadeSlide 0.5s 0.65s ease forwards; }
+        .script-card:nth-child(3) { animation: fadeSlide 0.5s 0.75s ease forwards; }
+        .script-card:nth-child(4) { animation: fadeSlide 0.5s 0.85s ease forwards; }
+
+        .card-icon {
+            font-size: 1.4em;
+            flex-shrink: 0;
+            width: 36px;
+            text-align: center;
+        }
+
+        .card-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .card-name {
+            font-weight: 600;
+            font-size: 0.92em;
+            letter-spacing: 0.2px;
+        }
+
+        .card-desc {
+            font-size: 0.72em;
+            color: rgba(255,255,255,0.35);
+            margin-top: 2px;
+        }
+
+        .card-badge {
+            font-size: 0.62em;
+            padding: 3px 10px;
+            border-radius: 99px;
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.15);
+            color: rgba(0, 230, 118, 0.7);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .card-badge.old {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.3);
+        }
+
+        .card-badge.fun {
+            background: rgba(255,152,0,0.1);
+            border-color: rgba(255,152,0,0.15);
+            color: rgba(255,183,77,0.7);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 0.68em;
+            color: rgba(255,255,255,0.2);
+            margin-top: 40px;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeSlide 0.5s 1.1s ease forwards;
+        }
+
+        .footer a {
+            color: rgba(255,152,0,0.4);
             text-decoration: none;
             transition: color 0.3s;
         }
 
-        .content a:hover {
-            color: #ff0066;
+        .footer a:hover {
+            color: rgba(255,152,0,0.7);
         }
 
-        video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            filter: brightness(50%);
+        /* Animations */
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 30px 16px 40px; }
+            .header h1 { font-size: 2em; }
+            .script-card { padding: 14px 16px; gap: 12px; border-radius: 14px; }
+            .card-name { font-size: 0.85em; }
+            .card-badge { font-size: 0.58em; padding: 2px 8px; }
+            .back-link { top: 14px; left: 14px; font-size: 0.75em; }
+        }
+
+        @media (max-width: 360px) {
+            .header h1 { font-size: 1.7em; }
+            .script-card { padding: 12px 14px; }
         }
     </style>
 </head>
 <body>
-    <video autoplay loop muted>
-        <source src="https://wojtoteka.ovh/img/tlow.mp4" type="video/mp4">
-        Twój przeglądarka nie wspiera odtwarzania wideo.
+
+    <video autoplay muted loop playsinline id="background-video">
+        <source src="../img/tlow.mp4" type="video/mp4">
     </video>
 
-    <div class="content">
-        <h1>Wojtoteka Hack</h1>
-        <a href="vblooket.js">Blooket - stare</a>
-        <a href="z-client.js">Blooket Z-Client(Beta) </a>
-        <p>Wymaga zainstalowanego <a href="https://www.tampermonkey.net/" target="_blank">Tampermonkey</a></p>
-        <a href="quiz.js">Quizizz</a>
-        <a href="kurwa.js">Wstawiacz kurwa</a>
+    <div class="vignette"></div>
+    <div class="scan-lines"></div>
+
+    <a href="../index.html" class="back-link">← Strona główna</a>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">⚡</div>
+            <h1>Wojtoteka <span>Hack</span></h1>
+            <p class="header-sub">Skrypty userscript do gier edukacyjnych</p>
+            <div class="requirement">
+                🔧 Wymaga <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey</a>
+            </div>
+        </div>
+
+        <div class="scripts">
+            <a href="z-client.js" class="script-card">
+                <span class="card-icon">🎯</span>
+                <div class="card-info">
+                    <div class="card-name">Blooket Z-Client</div>
+                    <div class="card-desc">Zaawansowany klient do Blooket</div>
+                </div>
+                <span class="card-badge">Beta</span>
+            </a>
+
+            <a href="vblooket.js" class="script-card">
+                <span class="card-icon">🟦</span>
+                <div class="card-info">
+                    <div class="card-name">Blooket Classic</div>
+                    <div class="card-desc">Klasyczny skrypt do Blooket</div>
+                </div>
+                <span class="card-badge old">Legacy</span>
+            </a>
+
+            <a href="quiz.js" class="script-card">
+                <span class="card-icon">📝</span>
+                <div class="card-info">
+                    <div class="card-name">Quizizz</div>
+                    <div class="card-desc">Skrypt do platformy Quizizz</div>
+                </div>
+                <span class="card-badge old">Legacy</span>
+            </a>
+
+            <a href="kurwa.js" class="script-card">
+                <span class="card-icon">💬</span>
+                <div class="card-info">
+                    <div class="card-name">Wstawiacz kurwa</div>
+                    <div class="card-desc">Bo czemu kurwa nie</div>
+                </div>
+                <span class="card-badge fun">Fun</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>&copy; <a href="https://wojtoteka.ovh">Wojtoteka.ovh</a> 2024–<span id="current-year"></span></p>
+        </div>
     </div>
+    <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
 
