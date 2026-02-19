@@ -28,37 +28,26 @@
             background: #0a0a0a;
         }
 
-        /* Animated construction background */
-        .bg-pattern {
+        #background-video {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 20px,
-                    rgba(255, 152, 0, 0.03) 20px,
-                    rgba(255, 152, 0, 0.03) 40px
-                );
-            animation: stripeMove 2s linear infinite;
+            object-fit: cover;
+            filter: brightness(25%) saturate(1.2);
         }
 
-        @keyframes stripeMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 56px 0; }
-        }
-
-        .gradient-bg {
+        .gradient-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            background: 
-                radial-gradient(ellipse at 30% 40%, rgba(255, 152, 0, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(255, 109, 0, 0.04) 0%, transparent 50%),
-                linear-gradient(180deg, #0d0d0d 0%, #1a1205 50%, #0d0d0d 100%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(ellipse at 50% 50%, rgba(255, 152, 0, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .container {
@@ -194,8 +183,11 @@
 </head>
 <body>
 
-    <div class="gradient-bg"></div>
-    <div class="bg-pattern"></div>
+    <video autoplay muted loop playsinline id="background-video">
+        <source src="https://wojtoteka.ovh/img/tlow.mp4" type="video/mp4">
+    </video>
+
+    <div class="gradient-overlay"></div>
 
     <div class="container">
         <div class="construction-icon">🏗️</div>
