@@ -8,504 +8,519 @@
     <title>Polityka Prywatności - Night Drive | Wojtoteka</title>
     <meta name="description" content="Polityka prywatności aplikacji Night Drive. Dowiedz się, jak chronimy Twoje dane i jakie informacje zbieramy.">
     <meta name="keywords" content="polityka prywatności, Night Drive, RODO, ochrona danych, Wojtoteka">
+    <meta name="author" content="Wojtoteka">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://wojtoteka.ovh/polityka-nightdrive.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://wojtoteka.ovh/polityka-nightdrive.html">
+    <meta property="og:title" content="Polityka Prywatności - Night Drive">
+    <meta property="og:description" content="Polityka prywatności aplikacji Night Drive. Dowiedz się, jak chronimy Twoje dane.">
+    <meta property="og:image" content="https://wojtoteka.ovh/img/logo.png">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:site_name" content="Wojtoteka">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Polityka Prywatności - Night Drive">
+    <meta name="twitter:description" content="Polityka prywatności aplikacji Night Drive od Wojtoteka.">
+    <meta name="twitter:image" content="https://wojtoteka.ovh/img/logo.png">
     
     <!-- Theme Color -->
-    <meta name="theme-color" content="#131939">
-    <link rel="icon" href="https://wojtoteka.ovh/Nightdrive/icon192.png" type="image/png">
-    <style>
-        @font-face {
-            font-family: "BitCell";
-            src: url("fonts/BitCell.ttf") format("truetype");
-        }
-        @font-face {
-            font-family: "Edunline";
-            src: url("fonts/Edunline.ttf") format("truetype");
-        }
+    <meta name="theme-color" content="#ff9800">
+    <link rel="icon" href="img/logo.png" type="image/png">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #000;
-            color: #fff;
-            font-family: Verdana, Arial, sans-serif;
-            line-height: 1.6;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.7;
             overflow-x: hidden;
-            background: linear-gradient(180deg, #131939 0%, #0d0d20 100%);
+            background: #050505;
         }
 
-        .stars {
+        /* Video bg */
+        #background-video {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            object-fit: cover;
+            filter: brightness(25%) saturate(1.2);
+        }
+
+        .gradient-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(255, 152, 0, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(255, 109, 0, 0.04) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 4s infinite ease-in-out;
+        /* Back button */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.45);
+            font-size: 0.8em;
+            padding: 8px 16px;
+            border-radius: 99px;
+            background: rgba(10,10,10,0.5);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: all 0.3s ease;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.8; }
+        .back-link:hover {
+            color: #fff;
+            background: rgba(255,152,0,0.1);
+            border-color: rgba(255,152,0,0.25);
+            transform: translateX(-2px);
         }
 
+        /* Container */
         .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 40px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #c6168c;
-            border-radius: 20px;
-            box-shadow: 
-                0 0 30px rgba(198, 22, 140, 0.3),
-                inset 0 0 20px rgba(198, 22, 140, 0.1);
             position: relative;
             z-index: 10;
-            backdrop-filter: blur(10px);
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 80px 24px 50px;
         }
 
-        .glow-effect {
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                rgba(198, 22, 140, 0.4), 
-                rgba(255, 28, 140, 0.4), 
-                rgba(198, 22, 140, 0.4)
-            );
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.6;
+        /* Main card */
+        .card {
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(20px) saturate(1.3);
+            -webkit-backdrop-filter: blur(20px) saturate(1.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 44px 36px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
         }
 
-        h1 {
-            color: #ffc6ff;
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .policy-header {
             text-align: center;
-            font-size: 2.5em;
-            font-family: 'Edunline', Verdana, sans-serif;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 198, 255, 0.6);
+            margin-bottom: 32px;
         }
 
-        h2 {
-            color: #c6168c;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            text-align: center;
-            font-family: 'BitCell', Verdana, sans-serif;
+        .policy-header h1 {
+            font-size: 2.2em;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
         }
 
-        h3 {
-            color: #ffc6ff;
-            font-size: 1.4em;
-            margin: 30px 0 15px 0;
-            border-left: 4px solid #c6168c;
-            padding-left: 15px;
-            background: linear-gradient(90deg, rgba(198, 22, 140, 0.2) 0%, transparent 100%);
-            padding: 10px 15px;
-            border-radius: 0 10px 10px 0;
-        }
-
-        p {
-            margin-bottom: 15px;
-            font-size: 1.1em;
-            text-align: justify;
+        .policy-header h2 {
+            font-size: 1.3em;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff9800, #ff6d00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
         }
 
         .update-date {
-            text-align: center;
-            font-size: 1.2em;
-            color: #00ffff;
-            margin-bottom: 30px;
-            padding: 10px;
-            background: rgba(0, 255, 255, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 99px;
+            background: rgba(255,152,0,0.08);
+            border: 1px solid rgba(255,152,0,0.15);
+            font-size: 0.78em;
+            color: rgba(255,183,77,0.75);
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,152,0,0.2), transparent);
+            margin: 28px 0;
+        }
+
+        /* Sections */
+        h3 {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #fff;
+            margin: 28px 0 12px;
+            padding-left: 14px;
+            border-left: 3px solid #ff9800;
+            line-height: 1.4;
+        }
+
+        p {
+            font-size: 0.92em;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.7);
         }
 
         ul {
             list-style: none;
-            margin-left: 20px;
+            margin: 0 0 14px 8px;
         }
 
         li {
-            margin-bottom: 10px;
             position: relative;
-            padding-left: 25px;
+            padding-left: 22px;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.65);
         }
 
-        li:before {
-            content: "▶";
+        li::before {
+            content: "›";
             position: absolute;
-            left: 0;
-            color: #c6168c;
-            font-size: 0.8em;
+            left: 4px;
+            color: #ff9800;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        strong {
+            color: rgba(255,255,255,0.9);
         }
 
         a {
-            color: #00ffff;
+            color: #ffb74d;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: color 0.2s;
         }
 
         a:hover {
-            color: #ffc6ff;
-            text-shadow: 0 0 10px rgba(255, 198, 255, 0.8);
+            color: #fff;
         }
 
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent 0%, #c6168c 50%, transparent 100%);
-            margin: 30px 0;
-            border-radius: 1px;
+        /* Info box */
+        .info-box {
+            background: rgba(255,152,0,0.06);
+            border-left: 3px solid rgba(255,152,0,0.4);
+            padding: 14px 18px;
+            margin: 16px 0;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.88em;
         }
 
+        .info-box p {
+            margin-bottom: 6px;
+            color: rgba(255,255,255,0.75);
+        }
+
+        .info-box ul {
+            margin-bottom: 0;
+        }
+
+        /* Footer */
+        .policy-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .policy-footer p {
+            font-size: 0.78em;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 4px;
+        }
+
+        .policy-footer a {
+            color: rgba(255,152,0,0.45);
+        }
+
+        .policy-footer a:hover {
+            color: rgba(255,152,0,0.75);
+        }
+
+        /* Page footer */
         .footer {
             text-align: center;
-            color: #c6168c;
-            font-size: 1.1em;
-            margin-top: 40px;
-            padding: 20px;
-            border-top: 1px solid rgba(198, 22, 140, 0.3);
-            font-family: 'BitCell', Verdana, sans-serif;
+            font-size: 0.68em;
+            color: rgba(255,255,255,0.2);
+            padding: 30px 0 20px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 10;
         }
 
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(198, 22, 140, 0.8);
-            color: #fff;
-            padding: 10px 20px;
-            border: 2px solid #c6168c;
-            border-radius: 25px;
+        .footer a {
+            color: rgba(255, 152, 0, 0.45);
             text-decoration: none;
-            font-family: 'BitCell', Verdana, sans-serif;
-            transition: all 0.3s ease;
-            z-index: 100;
+            transition: color 0.3s;
         }
 
-        .back-button:hover {
-            background: rgba(255, 198, 255, 0.2);
-            box-shadow: 0 0 20px rgba(198, 22, 140, 0.8);
-            transform: translateY(-2px);
+        .footer a:hover {
+            color: rgba(255, 152, 0, 0.75);
         }
 
-        .smooth-glow {
-            box-shadow: 0 0 20px rgba(198, 22, 140, 0.4);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .smooth-glow:hover {
-            box-shadow: 0 0 30px rgba(198, 22, 140, 0.6);
-        }
-
-        .info-box {
-            background: rgba(0, 255, 255, 0.1);
-            border-left: 4px solid #00ffff;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            h2 {
-                font-size: 1.5em;
-            }
-            
-            h3 {
-                font-size: 1.2em;
-            }
+            .card { padding: 32px 24px; }
+            .policy-header h1 { font-size: 1.8em; }
+            .policy-header h2 { font-size: 1.1em; }
         }
+
+        @media (max-width: 480px) {
+            .container { padding: 70px 14px 30px; }
+            .card { padding: 24px 18px; border-radius: 16px; }
+            .policy-header h1 { font-size: 1.5em; }
+            h3 { font-size: 1.05em; }
+            p, li { font-size: 0.85em; }
+            .back-link { top: 14px; left: 14px; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,152,0,0.3); border-radius: 6px; }
+        html { scrollbar-width: thin; scrollbar-color: rgba(255,152,0,0.3) transparent; }
     </style>
 </head>
 <body>
 
-    <div class="stars" id="stars"></div>
+    <video autoplay muted loop playsinline id="background-video">
+        <source src="img/tlow.mp4" type="video/mp4">
+    </video>
+    <div class="gradient-overlay"></div>
 
-    <a href="/" class="back-button">← Powrót</a>
+    <a href="index.html" class="back-link">← Strona główna</a>
 
-    <div class="container smooth-glow">
-        <div class="glow-effect"></div>
-        
-        <h1>Polityka Prywatności</h1>
-        <h2>NightDrive</h2>
+    <div class="container">
+        <div class="card">
+            <div class="policy-header">
+                <h1>Polityka Prywatności</h1>
+                <h2>Night Drive</h2>
+                <div class="update-date">📅 Ostatnia aktualizacja: 20 listopada 2025</div>
+            </div>
 
-        <div class="update-date">
-            Data ostatniej aktualizacji: <strong>20 listopada 2025</strong>
-        </div>
+            <div class="divider"></div>
 
-        <div class="divider"></div>
-
-        <h3>🛡️ 1. Administrator danych</h3>
-        <p>Administratorem Twoich danych osobowych w rozumieniu Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych (RODO) jest:</p>
-        <ul>
-            <li><strong>Wojtoteka</strong></li>
-            <li>Wrocław, Polska</li>
-            <li>Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
-            <li>Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
-        </ul>
-
-        <h3>📊 2. Informacje ogólne o aplikacji</h3>
-        <p>Aplikacja <strong>NightDrive</strong> to darmowa gra mobilna dostępna w sklepie Google Play Store. Została zaprojektowana z najwyższym priorytetem ochrony Twojej prywatności i działa w pełni <strong>offline</strong> – nie wymaga połączenia z internetem i nie komunikuje się z żadnymi zewnętrznymi serwerami.</p>
-
-        <div class="info-box">
-            <p><strong>💡 Kluczowa informacja:</strong> Aplikacja NightDrive działa w 100% lokalnie na Twoim urządzeniu. Nie zbieramy, nie przesyłamy i nie przechowujemy żadnych danych na naszych serwerach, ponieważ ich nie posiadamy.</p>
-        </div>
-
-        <h3>🔍 3. Jakie dane są zbierane?</h3>
-        <p>Aplikacja przechowuje wyłącznie następujące dane statystyczne gry w pamięci lokalnej Twojego urządzenia (localStorage):</p>
-        <ul>
-            <li><strong>Najlepszy wynik (Highscore)</strong> – najwyższy osiągnięty przez Ciebie wynik w punktach</li>
-            <li><strong>Czas gry</strong> – najdłuższy czas przetrwania w grze</li>
-            <li><strong>Łączna liczba zebranych monet</strong> – suma wszystkich monet zebranych podczas wszystkich sesji gry</li>
-        </ul>
-
-        <p><strong>Nie zbieramy:</strong></p>
-        <ul>
-            <li>❌ Danych osobowych (imię, nazwisko, PESEL)</li>
-            <li>❌ Adresów email</li>
-            <li>❌ Numerów telefonu</li>
-            <li>❌ Informacji o lokalizacji GPS</li>
-            <li>❌ Danych o urządzeniu</li>
-            <li>❌ Adresów IP</li>
-            <li>❌ Danych analitycznych</li>
-            <li>❌ Informacji o zachowaniu użytkownika</li>
-        </ul>
-
-        <h3>⚖️ 4. Podstawa prawna i cel przetwarzania</h3>
-        <p>Zapisywanie statystyk gry odbywa się na podstawie:</p>
-        <ul>
-            <li><strong>Art. 6 ust. 1 lit. f RODO</strong> – prawnie uzasadniony interes administratora, jakim jest zapewnienie prawidłowego działania funkcjonalności gry (możliwość śledzenia postępów i osiągnięć)</li>
-        </ul>
-
-        <p><strong>Cel przetwarzania:</strong></p>
-        <p>Jedynym celem zapisywania danych jest umożliwienie Ci:</p>
-        <ul>
-            <li>Śledzenia własnych postępów w grze</li>
-            <li>Pobicia własnego rekordu</li>
-            <li>Zachowania statystyk bez konieczności rejestracji lub logowania</li>
-        </ul>
-
-        <h3>💾 5. Sposób i miejsce przechowywania danych</h3>
-        <p>Wszystkie dane są przechowywane wyłącznie w mechanizmie <strong>localStorage</strong> Twojej przeglądarki/aplikacji na urządzeniu mobilnym. Oznacza to, że:</p>
-        <ul>
-            <li>✅ Dane nigdy nie opuszczają Twojego urządzenia</li>
-            <li>✅ Nie mamy dostępu do Twoich wyników</li>
-            <li>✅ Nie wysyłamy żadnych informacji na zewnętrzne serwery</li>
-            <li>✅ Dane są całkowicie pod Twoją kontrolą</li>
-            <li>✅ Aplikacja działa w pełni offline</li>
-        </ul>
-
-        <h3>⏰ 6. Okres przechowywania danych</h3>
-        <p>Dane przechowywane w localStorage pozostają na Twoim urządzeniu:</p>
-        <ul>
-            <li>Do momentu <strong>ręcznego usunięcia</strong> przez Ciebie (opcja "Reset Wyników" w menu gry)</li>
-            <li>Do momentu <strong>odinstalowania aplikacji</strong> z urządzenia</li>
-            <li>Do momentu <strong>wyczyszczenia danych aplikacji</strong> w ustawieniach systemu Android</li>
-        </ul>
-
-        <h3>🔒 7. Twoje prawa zgodnie z RODO</h3>
-        <p>Jako użytkownik aplikacji przysługują Ci następujące prawa:</p>
-        <ul>
-            <li><strong>Prawo dostępu do danych (Art. 15 RODO):</strong> Możesz w każdej chwili sprawdzić swoje statystyki w menu gry</li>
-            <li><strong>Prawo do usunięcia danych / prawo do bycia zapomnianym (Art. 17 RODO):</strong> Możesz usunąć wszystkie zapisane statystyki poprzez opcję "Reset Wyników" w menu głównym gry lub odinstalowanie aplikacji</li>
-            <li><strong>Prawo do sprzeciwu (Art. 21 RODO):</strong> Możesz w dowolnym momencie zaprzestać korzystania z aplikacji</li>
-            <li><strong>Prawo do przenoszenia danych (Art. 20 RODO):</strong> Dane są zapisane lokalnie na Twoim urządzeniu, więc masz do nich pełny dostęp</li>
-            <li><strong>Prawo do wniesienia skargi:</strong> Masz prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stanisława Moniuszki 1A, 00-014 Warszawa), jeśli uważasz, że przetwarzanie Twoich danych narusza przepisy RODO</li>
-        </ul>
-
-        <h3>🚫 8. Brak przekazywania danych osobom trzecim</h3>
-        <p>Twoje dane <strong>NIE SĄ i NIE BĘDĄ</strong> przekazywane jakimkolwiek osobom trzecim, ponieważ:</p>
-        <ul>
-            <li>Aplikacja nie posiada połączenia z internetem</li>
-            <li>Nie ma integracji z serwisami zewnętrznymi</li>
-            <li>Nie współpracujemy z firmami analitycznymi (np. Google Analytics)</li>
-            <li>Nie współpracujemy z sieciami reklamowymi</li>
-            <li>Nie ma żadnych trackerów ani narzędzi śledzących</li>
-        </ul>
-
-        <h3>🌐 9. Brak działania online i funkcji społecznościowych</h3>
-        <p>Aplikacja NightDrive:</p>
-        <ul>
-            <li>❌ Nie wymaga rejestracji ani logowania</li>
-            <li>❌ Nie posiada trybu multiplayer</li>
-            <li>❌ Nie ma tabel wyników (leaderboards)</li>
-            <li>❌ Nie posiada funkcji udostępniania w social media</li>
-            <li>❌ Nie umożliwia komunikacji między użytkownikami</li>
-        </ul>
-
-        <p><strong>Uwaga:</strong> Użytkownicy mogą samodzielnie wykonywać zrzuty ekranu (screenshoty) swoich wyników i udostępniać je prywatnie. Jest to funkcjonalność systemu Android, na którą nie mamy wpływu i za którą nie ponosimy odpowiedzialności.</p>
-
-        <h3>🍪 10. Pliki cookies i localStorage</h3>
-        <p>Aplikacja <strong>NIE UŻYWA plików cookies</strong>.</p>
-        <p>Wykorzystujemy wyłącznie mechanizm <strong>localStorage</strong>, który:</p>
-        <ul>
-            <li>Jest przechowywany lokalnie na Twoim urządzeniu</li>
-            <li>Nie jest wysyłany do żadnych serwerów</li>
-            <li>Służy wyłącznie do zapisywania statystyk gry</li>
-            <li>Możesz go wyczyścić w każdej chwili</li>
-        </ul>
-
-        <h3>👶 11. Ochrona danych dzieci</h3>
-        <p>Aplikacja NightDrive jest odpowiednia dla wszystkich grup wiekowych, w tym dla dzieci. Ponieważ:</p>
-        <ul>
-            <li>Nie zbieramy żadnych danych osobowych</li>
-            <li>Aplikacja działa w pełni offline</li>
-            <li>Brak funkcji społecznościowych i komunikacji</li>
-            <li>Brak reklam i płatności</li>
-        </ul>
-        <p>Rodzice mogą bez obaw pozwolić dzieciom na korzystanie z aplikacji.</p>
-
-        <h3>💰 12. Brak monetyzacji, reklam i płatności</h3>
-        <p>Aplikacja NightDrive jest <strong>w 100% darmowa</strong> i:</p>
-        <ul>
-            <li>✅ Nie zawiera reklam</li>
-            <li>✅ Nie ma płatności w grze (in-app purchases)</li>
-            <li>✅ Nie ma subskrypcji</li>
-            <li>✅ Nie zbiera danych do celów marketingowych</li>
-        </ul>
-        <p>W chwili obecnej nie planujemy wprowadzania żadnych form monetyzacji.</p>
-
-        <h3>🔐 13. Bezpieczeństwo danych</h3>
-        <p>Ponieważ wszystkie dane są przechowywane wyłącznie lokalnie na Twoim urządzeniu:</p>
-        <ul>
-            <li>Bezpieczeństwo danych zależy od zabezpieczeń Twojego urządzenia mobilnego</li>
-            <li>Zalecamy korzystanie z aktualnej wersji systemu Android</li>
-            <li>Zalecamy zabezpieczenie urządzenia hasłem/PIN-em/odciskiem palca</li>
-            <li>Administrator nie ponosi odpowiedzialności za utratę danych spowodowaną uszkodzeniem, zgubieniem lub kradzieżą urządzenia</li>
-        </ul>
-
-        <h3>📧 14. Kontakt w sprawach prywatności</h3>
-        <p>W razie jakichkolwiek pytań dotyczących:</p>
-        <ul>
-            <li>Polityki Prywatności</li>
-            <li>Ochrony danych osobowych</li>
-            <li>Korzystania z przysługujących Ci praw</li>
-            <li>Działania aplikacji</li>
-        </ul>
-
-        <p><strong>Skontaktuj się z nami:</strong></p>
-        <ul>
-            <li>📧 Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
-            <li>📝 Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
-        </ul>
-        <p>Odpowiemy na Twoje zapytanie w ciągu 30 dni, zgodnie z wymogami RODO.</p>
-
-        <h3>🔄 15. Zmiany w Polityce Prywatności</h3>
-        <p>Zastrzegamy sobie prawo do wprowadzania zmian w niniejszej Polityce Prywatności w celu dostosowania jej do:</p>
-        <ul>
-            <li>Zmieniających się przepisów prawa</li>
-            <li>Nowych funkcjonalności aplikacji</li>
-            <li>Najlepszych praktyk w zakresie ochrony prywatności</li>
-        </ul>
-
-        <p>O wszelkich istotnych zmianach poinformujemy poprzez:</p>
-        <ul>
-            <li>Aktualizację daty na górze dokumentu</li>
-        </ul>
-
-        <p>Zalecamy okresowe sprawdzanie tej strony w celu zapoznania się z ewentualnymi aktualizacjami.</p>
-
-        <h3>⚖️ 16. Przepisy prawa</h3>
-        <p>Niniejsza Polityka Prywatności została przygotowana zgodnie z:</p>
-        <ul>
-            <li><strong>RODO</strong> – Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679</li>
-            <li><strong>Ustawa o ochronie danych osobowych</strong> z dnia 10 maja 2018 r.</li>
-            <li><strong>Ustawa o świadczeniu usług drogą elektroniczną</strong> z dnia 18 lipca 2002 r.</li>
-        </ul>
-
-        <h3>✅ 17. Podsumowanie</h3>
-        <div class="info-box">
-            <p><strong>🎮 NightDrive to gra offline, która szanuje Twoją prywatność:</strong></p>
-            <ul style="margin-top: 10px;">
-                <li>✅ Żadne dane nie opuszczają Twojego urządzenia</li>
-                <li>✅ Brak połączenia z internetem</li>
-                <li>✅ Brak cookies i trackerów</li>
-                <li>✅ Brak reklam i płatności</li>
-                <li>✅ 100% kontroli nad swoimi danymi</li>
-                <li>✅ Możliwość usunięcia danych w każdej chwili</li>
+            <h3>🛡️ 1. Administrator danych</h3>
+            <p>Administratorem Twoich danych osobowych w rozumieniu Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych (RODO) jest:</p>
+            <ul>
+                <li><strong>Wojtoteka</strong></li>
+                <li>Wrocław, Polska</li>
+                <li>Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
+                <li>Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
             </ul>
-        </div>
 
-        <div class="divider"></div>
+            <h3>📊 2. Informacje ogólne o aplikacji</h3>
+            <p>Aplikacja <strong>NightDrive</strong> to darmowa gra mobilna dostępna w sklepie Google Play Store. Została zaprojektowana z najwyższym priorytetem ochrony Twojej prywatności i działa w pełni <strong>offline</strong> – nie wymaga połączenia z internetem i nie komunikuje się z żadnymi zewnętrznymi serwerami.</p>
+
+            <div class="info-box">
+                <p><strong>💡 Kluczowa informacja:</strong> Aplikacja NightDrive działa w 100% lokalnie na Twoim urządzeniu. Nie zbieramy, nie przesyłamy i nie przechowujemy żadnych danych na naszych serwerach, ponieważ ich nie posiadamy.</p>
+            </div>
+
+            <h3>🔍 3. Jakie dane są zbierane?</h3>
+            <p>Aplikacja przechowuje wyłącznie następujące dane statystyczne gry w pamięci lokalnej Twojego urządzenia (localStorage):</p>
+            <ul>
+                <li><strong>Najlepszy wynik (Highscore)</strong> – najwyższy osiągnięty przez Ciebie wynik w punktach</li>
+                <li><strong>Czas gry</strong> – najdłuższy czas przetrwania w grze</li>
+                <li><strong>Łączna liczba zebranych monet</strong> – suma wszystkich monet zebranych podczas wszystkich sesji gry</li>
+            </ul>
+
+            <p><strong>Nie zbieramy:</strong></p>
+            <ul>
+                <li>❌ Danych osobowych (imię, nazwisko, PESEL)</li>
+                <li>❌ Adresów email</li>
+                <li>❌ Numerów telefonu</li>
+                <li>❌ Informacji o lokalizacji GPS</li>
+                <li>❌ Danych o urządzeniu</li>
+                <li>❌ Adresów IP</li>
+                <li>❌ Danych analitycznych</li>
+                <li>❌ Informacji o zachowaniu użytkownika</li>
+            </ul>
+
+            <h3>⚖️ 4. Podstawa prawna i cel przetwarzania</h3>
+            <p>Zapisywanie statystyk gry odbywa się na podstawie:</p>
+            <ul>
+                <li><strong>Art. 6 ust. 1 lit. f RODO</strong> – prawnie uzasadniony interes administratora, jakim jest zapewnienie prawidłowego działania funkcjonalności gry (możliwość śledzenia postępów i osiągnięć)</li>
+            </ul>
+
+            <p><strong>Cel przetwarzania:</strong></p>
+            <p>Jedynym celem zapisywania danych jest umożliwienie Ci:</p>
+            <ul>
+                <li>Śledzenia własnych postępów w grze</li>
+                <li>Pobicia własnego rekordu</li>
+                <li>Zachowania statystyk bez konieczności rejestracji lub logowania</li>
+            </ul>
+
+            <h3>💾 5. Sposób i miejsce przechowywania danych</h3>
+            <p>Wszystkie dane są przechowywane wyłącznie w mechanizmie <strong>localStorage</strong> Twojej przeglądarki/aplikacji na urządzeniu mobilnym. Oznacza to, że:</p>
+            <ul>
+                <li>✅ Dane nigdy nie opuszczają Twojego urządzenia</li>
+                <li>✅ Nie mamy dostępu do Twoich wyników</li>
+                <li>✅ Nie wysyłamy żadnych informacji na zewnętrzne serwery</li>
+                <li>✅ Dane są całkowicie pod Twoją kontrolą</li>
+                <li>✅ Aplikacja działa w pełni offline</li>
+            </ul>
+
+            <h3>⏰ 6. Okres przechowywania danych</h3>
+            <p>Dane przechowywane w localStorage pozostają na Twoim urządzeniu:</p>
+            <ul>
+                <li>Do momentu <strong>ręcznego usunięcia</strong> przez Ciebie (opcja "Reset Wyników" w menu gry)</li>
+                <li>Do momentu <strong>odinstalowania aplikacji</strong> z urządzenia</li>
+                <li>Do momentu <strong>wyczyszczenia danych aplikacji</strong> w ustawieniach systemu Android</li>
+            </ul>
+
+            <h3>🔒 7. Twoje prawa zgodnie z RODO</h3>
+            <p>Jako użytkownik aplikacji przysługują Ci następujące prawa:</p>
+            <ul>
+                <li><strong>Prawo dostępu do danych (Art. 15 RODO):</strong> Możesz w każdej chwili sprawdzić swoje statystyki w menu gry</li>
+                <li><strong>Prawo do usunięcia danych / prawo do bycia zapomnianym (Art. 17 RODO):</strong> Możesz usunąć wszystkie zapisane statystyki poprzez opcję "Reset Wyników" w menu głównym gry lub odinstalowanie aplikacji</li>
+                <li><strong>Prawo do sprzeciwu (Art. 21 RODO):</strong> Możesz w dowolnym momencie zaprzestać korzystania z aplikacji</li>
+                <li><strong>Prawo do przenoszenia danych (Art. 20 RODO):</strong> Dane są zapisane lokalnie na Twoim urządzeniu, więc masz do nich pełny dostęp</li>
+                <li><strong>Prawo do wniesienia skargi:</strong> Masz prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stanisława Moniuszki 1A, 00-014 Warszawa), jeśli uważasz, że przetwarzanie Twoich danych narusza przepisy RODO</li>
+            </ul>
+
+            <h3>🚫 8. Brak przekazywania danych osobom trzecim</h3>
+            <p>Twoje dane <strong>NIE SĄ i NIE BĘDĄ</strong> przekazywane jakimkolwiek osobom trzecim, ponieważ:</p>
+            <ul>
+                <li>Aplikacja nie posiada połączenia z internetem</li>
+                <li>Nie ma integracji z serwisami zewnętrznymi</li>
+                <li>Nie współpracujemy z firmami analitycznymi (np. Google Analytics)</li>
+                <li>Nie współpracujemy z sieciami reklamowymi</li>
+                <li>Nie ma żadnych trackerów ani narzędzi śledzących</li>
+            </ul>
+
+            <h3>🌐 9. Brak działania online i funkcji społecznościowych</h3>
+            <p>Aplikacja NightDrive:</p>
+            <ul>
+                <li>❌ Nie wymaga rejestracji ani logowania</li>
+                <li>❌ Nie posiada trybu multiplayer</li>
+                <li>❌ Nie ma tabel wyników (leaderboards)</li>
+                <li>❌ Nie posiada funkcji udostępniania w social media</li>
+                <li>❌ Nie umożliwia komunikacji między użytkownikami</li>
+            </ul>
+
+            <p><strong>Uwaga:</strong> Użytkownicy mogą samodzielnie wykonywać zrzuty ekranu (screenshoty) swoich wyników i udostępniać je prywatnie. Jest to funkcjonalność systemu Android, na którą nie mamy wpływu i za którą nie ponosimy odpowiedzialności.</p>
+
+            <h3>🍪 10. Pliki cookies i localStorage</h3>
+            <p>Aplikacja <strong>NIE UŻYWA plików cookies</strong>.</p>
+            <p>Wykorzystujemy wyłącznie mechanizm <strong>localStorage</strong>, który:</p>
+            <ul>
+                <li>Jest przechowywany lokalnie na Twoim urządzeniu</li>
+                <li>Nie jest wysyłany do żadnych serwerów</li>
+                <li>Służy wyłącznie do zapisywania statystyk gry</li>
+                <li>Możesz go wyczyścić w każdej chwili</li>
+            </ul>
+
+            <h3>👶 11. Ochrona danych dzieci</h3>
+            <p>Aplikacja NightDrive jest odpowiednia dla wszystkich grup wiekowych, w tym dla dzieci. Ponieważ:</p>
+            <ul>
+                <li>Nie zbieramy żadnych danych osobowych</li>
+                <li>Aplikacja działa w pełni offline</li>
+                <li>Brak funkcji społecznościowych i komunikacji</li>
+                <li>Brak reklam i płatności</li>
+            </ul>
+            <p>Rodzice mogą bez obaw pozwolić dzieciom na korzystanie z aplikacji.</p>
+
+            <h3>💰 12. Brak monetyzacji, reklam i płatności</h3>
+            <p>Aplikacja NightDrive jest <strong>w 100% darmowa</strong> i:</p>
+            <ul>
+                <li>✅ Nie zawiera reklam</li>
+                <li>✅ Nie ma płatności w grze (in-app purchases)</li>
+                <li>✅ Nie ma subskrypcji</li>
+                <li>✅ Nie zbiera danych do celów marketingowych</li>
+            </ul>
+            <p>W chwili obecnej nie planujemy wprowadzania żadnych form monetyzacji.</p>
+
+            <h3>🔐 13. Bezpieczeństwo danych</h3>
+            <p>Ponieważ wszystkie dane są przechowywane wyłącznie lokalnie na Twoim urządzeniu:</p>
+            <ul>
+                <li>Bezpieczeństwo danych zależy od zabezpieczeń Twojego urządzenia mobilnego</li>
+                <li>Zalecamy korzystanie z aktualnej wersji systemu Android</li>
+                <li>Zalecamy zabezpieczenie urządzenia hasłem/PIN-em/odciskiem palca</li>
+                <li>Administrator nie ponosi odpowiedzialności za utratę danych spowodowaną uszkodzeniem, zgubieniem lub kradzieżą urządzenia</li>
+            </ul>
+
+            <h3>📧 14. Kontakt w sprawach prywatności</h3>
+            <p>W razie jakichkolwiek pytań dotyczących:</p>
+            <ul>
+                <li>Polityki Prywatności</li>
+                <li>Ochrony danych osobowych</li>
+                <li>Korzystania z przysługujących Ci praw</li>
+                <li>Działania aplikacji</li>
+            </ul>
+
+            <p><strong>Skontaktuj się z nami:</strong></p>
+            <ul>
+                <li>📧 Email: <a href="mailto:kontakt@wojtoteka.ovh">kontakt@wojtoteka.ovh</a></li>
+                <li>📝 Formularz kontaktowy: <a href="https://kontakt.wojtoteka.ovh">kontakt.wojtoteka.ovh</a></li>
+            </ul>
+            <p>Odpowiemy na Twoje zapytanie w ciągu 30 dni, zgodnie z wymogami RODO.</p>
+
+            <h3>🔄 15. Zmiany w Polityce Prywatności</h3>
+            <p>Zastrzegamy sobie prawo do wprowadzania zmian w niniejszej Polityce Prywatności w celu dostosowania jej do:</p>
+            <ul>
+                <li>Zmieniających się przepisów prawa</li>
+                <li>Nowych funkcjonalności aplikacji</li>
+                <li>Najlepszych praktyk w zakresie ochrony prywatności</li>
+            </ul>
+
+            <p>O wszelkich istotnych zmianach poinformujemy poprzez:</p>
+            <ul>
+                <li>Aktualizację daty na górze dokumentu</li>
+            </ul>
+
+            <p>Zalecamy okresowe sprawdzanie tej strony w celu zapoznania się z ewentualnymi aktualizacjami.</p>
+
+            <h3>⚖️ 16. Przepisy prawa</h3>
+            <p>Niniejsza Polityka Prywatności została przygotowana zgodnie z:</p>
+            <ul>
+                <li><strong>RODO</strong> – Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679</li>
+                <li><strong>Ustawa o ochronie danych osobowych</strong> z dnia 10 maja 2018 r.</li>
+                <li><strong>Ustawa o świadczeniu usług drogą elektroniczną</strong> z dnia 18 lipca 2002 r.</li>
+            </ul>
+
+            <h3>✅ 17. Podsumowanie</h3>
+            <div class="info-box">
+                <p><strong>🎮 NightDrive to gra offline, która szanuje Twoją prywatność:</strong></p>
+                <ul style="margin-top: 8px;">
+                    <li>✅ Żadne dane nie opuszczają Twojego urządzenia</li>
+                    <li>✅ Brak połączenia z internetem</li>
+                    <li>✅ Brak cookies i trackerów</li>
+                    <li>✅ Brak reklam i płatności</li>
+                    <li>✅ 100% kontroli nad swoimi danymi</li>
+                    <li>✅ Możliwość usunięcia danych w każdej chwili</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="policy-footer">
+                <p>Niniejsza Polityka Prywatności została przygotowana zgodnie z wymogami RODO<br>i odpowiada realnemu sposobowi działania aplikacji NightDrive</p>
+                <p style="margin-top: 8px;">Wrocław, Polska</p>
+            </div>
+        </div>
 
         <div class="footer">
-            <p><strong>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></strong></p>
-            <p style="font-size: 0.9em; margin-top: 10px;">
-                Wrocław, Polska
-            </p>
-            <p style="font-size: 0.85em; margin-top: 15px; color: #00ffff;">
-                Niniejsza Polityka Prywatności została przygotowana zgodnie z wymogami RODO<br>
-                i odpowiada realnemu sposobowi działania aplikacji NightDrive
-            </p>
+            <p>&copy; <a href="https://wojtoteka.ovh">Wojtoteka.ovh</a> 2024–<span id="current-year"></span></p>
         </div>
     </div>
-
-    <script>
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const numStars = 80;
-
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 4 + 's';
-                star.style.animationDuration = (Math.random() * 2 + 4) + 's'; 
-                starsContainer.appendChild(star);
-            }
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        window.addEventListener('load', () => {
-            createStars();
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            const yearSpan = document.getElementById('current-year');
-            if (yearSpan) { 
-                const currentYear = new Date().getFullYear();
-                yearSpan.textContent = currentYear;
-            }
-        });
-        
-    </script>
+    <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

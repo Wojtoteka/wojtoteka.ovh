@@ -2,42 +2,152 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Przekierowanie...</title>
-    
-    <meta http-equiv="refresh" content="1;url=https://status.wojtoteka.ovh/">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przekierowanie – Status | Wojtoteka</title>
+    <meta name="theme-color" content="#ff9800">
+    <meta http-equiv="refresh" content="2;url=https://status.wojtoteka.ovh/">
+    <link rel="icon" href="img/logo.png" type="image/png">
     <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            margin: 0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
-            background: #111;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #050505;
             color: #fff;
+            overflow: hidden;
         }
 
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #444;
-            border-top: 5px solid #ff9800;
+        /* Subtle bg gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(255,152,0,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(255,109,0,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .loader-wrap {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 32px;
+        }
+
+        /* Outer ring */
+        .ring {
+            position: absolute;
+            inset: 0;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            border: 2px solid rgba(255,152,0,0.1);
+        }
+
+        .ring::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #ff9800;
+            animation: spin 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
+
+        /* Inner ring */
+        .ring-inner {
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,152,0,0.06);
+        }
+
+        .ring-inner::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-bottom-color: rgba(255,183,77,0.6);
+            animation: spin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite reverse;
+        }
+
+        /* Center pulse dot */
+        .pulse {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 8px; height: 8px;
+            margin: -4px 0 0 -4px;
+            background: #ff9800;
+            border-radius: 50%;
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+
+        .pulse::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: rgba(255,152,0,0.15);
+            animation: pulse-ring 1.6s ease-in-out infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .text {
+            font-size: 0.85em;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeText 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes fadeText {
+            from { opacity: 0.3; }
+            to { opacity: 0.7; }
+        }
+
+        .dest {
+            margin-top: 8px;
+            font-size: 0.7em;
+            color: rgba(255,152,0,0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .dest a {
+            color: rgba(255,152,0,0.4);
+            text-decoration: none;
+        }
+
+        .dest a:hover { color: rgba(255,152,0,0.7); }
     </style>
 </head>
 <body>
 
-    <div class="loader"></div>
-    <p>Trwa przekierowanie...</p>
+    <div class="loader-wrap">
+        <div class="ring"></div>
+        <div class="ring-inner"></div>
+        <div class="pulse"></div>
+    </div>
+
+    <p class="text">Przekierowanie</p>
+    <p class="dest"><a href="https://status.wojtoteka.ovh/">status.wojtoteka.ovh</a></p>
+
 </body>
 </html>

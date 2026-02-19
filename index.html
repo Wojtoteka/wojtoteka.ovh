@@ -43,322 +43,284 @@
       "inLanguage": "pl-PL",
       "author": {
         "@type": "Person",
-        "name": "Wojtoteka"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://wojtoteka.ovh/?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
+        "name": "Wojtoteka",
+        "url": "https://wojtoteka.ovh/"
       }
     }
     </script>
     <style>
-        body, html {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
             height: 100%;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #fff;
+            overflow: hidden;
+            background: #050505;
+        }
+
+        body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            text-align: center;
-            overflow: hidden;
         }
 
+        /* === Video Background === */
         #background-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            filter: brightness(50%);
-        }
-
-        /* Announcement Banner */
-        .announcement-banner {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            padding: 12px 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            animation: slideDown 0.6s ease-out forwards;
-        }
-
-        .announcement-banner p {
-            margin: 0;
-            font-size: 1em;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .announcement-banner .sparkle {
-            display: inline-block;
-            animation: sparkle 1.5s ease-in-out infinite;
-        }
-        
-        .container {
-            z-index: 1;
-            width: 85%;
-            max-width: 570px; 
-            padding: 30px 22px; 
-            border-radius: 14px; 
-            background: rgba(0, 0, 0, 0.68);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-            margin-top: 60px; /* Space for banner */
-        }
-
-  
-        .profile-pic {
-            width: 120px; 
-            height: 120px; 
-            border-radius: 50%;
+            height: 100%;
+            z-index: 0;
             object-fit: cover;
-            margin-bottom: 18px; 
-            animation: scaleIn 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
-            transition: transform 0.3s ease;
+            filter: brightness(40%) saturate(1.3) contrast(1.1);
         }
 
-        .profile-pic:hover {
-            transform: scale(1.05);
+        /* === Grain / noise overlay === */
+        .noise {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
         }
 
-        h1 {
-            font-size: 1.9em; 
-            margin: 13px 0; 
-            animation: fadeInUp 0.5s 0.2s ease-out forwards;
-        }
-
-        p {
-            font-size: 0.95em; 
-            margin: 10px 0; 
-            color: #ddd;
-            animation: fadeInUp 0.5s 0.4s ease-out forwards;
-        }
-
-        .social-links {
-            margin-top: 18px; 
+        /* === Vignette === */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+        }
+
+        /* === Ambient glow === */
+        .ambient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                radial-gradient(600px circle at var(--mx, 50%) var(--my, 40%), rgba(255,152,0,0.06) 0%, transparent 60%);
+            transition: background 0.3s ease;
+        }
+
+        /* === Main content === */
+        .hero {
+            position: relative;
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            gap: 10px; 
+            align-items: center;
+            text-align: center;
+            gap: 0;
+            padding: 20px;
         }
-        
-        .social-links a {
+
+        /* Profile */
+        .avatar {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: rise 0.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .avatar img:hover {
+            transform: scale(1.06);
+            border-color: rgba(255, 152, 0, 0.7);
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff9800, #ff6d00, #ffb74d, #ff9800);
+            opacity: 0;
+            z-index: 1;
+            animation: ringFade 0.8s 0.5s ease forwards, ringRotate 6s 1.3s linear infinite;
+            filter: blur(6px);
+        }
+
+        @keyframes ringFade {
+            to { opacity: 0.45; }
+        }
+
+        @keyframes ringRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Name */
+        h1 {
+            font-size: 3.4em;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1;
+            color: #fff;
+            opacity: 0;
+            animation: rise 0.7s 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Accent line under name */
+        .accent-line {
+            width: 50px;
+            height: 3px;
+            margin: 14px auto 16px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #ff9800, #ff6d00);
+            opacity: 0;
+            animation: lineIn 0.6s 0.45s ease forwards;
+        }
+
+        @keyframes lineIn {
+            from { opacity: 0; width: 0; }
+            to { opacity: 1; width: 50px; }
+        }
+
+        /* Tagline */
+        .tagline {
+            font-size: 1em;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: rise 0.6s 0.5s ease forwards;
+        }
+
+        /* Status */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 18px;
+            padding: 5px 16px;
+            border-radius: 99px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.72em;
+            letter-spacing: 0.5px;
+            color: rgba(255,255,255,0.4);
+            opacity: 0;
+            animation: rise 0.5s 0.6s ease forwards;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4caf50;
+            box-shadow: 0 0 6px rgba(76,175,80,0.5);
+            animation: blink 2.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* === Links row === */
+        .links {
+            display: flex;
+            gap: 12px;
+            margin-top: 36px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .links a {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
             text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.13);
-            color: white;
-            padding: 13px 13px; 
-            border-radius: 9px; 
-            width: 100%;
-            margin: 0;
-            font-weight: bold;
-            font-size: 0.85em; 
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 600;
+            font-size: 0.82em;
+            padding: 11px 22px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             opacity: 0;
             transform: translateY(10px);
-            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
         }
 
-        .social-links a:hover {
-            background-color: rgba(255, 255, 255, 0.22);
-            color: #fff;
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-        }
-
-        
-        .social-links a:nth-child(1) { animation: fadeInUpLink 0.5s 0.6s ease-out forwards; }
-        .social-links a:nth-child(2) { animation: fadeInUpLink 0.5s 0.65s ease-out forwards; }
-        .social-links a:nth-child(3) { animation: fadeInUpLink 0.5s 0.7s ease-out forwards; }
-        .social-links a:nth-child(4) { animation: fadeInUpLink 0.5s 0.75s ease-out forwards; }
-        .social-links a:nth-child(5) { animation: fadeInUpLink 0.5s 0.8s ease-out forwards; }
-        .social-links a:nth-child(6) { animation: fadeInUpLink 0.5s 0.85s ease-out forwards; }
-        .social-links a:nth-child(7) { animation: fadeInUpLink 0.5s 0.9s ease-out forwards; }
-        .social-links a:nth-child(8) { animation: fadeInUpLink 0.5s 0.95s ease-out forwards; }
-        .social-links a:nth-child(9) { animation: fadeInUpLink 0.5s 1.0s ease-out forwards; }
-
-        
-        .footer {
-            font-size: 0.75em; 
-            color: white;
+        .links a::after {
+            content: '';
             position: absolute;
-            bottom: 15px;
-            width: 100%;
-            text-align: center;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,152,0,0.15), transparent);
             opacity: 0;
-            animation: fadeIn 1s 1.5s ease-out forwards;
-            padding: 0 15px;
-            box-sizing: border-box;
+            transition: opacity 0.3s ease;
         }
 
-        
-        @media (max-width: 768px) {
-            .announcement-banner {
-                padding: 10px 15px;
-            }
-
-            .announcement-banner p {
-                font-size: 0.9em;
-            }
-
-            .container {
-                width: 90%;
-                max-width: 500px;
-                padding: 25px 20px;
-                margin-top: 55px;
-            }
-
-            .profile-pic {
-                width: 110px;
-                height: 110px;
-                margin-bottom: 18px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-                margin: 12px 0;
-            }
-
-            p {
-                font-size: 1em;
-                margin: 10px 0;
-            }
-
-            .social-links {
-                gap: 9px; 
-                margin-top: 16px; 
-            }
-
-            .social-links a {
-                padding: 13px 12px; 
-                font-size: 0.9em; 
-                border-radius: 8px;
-            }
+        .links a:hover::after {
+            opacity: 1;
         }
 
-        
-        @media (max-width: 480px) {
-            .announcement-banner {
-                padding: 8px 12px;
-            }
-
-            .announcement-banner p {
-                font-size: 0.85em;
-            }
-
-            .container {
-                width: 92%;
-                padding: 20px 15px;
-                margin: 15px;
-                margin-top: 50px;
-            }
-
-            .profile-pic {
-                width: 90px;
-                height: 90px;
-                margin-bottom: 15px;
-            }
-
-            h1 {
-                font-size: 1.5em;
-                margin: 10px 0;
-            }
-
-            p {
-                font-size: 0.9em;
-                margin: 8px 0;
-            }
-
-            .social-links {
-                gap: 8px; 
-                margin-top: 12px; 
-            }
-
-            .social-links a {
-                padding: 11px 10px; 
-                font-size: 0.8em; 
-                border-radius: 7px;
-            }
-
-            .footer {
-                font-size: 0.7em;
-                bottom: 10px;
-            }
+        .links a:hover {
+            border-color: rgba(255, 152, 0, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 152, 0, 0.12);
+            color: #fff;
         }
 
-        
-        @media (max-width: 320px) {
-            .announcement-banner p {
-                font-size: 0.8em;
-            }
-
-            .container {
-                width: 95%;
-                padding: 18px 12px;
-            }
-
-            .profile-pic {
-                width: 75px;
-                height: 75px;
-            }
-
-            h1 {
-                font-size: 1.3em;
-            }
-
-            p {
-                font-size: 0.8em;
-            }
-
-            .social-links a {
-                padding: 9px 8px; 
-                font-size: 0.75em; 
-            }
+        .links a:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
-       
-        ::-webkit-scrollbar {
-            width: 10px;
-            background: rgba(0,0,0,0.25);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff9800 40%, #ffcc80 100%);
-            border-radius: 8px;
-            border: 2px solid rgba(0,0,0,0.15);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #ff6d00 40%, #ffb74d 100%);
-        }
-        ::-webkit-scrollbar-corner {
-            background: transparent;
-        }
-        
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #ff9800 rgba(0,0,0,0.25);
+        .links a .ico {
+            font-size: 1.15em;
+            position: relative;
+            z-index: 1;
         }
 
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .links a .txt {
+            position: relative;
+            z-index: 1;
         }
 
-        @keyframes fadeInUp {
+        .links a:nth-child(1) { animation: rise 0.5s 0.7s ease forwards; }
+        .links a:nth-child(2) { animation: rise 0.5s 0.8s ease forwards; }
+        .links a:nth-child(3) { animation: rise 0.5s 0.9s ease forwards; }
+
+        /* === Animations === */
+        @keyframes rise {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -369,92 +331,107 @@
             }
         }
 
-        @keyframes fadeInUpLink { 
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* === Footer === */
+        .footer {
+            position: fixed;
+            bottom: 16px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.68em;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+            z-index: 10;
+            opacity: 0;
+            animation: rise 0.6s 1.3s ease forwards;
         }
 
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        .footer a {
+            color: rgba(255, 152, 0, 0.4);
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .footer a:hover {
+            color: rgba(255, 152, 0, 0.7);
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
+        /* === Responsive === */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8em; }
+            .avatar { width: 100px; height: 100px; }
+            .tagline { font-size: 0.88em; letter-spacing: 2px; }
         }
 
-        @keyframes sparkle {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.7;
-                transform: scale(1.1);
-            }
+        @media (max-width: 480px) {
+            h1 { font-size: 2.4em; }
+            .avatar { width: 88px; height: 88px; margin-bottom: 18px; }
+            .tagline { font-size: 0.78em; letter-spacing: 1.5px; }
+            .links { flex-direction: column; align-items: center; gap: 10px; margin-top: 28px; }
+            .links a { width: 220px; justify-content: center; padding: 12px 20px; }
+        }
+
+        @media (max-width: 360px) {
+            h1 { font-size: 2em; }
+            .avatar { width: 76px; height: 76px; }
+            .links a { width: 200px; font-size: 0.78em; padding: 10px 16px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Announcement Banner -->
-    <div class="announcement-banner">
-        <p><span class="sparkle">✨</span> Już niedługo nowa odsłona strony! <span class="sparkle">✨</span></p>
-    </div>
-
     <!-- Background video -->
-    <video autoplay muted loop id="background-video">
+    <video autoplay muted loop playsinline id="background-video">
         <source src="img/tlow.mp4" type="video/mp4">
-        Twoja przeglądarka nie obsługuje wideo.
     </video>
 
-    <div class="container">
-        <img src="img/glogo.gif" alt="Profile Picture" class="profile-pic">
-        <h1>Wojtoteka</h1>
-        <p>Witaj na mojej stronie! 👋</p>
-        <p>Znajdziesz tu wszystkie ważne linki</p>
+    <!-- Overlays -->
+    <div class="noise"></div>
+    <div class="vignette"></div>
+    <div class="ambient"></div>
 
-        <div class="social-links">
-            <a href="gry.html">🕹️ Moje gry</a>
-            <a href="https://kontakt.wojtoteka.ovh/" target="_blank">📩 Kontakt</a>
-            <a href="https://play.google.com/store/apps/developer?id=Wojtoteka&hl=pl" target="_blank">🎮 Sklep Play</a>
+    <!-- Hero content -->
+    <section class="hero">
+        <div class="avatar">
+            <img src="img/glogo.gif" alt="Wojtoteka - twórca gier" width="120" height="120">
         </div>
-    </div>
+
+        <h1>Wojtoteka</h1>
+        <div class="accent-line"></div>
+        <p class="tagline">developer html,css,js & Twórca gier</p>
+
+
+
+        <nav class="links" aria-label="Główna nawigacja">
+            <a href="gry.html">
+                <span class="ico">🕹️</span>
+                <span class="txt">Moje gry</span>
+            </a>
+            <a href="https://kontakt.wojtoteka.ovh/" target="_blank" rel="noopener">
+                <span class="ico">📩</span>
+                <span class="txt">Kontakt</span>
+            </a>
+            <a href="https://play.google.com/store/apps/developer?id=Wojtoteka&hl=pl" target="_blank" rel="noopener">
+                <span class="ico">🎮</span>
+                <span class="txt">Google Play</span>
+            </a>
+        </nav>
+    </section>
 
     <div class="footer">
-        <p>Copyright Wojtoteka.ovh 2024-<span id="current-year"></span></p>
+        <p>&copy; <a href="https://wojtoteka.ovh">Wojtoteka.ovh</a> 2024–<span id="current-year"></span></p>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const yearSpan = document.getElementById('current-year');
-            if (yearSpan) { 
-                const currentYear = new Date().getFullYear();
-                yearSpan.textContent = currentYear;
-            }
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Ambient glow follows mouse
+        document.addEventListener('mousemove', (e) => {
+            const x = ((e.clientX / window.innerWidth) * 100).toFixed(1);
+            const y = ((e.clientY / window.innerHeight) * 100).toFixed(1);
+            document.querySelector('.ambient').style.setProperty('--mx', x + '%');
+            document.querySelector('.ambient').style.setProperty('--my', y + '%');
         });
     </script>
 </body>
 </html>
+
