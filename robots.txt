@@ -7,6 +7,7 @@ Disallow: /404.html
 Disallow: /503.html
 Disallow: /soon.html
 Disallow: /budowa.html
+Disallow: /status.html
 
 # Blokowanie sekcji
 Disallow: /hack/
