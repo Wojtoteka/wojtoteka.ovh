@@ -232,6 +232,36 @@
             box-shadow: 0 8px 25px rgba(255, 152, 0, 0.35);
         }
 
+        .game .game-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.7), rgba(21, 101, 192, 0.7));
+            padding: 12px 28px;
+            border-radius: 12px;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 600;
+            font-size: 0.9em;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(100, 181, 246, 0.2);
+        }
+
+        .game .download-btn:hover {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.9), rgba(21, 101, 192, 0.9));
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.35);
+        }
+
         /* Staggered animations */
         .game.visible {
             animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -379,7 +409,10 @@
                     <img src="Nightdrive/icon192.png" alt="Night Drive" loading="lazy">
                 </div>
                 <h2>Night Drive</h2>
-                <a href="https://wojtoteka.ovh/Nightdrive" class="play-btn">▶ Zagraj teraz</a>
+                <div class="game-btns">
+                    <a href="https://wojtoteka.ovh/Nightdrive" class="play-btn">▶ Zagraj teraz</a>
+                    <a href="https://play.google.com/store/apps/details?id=wojtoteka.nightdrive&hl=pl" class="download-btn" target="_blank" rel="noopener">⬇ Pobierz</a>
+                </div>
             </div>
 
             <div class="game">
