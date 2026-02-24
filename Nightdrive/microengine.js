@@ -710,6 +710,10 @@ this.Runtime = class Runtime {
 
   start() {
     var a, i, j, k, key, l, len1, len2, len3, len4, len5, m, n, name, o, ref, ref1, ref2, ref3, ref4, ref5, s, value;
+    
+    // Rozpocznij animację paska ładowania
+    this.startLoadingAnimation();
+    
     if (window.ms_async_load) {
       this.startReady();
     }
@@ -768,10 +772,94 @@ this.Runtime = class Runtime {
       a.name = name;
       this.assets[name] = a;
     }
+    
+    // Sprawdź od razu czy wszystkie zasoby są gotowe (np. z cache)
+    setTimeout(() => {
+      if (!this.started && !this.starting_game) {
+        console.log("Checking if resources loaded from cache...");
+        this.checkStartReady();
+      }
+    }, 100);
+  }
+
+  startLoadingAnimation() {
+    this.loading_animation_active = true;
+    this.loading_start_time = Date.now();
+    const MAX_LOADING_TIME = 30000; // 30 sekund maksymalnie
+    
+    const animateLoading = () => {
+      if (!this.loading_animation_active || this.started) {
+        return;
+      }
+      
+      var count = 0;
+      var ready = 0;
+      var key, value, ref, ref1;
+      
+      ref = this.sprites;
+      for (key in ref) {
+        value = ref[key];
+        count += 1;
+        if (value.ready) {
+          ready += 1;
+        }
+      }
+      ref1 = this.maps;
+      for (key in ref1) {
+        value = ref1[key];
+        count += 1;
+        if (value.ready) {
+          ready += 1;
+        }
+      }
+      
+      // Sprawdź timeout
+      var loading_time = Date.now() - this.loading_start_time;
+      var timed_out = loading_time > MAX_LOADING_TIME;
+      
+      // Rysuj pasek zawsze, nawet jeśli wszystko załadowane
+      if (this.screen.fillRect != null) {
+        this.screen.clear();
+        this.screen.drawRect(0, 0, 100, 10, "#DDD");
+        var progress = count > 0 ? ready / count : 1;
+        this.screen.fillRect(-(1 - progress) * 48, 0, progress * 96, 6, "#DDD");
+        
+        // Pokaż informację o timeout
+        if (timed_out && this.screen.drawText != null) {
+          this.screen.drawText("Loading timeout - starting anyway...", 0, -20, 8, "#FFF");
+        }
+      }
+      
+      // Kontynuuj animację dopóki nie wystartowano gry
+      if (!this.started) {
+        requestAnimationFrame(animateLoading);
+      }
+      
+      // Jeśli wszystko załadowane LUB timeout, spróbuj uruchomić grę
+      if ((ready >= count && count > 0) || timed_out) {
+        if (!this.started && !this.starting_game) {
+          console.log(timed_out ? "Loading timed out, starting anyway" : "All resources loaded");
+          this.checkStartReady();
+        }
+      }
+    };
+    
+    requestAnimationFrame(animateLoading);
   }
 
   checkStartReady() {
-    var count, key, progress, ready, ref, ref1, value;
+    var count, key, ready, ref, ref1, value;
+    
+    // Jeśli gra już wystartowała, nie sprawdzaj ponownie
+    if (this.started) {
+      return;
+    }
+    
+    // Zapobiega wielokrotnemu wywołaniu w tym samym czasie
+    if (this.starting_game) {
+      return;
+    }
+    
     count = 0;
     ready = 0;
     ref = this.sprites;
@@ -790,28 +878,33 @@ this.Runtime = class Runtime {
         ready += 1;
       }
     }
+    
+    console.log(`checkStartReady: ${ready}/${count} resources ready`);
+    
+    // Jeśli nie ma żadnych zasobów do załadowania
+    if (count === 0) {
+      console.log("No resources to load, starting immediately");
+      this.loading_animation_active = false;
+      this.starting_game = true;
+      return this.startReady();
+    }
+    
     if (ready < count) {
-      if ((this.loading_bar_time == null) || Date.now() > this.loading_bar_time + 16) {
-        this.loading_bar_time = Date.now();
-        if (this.screen.fillRect != null) {
-          this.screen.clear();
-          this.screen.drawRect(0, 0, 100, 10, "#DDD");
-          progress = ready / count;
-          this.screen.fillRect(-(1 - progress) * 48, 0, progress * 96, 6, "#DDD");
-        }
-        if (window.ms_async_load && (this.vm != null)) {
-          this.vm.context.global.system.loading = Math.floor(ready / count * 100);
-        }
+      // Zasoby jeszcze się ładują
+      if (window.ms_async_load && (this.vm != null)) {
+        this.vm.context.global.system.loading = Math.floor(ready / count * 100);
       }
       if (!window.ms_async_load) {
         return;
       }
     } else {
+      // Wszystkie zasoby załadowane
+      console.log("All resources loaded, starting game");
+      this.loading_animation_active = false;
+      this.starting_game = true;
       if (window.ms_async_load && (this.vm != null)) {
         this.vm.context.global.system.loading = 100;
       }
-    }
-    if (!this.started) {
       return this.startReady();
     }
   }
@@ -5964,6 +6057,7 @@ this.Sound = class Sound {
     var request;
     this.audio = audio;
     this.url = url;
+    this.fallback = null;
     if (typeof MicroSound !== "undefined" && MicroSound !== null) {
       this.class = MicroSound;
     }
@@ -5972,21 +6066,87 @@ this.Sound = class Sound {
       this.ready = 1;
     } else {
       this.ready = 0;
-      request = new XMLHttpRequest();
-      request.open('GET', this.url, true);
-      request.responseType = 'arraybuffer';
-      request.onload = () => {
-        return this.audio.context.decodeAudioData(request.response, (buffer1) => {
-          this.buffer = buffer1;
-          return this.ready = 1;
-        });
-      };
-      request.send();
+      this._loadWithFetch(url);
     }
+  }
+
+  _loadWithFetch(url) {
+    var _this = this;
+    // Try fetch first (works better cross-origin and with file://)
+    if (typeof fetch === "function") {
+      fetch(url).then(function(response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.arrayBuffer();
+      }).then(function(arrayBuffer) {
+        return _this.audio.getContext().decodeAudioData(arrayBuffer);
+      }).then(function(buffer) {
+        _this.buffer = buffer;
+        _this.ready = 1;
+        console.log("Sound loaded (fetch):", url);
+      }).catch(function(e) {
+        console.warn("Sound fetch failed for " + url + ", trying XHR:", e);
+        _this._loadWithXHR(url);
+      });
+    } else {
+      this._loadWithXHR(url);
+    }
+  }
+
+  _loadWithXHR(url) {
+    var _this = this;
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+    request.onload = function() {
+      if (request.status === 200 || request.status === 0) {
+        _this.audio.getContext().decodeAudioData(request.response, function(buffer1) {
+          _this.buffer = buffer1;
+          _this.ready = 1;
+          console.log("Sound loaded (XHR):", url);
+        }, function(err) {
+          console.warn("decodeAudioData failed for " + url + ", using HTML5 Audio fallback:", err);
+          _this._loadFallback(url);
+        });
+      } else {
+        console.warn("XHR failed for " + url + " (status " + request.status + "), using HTML5 Audio fallback");
+        _this._loadFallback(url);
+      }
+    };
+    request.onerror = function() {
+      console.warn("XHR error for " + url + ", using HTML5 Audio fallback");
+      _this._loadFallback(url);
+    };
+    request.send();
+  }
+
+  _loadFallback(url) {
+    // HTML5 Audio fallback (same approach as Music class)
+    this.fallback = new Audio(url);
+    this.fallback.preload = "auto";
+    this.ready = 1;
+    console.log("Sound using HTML5 Audio fallback:", url);
   }
 
   play(volume = 1, pitch = 1, pan = 0, loopit = false) {
     var gain, panner, playing, res, source;
+
+    // HTML5 Audio fallback path
+    if (this.fallback != null) {
+      var snd = this.fallback.cloneNode();
+      snd.volume = Math.max(0, Math.min(1, volume));
+      snd.loop = loopit ? true : false;
+      snd.playbackRate = Math.max(0.25, Math.min(4, pitch));
+      snd.play().catch(function(){});
+      return {
+        stop: function() { snd.pause(); snd.currentTime = 0; return 1; },
+        setVolume: function(v) { snd.volume = Math.max(0, Math.min(1, v)); },
+        setPitch: function(p) { snd.playbackRate = Math.max(0.25, Math.min(4, p)); },
+        setPan: function() {},
+        getDuration: function() { return snd.duration || 0; },
+        finished: false
+      };
+    }
+
     if (this.buffer == null) {
       return;
     }

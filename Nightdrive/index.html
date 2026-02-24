@@ -151,6 +151,27 @@ window.addEventListener("load",function() {
       // console.info(event.data) ;
     }
   }) ;
+  
+  // Fix AudioContext autoplay policy - Web Audio API wymaga user gesture
+  // Dodajemy persistentny handler który resumuje kontekst przy każdej interakcji
+  function resumeAudioContext() {
+    var runtime = window.player && window.player.runtime;
+    if (!runtime) return;
+    var ctx = runtime.audio && runtime.audio.context;
+    if (!ctx) return;
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(function() {
+        console.log('AudioContext resumed, state:', ctx.state);
+      }).catch(function(e) {
+        console.warn('AudioContext resume failed:', e);
+      });
+    }
+  }
+  
+  ['mousedown', 'mouseup', 'touchstart', 'touchend', 'keydown'].forEach(function(evt) {
+    document.addEventListener(evt, resumeAudioContext, { passive: true, capture: true });
+  });
+  
   document.body.focus() ;
 }) ;
 
@@ -172,6 +193,10 @@ coin = class
   update = function()
     if destroyed == false then
      coin_x-=coin_speed+global_time/55
+     if magnet_active then
+       coin_x += (player_x-coin_x)/28
+       coin_y += (player_y-coin_y)/28
+     end
     end
   end
    
@@ -227,7 +252,11 @@ enemy = class
   end
   
   update = function()
-   enemy_x-=enemy_speed+global_time/55
+   if slowmo_active then
+     enemy_x-=(enemy_speed+global_time/55)*0.5
+   else
+     enemy_x-=enemy_speed+global_time/55
+   end
   end
 
   draw = function()
@@ -308,6 +337,271 @@ random.intInRange = function(MIN,MAX)
 end
 
 
+// Power-up entity
+powerup = class
+  constructor = function(x,y,p_type)
+    this.px = x
+    this.py = y
+    this.p_speed = 1.2
+    this.p_type = p_type
+    this.collected = false
+    this.hitbox = 12
+  end
+  
+  update = function()
+    if not collected then
+      px -= p_speed + global_time/70
+    end
+  end
+  
+  draw = function()
+    if collected then
+      screen.setAlpha(0)
+    else
+      size = 12-py/9
+      c = getPowerupColor(p_type)
+      icon = getPowerupIcon(p_type)
+      screen.setAlpha(0.15)
+      screen.fillRound(px,py,2.2*size,1.1*size,c)
+      screen.setAlpha(0.9)
+      screen.setFont("Zepto")
+      screen.drawRound(px,py,1.8*size,1.2*size,c)
+      screen.drawText(icon,px,py,size+2,"rgb(0,0,0)")
+      
+      if px-hitbox<=player_x+player_hitbox and px+hitbox>=player_x-player_hitbox then
+        if py+hitbox>=player_y-player_hitbox/4-10 and py-hitbox<=player_y+player_hitbox/4-10 then
+          collected = true
+          applyPowerup(p_type)
+        end
+      end
+    end
+  end
+end
+
+
+getPowerupColor = function(kind)
+  if kind == "shield" then return "rgb(0,220,255)"
+  elsif kind == "magnet" then return "rgb(255,180,0)"
+  elsif kind == "slowmo" then return "rgb(140,160,255)"
+  elsif kind == "double" then return "rgb(120,255,120)"
+  else return "#FFFFFF"
+  end
+end
+
+getPowerupIcon = function(kind)
+  if kind == "shield" then return "SH"
+  elsif kind == "magnet" then return "MG"
+  elsif kind == "slowmo" then return "SL"
+  elsif kind == "double" then return "X2"
+  else return "?"
+  end
+end
+
+applyPowerup = function(kind)
+  if kind == "shield" then
+    shield_charges = min(shield_charges + 1, 5)
+    storage.set("shield_charges", shield_charges)
+    powerup_messages.push("shield")
+  elsif kind == "magnet" then
+    magnet_active = true
+    magnet_timer = system.time() + powerup_durations.magnet
+    powerup_messages.push("magnet")
+  elsif kind == "slowmo" then
+    slowmo_active = true
+    slowmo_timer = system.time() + powerup_durations.slowmo
+    powerup_messages.push("slowmo")
+  elsif kind == "double" then
+    double_score_active = true
+    double_score_timer = system.time() + powerup_durations.double
+    powerup_messages.push("double")
+  end
+end
+
+getComboMultiplier = function()
+  if current_streak >= 20 then return 4
+  elsif current_streak >= 12 then return 3
+  elsif current_streak >= 6 then return 2
+  elsif current_streak >= 3 then return 1.5
+  else return 1
+  end
+end
+
+getCoinValue = function()
+  local base = 1
+  local value = base * getComboMultiplier()
+  if double_score_active then
+    value *= 2
+  end
+  return ceil(value)
+end
+
+updatePowerupTimers = function()
+  local now = system.time()
+  if magnet_active and now > magnet_timer then
+    magnet_active = false
+  end
+  if slowmo_active and now > slowmo_timer then
+    slowmo_active = false
+  end
+  if double_score_active and now > double_score_timer then
+    double_score_active = false
+  end
+end
+
+updateComboTimeout = function()
+  local now = system.time()
+  if current_streak > 0 and now - last_coin_time > 3500 then
+    current_streak = 0
+  end
+end
+
+getPlayerColor = function()
+  for s in shop_items
+    if s.id == selected_skin then
+      return s.colour
+    end
+  end
+  return "#FFFFFF"
+end
+
+getPlayerAltColor = function()
+  if selected_skin == "neon" then return "rgb(0,130,130)"
+  elsif selected_skin == "rose" then return "rgb(160,70,110)"
+  elsif selected_skin == "gold" then return "rgb(170,140,0)"
+  else return "rgb(160,160,160)"
+  end
+end
+
+refreshDailyChallenge = function()
+  current_day_key = floor(system.time()/86400000)
+  saved_day = storage.get("daily_day")
+  if saved_day == null or saved_day != current_day_key then
+    // Check streak continuity
+    if saved_day != null and current_day_key - saved_day == 1 then
+      daily_streak += 1
+    elsif saved_day != null and current_day_key - saved_day > 1 then
+      daily_streak = 1
+    else
+      daily_streak = 1
+    end
+    if daily_streak > best_daily_streak then
+      best_daily_streak = daily_streak
+    end
+    storage.set("daily_streak", daily_streak)
+    storage.set("best_daily_streak", best_daily_streak)
+    daily_completed = false
+    daily_progress = 0
+    daily_goal = random.intInRange(25,60)
+    daily_type = random.intInRange(0,1)
+    daily_reward = 25
+    storage.set("daily_day", current_day_key)
+    storage.set("daily_completed", daily_completed)
+    storage.set("daily_progress", daily_progress)
+    storage.set("daily_goal", daily_goal)
+    storage.set("daily_type", daily_type)
+  else
+    daily_completed = storage.get("daily_completed")
+    if daily_completed == null then daily_completed = false end
+    daily_progress = storage.get("daily_progress")
+    if daily_progress == null then daily_progress = 0 end
+    daily_goal = storage.get("daily_goal")
+    if daily_goal == null then daily_goal = 30 end
+    daily_type = storage.get("daily_type")
+    if daily_type == null then daily_type = 0 end
+  end
+end
+
+saveDaily = function()
+  storage.set("daily_completed", daily_completed)
+  storage.set("daily_progress", daily_progress)
+  storage.set("daily_goal", daily_goal)
+  storage.set("daily_type", daily_type)
+end
+
+// Achievement helpers
+loadAchievements = function()
+  achievements = [
+    object id="coins100" name="100 Coins" goal=100 type="total_coins" reward=15 unlocked=false end,
+    object id="score50" name="Score 50" goal=50 type="score" reward=15 unlocked=false end,
+    object id="streak5" name="Combo x5" goal=5 type="streak" reward=10 unlocked=false end,
+    object id="survive60" name="Survive 60s" goal=60 type="time" reward=20 unlocked=false end,
+    object id="daily30" name="30 Days" goal=30 type="daily_streak" reward=50 unlocked=false end,
+    object id="daily100" name="100 Days" goal=100 type="daily_streak" reward=150 unlocked=false end
+  ]
+  stored = storage.get("achievements")
+  if stored != null then
+    for a in achievements
+      if stored[a.id] != null then
+        a.unlocked = stored[a.id]
+      end
+    end
+  end
+end
+
+saveAchievements = function()
+  data = object end
+  for a in achievements
+    data[a.id] = a.unlocked
+  end
+  storage.set("achievements", data)
+end
+
+unlockAchievement = function(id)
+  for a in achievements
+    if a.id == id and not a.unlocked then
+      a.unlocked = true
+      achievement_toast = getText("achievement_unlocked") + " " + a.name
+      achievement_timer = system.time() + 4000
+      total_coins_collected += a.reward
+      storage.set("total_coins", total_coins_collected)
+      saveAchievements()
+    end
+  end
+end
+
+checkAchievements = function(current_score, survival_time)
+  for a in achievements
+    if not a.unlocked then
+      if a.type == "total_coins" and total_coins_collected >= a.goal then
+        unlockAchievement(a.id)
+      elsif a.type == "score" and current_score >= a.goal then
+        unlockAchievement(a.id)
+      elsif a.type == "streak" and current_streak >= a.goal then
+        unlockAchievement(a.id)
+      elsif a.type == "time" and survival_time >= a.goal then
+        unlockAchievement(a.id)
+      elsif a.type == "daily_streak" and best_daily_streak >= a.goal then
+        unlockAchievement(a.id)
+      end
+    end
+  end
+end
+
+countUnlocked = function()
+  local n = 0
+  for a in achievements
+    if a.unlocked then n+=1 end
+  end
+  return n
+end
+
+achievementProgress = function(a)
+  if a.type == "total_coins" then
+    return total_coins_collected
+  elsif a.type == "score" then
+    return highscore
+  elsif a.type == "streak" then
+    return longest_streak
+  elsif a.type == "time" then
+    return longest_streak_time
+  elsif a.type == "daily_streak" then
+    return best_daily_streak
+  else
+    return 0
+  end
+end
+
+
 end()
 
 
@@ -317,6 +611,8 @@ init = function()
   TIMER = system.time()
   ini_time = system.time()
   ini_time2 = system.time()
+  last_powerup_time = system.time()
+  last_coin_time = system.time()
   player_x = -screen.width/2-70
   player_y = -50
   player_z = 0
@@ -325,13 +621,26 @@ init = function()
   player_speed = 1.8
   enemy_spawn_delay = 300
   coin_spawn_delay = 0
+  powerup_spawn_delay = 0
   score = 0
   coins_in_session = 0
   current_streak = 0
   streak_start_time = 0
-  
-  // Uruchom muzykę w tle
-  audio.playMusic("music", 0.3, true)
+  combo_multiplier = 1
+  double_score_active = false
+  double_score_timer = 0
+  magnet_active = false
+  magnet_timer = 0
+  slowmo_active = false
+  slowmo_timer = 0
+  shield_charges = storage.get("shield_charges")
+  if shield_charges == null then shield_charges = 0 end
+  powerup_messages = []
+  powerup_durations = object shield=0 magnet=8000 slowmo=5000 double=10000 end
+  powerups = []
+  powerup_spawn_min = 1200
+  powerup_spawn_max = 4800
+  powerup_spawn_delay = random.intInRange(powerup_spawn_min, powerup_spawn_max)
   
   highscore = storage.get("highscore")
   if highscore == null or highscore == 0 then
@@ -344,24 +653,58 @@ init = function()
   total_coins_collected = storage.get("total_coins")
   if total_coins_collected == null then
     total_coins_collected = 0
-    storage.set("total_coins", 0)
   end
   
   longest_streak = storage.get("longest_streak")
   if longest_streak == null then
     longest_streak = 0
-    storage.set("longest_streak", 0)
   end
   
   longest_streak_time = storage.get("longest_streak_time")
   if longest_streak_time == null then
     longest_streak_time = 0
-    storage.set("longest_streak_time", 0)
   end
+  
+  if storage.get("owned_skins") == null then
+    storage.set("owned_skins", ["classic"])
+  end
+  owned_skins = storage.get("owned_skins")
+  if storage.get("selected_skin") == null then
+    storage.set("selected_skin", "classic")
+  end
+  selected_skin = storage.get("selected_skin")
+  shop_items = [
+    object id="classic" name="Classic" price=0 colour="#FFFFFF" end,
+    object id="neon" name="Neon Aqua" price=40 colour="rgb(0,255,255)" end,
+    object id="rose" name="Hot Pink" price=80 colour="rgb(255,120,180)" end,
+    object id="gold" name="Gold" price=120 colour="rgb(255,215,0)" end
+  ]
+  shop_open = false
+  shop_message = ""
+  shop_message_timer = 0
+  achievements_open = false
+  
+  achievements = []
+  achievement_toast = ""
+  achievement_timer = 0
+  loadAchievements()
+  
+  daily_streak = storage.get("daily_streak")
+  if daily_streak == null then daily_streak = 0 end
+  best_daily_streak = storage.get("best_daily_streak")
+  if best_daily_streak == null then best_daily_streak = 0 end
+  
+  daily_completed = false
+  daily_progress = 0
+  daily_goal = 30
+  daily_type = 0
+  daily_reward = 25
+  refreshDailyChallenge()
   
   global_time = 0
   enemies = []
   coins = []
+  powerups = []
   stars=[]
   for i=0 to 15
     local star=object
@@ -377,6 +720,7 @@ init = function()
   paused = false
   pause_time = 0
   stored_bounce = 0
+  music_handle = null
   
   show_reset_confirmation = false
   
@@ -388,6 +732,8 @@ init = function()
   down = 0
   
   difficulty_level = 0
+  
+  menu_stats_loaded = false
   
 end
 
@@ -421,6 +767,21 @@ update = function()
       elsif key == "current_high_score" then return "Najwyższy wynik: "
       elsif key == "total_coins" then return "Zebrane monety: "
       elsif key == "best_streak" then return "Najdłuższa seria: "
+      elsif key == "shop" then return "Sklep"
+      elsif key == "buy" then return "Kup"
+      elsif key == "owned" then return "Posiadane"
+      elsif key == "select" then return "Wybierz"
+      elsif key == "selected" then return "Wybrano"
+      elsif key == "achievements" then return "Osiągnięcia"
+      elsif key == "daily" then return "Wyzwanie dnia"
+      elsif key == "daily_done" then return "Ukończone!"
+      elsif key == "daily_reward" then return "Nagroda"
+      elsif key == "achievement_unlocked" then return "Odblokowano"
+      elsif key == "not_enough" then return "Za mało monet"
+      elsif key == "combo" then return "Mnożnik"
+      elsif key == "back" then return "Wróć"
+      elsif key == "streak_days" then return "Passa: "
+      elsif key == "days" then return " dni"
       else return key
       end
     else
@@ -441,9 +802,31 @@ update = function()
       elsif key == "current_high_score" then return "High Score: "
       elsif key == "total_coins" then return "Total Coins: "
       elsif key == "best_streak" then return "Best Streak: "
+      elsif key == "shop" then return "Shop"
+      elsif key == "buy" then return "Buy"
+      elsif key == "owned" then return "Owned"
+      elsif key == "select" then return "Select"
+      elsif key == "selected" then return "Selected"
+      elsif key == "achievements" then return "Achievements"
+      elsif key == "daily" then return "Daily Challenge"
+      elsif key == "daily_done" then return "Completed!"
+      elsif key == "daily_reward" then return "Reward"
+      elsif key == "achievement_unlocked" then return "Unlocked"
+      elsif key == "not_enough" then return "Not enough coins"
+      elsif key == "combo" then return "Combo"
+      elsif key == "back" then return "Back"
+      elsif key == "streak_days" then return "Streak: "
+      elsif key == "days" then return " days"
       else return key
       end
     end
+  end
+  
+  updatePowerupTimers()
+  updateComboTimeout()
+  today = floor(system.time()/86400000)
+  if storage.get("daily_day") != today then
+    refreshDailyChallenge()
   end
   
   if scene == 1 then
@@ -452,11 +835,13 @@ update = function()
         paused = not paused
         if paused then
           pause_time = system.time()
+          if music_handle != null then music_handle.stop() end
           print("Gra spauzowana")
         else
           local pause_duration = system.time() - pause_time
           ini_time += pause_duration
           ini_time2 += pause_duration
+          if music_handle != null then music_handle.play() end
           print("Gra wznowiona")
         end
       end
@@ -469,6 +854,7 @@ update = function()
           local pause_duration = system.time() - pause_time
           ini_time += pause_duration
           ini_time2 += pause_duration
+          if music_handle != null then music_handle.play() end
           print("Gra wznowiona przez przycisk")
         end
       end
@@ -492,26 +878,38 @@ update = function()
   streak_start_time = 0
   difficulty_level = 0
   global_time = 0
+  double_score_active = false
+  magnet_active = false
+  slowmo_active = false
+  powerups = []
+  last_powerup_time = system.time()
+  powerup_spawn_delay = random.intInRange(powerup_spawn_min, powerup_spawn_max)
+  last_coin_time = system.time()
   
-  stored_score = storage.get("highscore")
-  if stored_score != null and stored_score > highscore then
-    highscore = stored_score
-    print("Zaktualizowano najwyższy wynik w menu: " + highscore)
-  end
-  
-  stored_coins = storage.get("total_coins")
-  if stored_coins != null then
-    total_coins_collected = stored_coins
-  end
-  
-  stored_streak = storage.get("longest_streak")
-  if stored_streak != null then
-    longest_streak = stored_streak
-  end
-  
-  stored_streak_time = storage.get("longest_streak_time")
-  if stored_streak_time != null then
-    longest_streak_time = stored_streak_time
+  // Wczytaj statystyki tylko raz, nie w każdej klatce
+  if not menu_stats_loaded then
+    stored_score = storage.get("highscore")
+    if stored_score != null and stored_score > highscore then
+      highscore = stored_score
+      print("Zaktualizowano najwyższy wynik w menu: " + highscore)
+    end
+    
+    stored_coins = storage.get("total_coins")
+    if stored_coins != null then
+      total_coins_collected = stored_coins
+    end
+    
+    stored_streak = storage.get("longest_streak")
+    if stored_streak != null then
+      longest_streak = stored_streak
+    end
+    
+    stored_streak_time = storage.get("longest_streak_time")
+    if stored_streak_time != null then
+      longest_streak_time = stored_streak_time
+    end
+    
+    menu_stats_loaded = true
   end
   
   for e in enemies
@@ -527,10 +925,22 @@ update = function()
    end
   end
  end
+ 
+ // Reset flagi gdy opuszczamy menu
+ if scene != 0 and menu_stats_loaded then
+   menu_stats_loaded = false
+ end
   
   if scene==1 then
   if not paused and global_time<80 then
    global_time+=0.01
+   if not daily_completed and daily_type == 1 then
+     live_time = floor((system.time()-streak_start_time)/1000)
+     if live_time > daily_progress then
+       daily_progress = min(live_time, daily_goal)
+        saveDaily()
+     end
+   end
   end
   
   if not paused then
@@ -580,15 +990,40 @@ update = function()
       enemies.removeElement(e)
     end
     if not paused and e.collided then
+      if shield_charges > 0 then
+        shield_charges -= 1
+        storage.set("shield_charges", shield_charges)
+        e.collided = false
+        e.enemy_x = -screen.width - 200
+      else
       current_streak_time = floor((system.time() - streak_start_time) / 1000)
       if current_streak_time > longest_streak_time then
         longest_streak_time = current_streak_time
-        storage.set("longest_streak_time", longest_streak_time)
       end
       current_streak = 0
+      if not daily_completed and daily_type == 1 then
+        if current_streak_time > daily_progress then
+          daily_progress = current_streak_time
+        end
+        if daily_progress >= daily_goal then
+          daily_completed = true
+          total_coins_collected += daily_reward
+          storage.set("total_coins", total_coins_collected)
+        end
+        saveDaily()
+      end
+      checkAchievements(score, current_streak_time)
+      
+      // Zapisz wszystkie statystyki przy game over
+      storage.set("longest_streak_time", longest_streak_time)
+      storage.set("total_coins", total_coins_collected)
+      
       scene = 2
+      if music_handle != null then music_handle.stop() end
+      music_handle = null
       audio.playSound("explosion",0.5,1,0,0)
       audio.playSound("defeat",0.9,1,0,0)
+      end
     end
    end
   end
@@ -618,11 +1053,28 @@ update = function()
     if c.coin_x <=-screen.width/2-90 then
       coins.removeElement(c)
     elsif not paused and c.n<=0.05 then
-      score+=1
+      value = getCoinValue()
+      score+=value
       coins_in_session+=1
       current_streak+=1
+      last_coin_time = system.time()
       total_coins_collected+=1
       storage.set("total_coins", total_coins_collected)
+      if current_streak > longest_streak then
+        longest_streak = current_streak
+      end
+      checkAchievements(score, floor((system.time()-streak_start_time)/1000))
+      if not daily_completed then
+        if daily_type == 0 then
+          daily_progress+=1
+        end
+        if daily_progress>=daily_goal then
+          daily_completed = true
+          total_coins_collected += daily_reward
+          storage.set("total_coins", total_coins_collected)
+        end
+        saveDaily()
+      end
       audio.playSound("coins",1,1,0,0)
       coins.removeElement(c)
     end
@@ -635,6 +1087,25 @@ update = function()
     coins.push(new coin(500,random.intInRange(21,-60),1))
     ini_time2 = system.time()
     coin_spawn_delay = random.intInRange(720-ceil(global_time*2),5000-ceil(global_time*45))
+  end
+  
+  for p in powerups
+   if p!=null then
+     if not paused then
+       p.update()
+     end
+     if p.px <= -screen.width/2-90 or p.collected then
+       powerups.removeElement(p)
+     end
+   end
+  end
+  
+  if not paused and current_time2 - last_powerup_time >= powerup_spawn_delay and powerups.length < 2 then
+    list = ["shield","magnet","slowmo","double"]
+    p_type = list[random.intInRange(0,list.length-1)]
+    powerups.push(new powerup(500,random.intInRange(25,-50),p_type))
+    last_powerup_time = system.time()
+    powerup_spawn_delay = random.intInRange(powerup_spawn_min, powerup_spawn_max)
   end
   end
   
@@ -657,29 +1128,92 @@ update = function()
   end
   
   if scene==0 then
-   if mouse.x<50 and mouse.x>-50 and mouse.y<-5 and mouse.y>-40 then
-     if mouse.press then
+   if not show_reset_confirmation and not shop_open and not achievements_open then
+     start_y = 0
+     start_hw = 70
+     start_hh = 20
+     if mouse.x<start_hw and mouse.x>-start_hw and mouse.y<start_y+start_hh and mouse.y>start_y-start_hh then
+       if mouse.press then
+         scene = 0.5
+       end
+     elsif gamepad.release.A then
        scene = 0.5
      end
-   elsif gamepad.release.A then
-     scene = 0.5
    end
    
    if not show_reset_confirmation then
-     if mouse.x>-screen.width/2+10 and mouse.x<-screen.width/2+150 and mouse.y>-screen.height/2+15 and mouse.y<-screen.height/2+55 then
-       if mouse.press then
-         show_reset_confirmation = true
-       end
-     end
-     
-     if mouse.x>screen.width/2-65 and mouse.x<screen.width/2-15 and mouse.y>screen.height/2-50 and mouse.y<screen.height/2-10 then
-       if mouse.press then
-         if current_language == "PL" then
-           current_language = "EN"
-         else
-           current_language = "PL"
+     if shop_open then
+       if mouse.x>-screen.width/2+10 and mouse.x<-screen.width/2+90 and mouse.y>70 and mouse.y<95 then
+         if mouse.press then
+           shop_open = false
          end
-         print("Zmieniono język na: " + current_language)
+       end
+       for i=0 to shop_items.length-1
+         item = shop_items[i]
+         y = 45 - i*30
+         if mouse.x>-120 and mouse.x<120 and mouse.y>y-12 and mouse.y<y+12 then
+           if mouse.press then
+             owned = false
+             for s in owned_skins
+               if s == item.id then owned = true end
+             end
+             if owned then
+               selected_skin = item.id
+               storage.set("selected_skin", selected_skin)
+               shop_message = getText("selected")
+               shop_message_timer = system.time()+2000
+             elsif total_coins_collected >= item.price then
+               total_coins_collected -= item.price
+               owned_skins.push(item.id)
+               storage.set("owned_skins", owned_skins)
+               storage.set("selected_skin", item.id)
+               storage.set("total_coins", total_coins_collected)
+               selected_skin = item.id
+               shop_message = getText("buy") + " " + item.name
+               shop_message_timer = system.time()+2000
+             else
+               shop_message = getText("not_enough")
+               shop_message_timer = system.time()+2000
+             end
+           end
+         end
+       end
+     elsif achievements_open then
+       // Back button for achievements
+       if mouse.x>-screen.width/2+10 and mouse.x<-screen.width/2+90 and mouse.y>70 and mouse.y<95 then
+         if mouse.press then
+           achievements_open = false
+         end
+       end
+     else
+       if mouse.x>-screen.width/2+10 and mouse.x<-screen.width/2+150 and mouse.y>-screen.height/2+15 and mouse.y<-screen.height/2+55 then
+         if mouse.press then
+           show_reset_confirmation = true
+         end
+       end
+       
+       if mouse.x>screen.width/2-65 and mouse.x<screen.width/2-15 and mouse.y>screen.height/2-50 and mouse.y<screen.height/2-10 then
+         if mouse.press then
+           if current_language == "PL" then
+             current_language = "EN"
+           else
+             current_language = "PL"
+           end
+           print("Zmieniono język na: " + current_language)
+         end
+       end
+       
+       // Shop button
+       if mouse.x>screen.width/2-140 and mouse.x<screen.width/2-10 and mouse.y>-screen.height/2+45 and mouse.y<-screen.height/2+70 then
+         if mouse.press then
+           shop_open = true
+         end
+       end
+       // Achievements button
+       if mouse.x>screen.width/2-140 and mouse.x<screen.width/2-10 and mouse.y>-screen.height/2+15 and mouse.y<-screen.height/2+45 then
+         if mouse.press then
+           achievements_open = true
+         end
        end
      end
    else
@@ -731,6 +1265,7 @@ update = function()
     elsif player_x>=-90 then
       scene = 1
       streak_start_time = system.time()
+      music_handle = audio.playMusic("music", 0.7, true)
     end
   end
 
@@ -788,22 +1323,24 @@ draw = function()
   y=player_y+bounce
   x2 = player_x/(1.07-y2/700) 
   y2 = player_y/1.1 + 5-(player_y-20)/10+bounce
+  main_color = getPlayerColor()
+  alt_color = getPlayerAltColor()
   if not paused then
     bounce = 0.3*sin(system.time()/30)
     stored_bounce = bounce
   else
     bounce = stored_bounce
   end
-  screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
-  screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,"rgb(180,180,180)")
-  screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
-  screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,"#FFFFFF")
-  screen.drawRect( x, y, 5*size1, 3*size1, '#FFF')
-  screen.drawRect( x2, y2, 5*size2, 3*size2,"rgb(180,180,180)")
-  screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
-  screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
-  screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,"rgb(210,210,210)")
-  screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,"rgb(210,210,210)")
+  screen.drawRound(x2+5*size2/2-8*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,alt_color)
+  screen.drawRound(x2+5*size2/2-2*size2/2,y2+3*size2/2-6*size2/2+bounce,1.5*size2,1.5*size2,alt_color)
+  screen.drawRound(x+5*size1/2-8*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,main_color)
+  screen.drawRound(x+5*size1/2-2*size1/2,y+3*size1/2-6*size1/2+bounce,1.5*size1,1.5*size1,main_color)
+  screen.drawRect( x, y, 5*size1, 3*size1, main_color)
+  screen.drawRect( x2, y2, 5*size2, 3*size2,alt_color)
+  screen.drawLine(x+5*size1/2,y+3*size1/2,x2+5*size2/2,y2+3*size2/2,alt_color)
+  screen.drawLine(x+5*size1/2,y-3*size1/2,x2+5*size2/2,y2-3*size2/2,alt_color)
+  screen.drawLine(x-5*size1/2,y+3*size1/2,x2-5*size2/2,y2+3*size2/2,alt_color)
+  screen.drawLine(x-5*size1/2,y-3*size1/2,x2-5*size2/2,y2-3*size2/2,alt_color)
   
   for e in enemies
     if e!=null then
@@ -817,33 +1354,135 @@ draw = function()
     end
   end
   
+  for p in powerups
+    if p!=null then
+      p.draw()
+    end
+  end
+  
   end
   
   if scene==0 then
     screen.setAlpha(1)
     
     if not show_reset_confirmation then
-      screen.setFont("Edunline")
-      screen.drawText("Night Drive",0,50,20,"rgb(255,198,255)")
-      screen.setFont("Zepto")
-      screen.drawText(getText("start"),1,-22,17,"rgb(0,255,255)")
-      
-      screen.setFont("Squarewave")
-      screen.drawText(current_language, screen.width/2-40, screen.height/2-30, 20, "rgb(100,255,255)")
-      
-      screen.setFont("Squarewave")
-      screen.drawText(getText("current_high_score") + highscore, 0, -45, 12, "rgb(200,200,255)")
-      screen.drawText(getText("total_coins") + total_coins_collected, 0, -60, 12, "rgb(255,255,100)")
-      if longest_streak_time > 0 then
-        screen.drawText(getText("best_streak") + formatTime(longest_streak_time), 0, -75, 12, "rgb(100,255,150)")
+      if shop_open then
+        // ---- SHOP OVERLAY ----
+        screen.setAlpha(0.95)
+        screen.fillRect(0,0,screen.width,screen.height,"rgba(0,0,0,0.92)")
+        screen.setAlpha(1)
+        screen.setFont("Edunline")
+        screen.drawText(getText("shop"),0,82,24,"rgb(255,220,120)")
+        screen.setFont("Squarewave")
+        screen.drawText(getText("back"), -screen.width/2+50, 82, 13, "rgb(200,200,255)")
+        screen.drawText(getText("total_coins") + total_coins_collected, screen.width/2-80, 82, 10, "rgb(255,255,120)")
+        for i=0 to shop_items.length-1
+          item = shop_items[i]
+          iy = 45 - i*30
+          owned = false
+          for s in owned_skins
+            if s == item.id then owned = true end
+          end
+          screen.setAlpha(0.12)
+          screen.drawLine(-110, iy-13, 110, iy-13, "rgb(255,255,255)")
+          screen.setAlpha(1)
+          screen.setFont("Squarewave")
+          screen.drawText(item.name, -55, iy, 13, item.colour)
+          screen.drawText(item.price + "c", 40, iy, 12, "rgb(255,255,140)")
+          if owned then
+            if selected_skin == item.id then
+              label = getText("selected")
+            else
+              label = getText("owned")
+            end
+            screen.drawText(label, 105, iy, 11, "rgb(120,255,120)")
+          else
+            screen.drawText(getText("buy"), 105, iy, 11, "rgb(255,200,120)")
+          end
+        end
+        if shop_message != "" and shop_message_timer>system.time() then
+          screen.setFont("Squarewave")
+          screen.drawText(shop_message,0,-70,11,"rgb(200,240,255)")
+        end
+      elsif achievements_open then
+        // ---- ACHIEVEMENTS OVERLAY ----
+        screen.setAlpha(0.95)
+        screen.fillRect(0,0,screen.width,screen.height,"rgba(0,0,0,0.92)")
+        screen.setAlpha(1)
+        screen.setFont("Squarewave")
+        screen.drawText(getText("achievements"),0,82,18,"rgb(200,240,255)")
+        screen.drawText(getText("back"), -screen.width/2+50, 82, 13, "rgb(200,200,255)")
+        screen.drawText(countUnlocked() + "/" + achievements.length, screen.width/2-50, 82, 12, "rgb(120,255,120)")
+        for i=0 to achievements.length-1
+          a = achievements[i]
+          iy = 50 - i*22
+          status = "[ ]"
+          if a.unlocked then status = "[X]" end
+          prog = achievementProgress(a)
+          suffix = ""
+          if a.type == "time" then suffix = "s" end
+          if a.type == "daily_streak" then
+            suffix = getText("days")
+          end
+          screen.setAlpha(0.12)
+          screen.drawLine(-140, iy-10, 140, iy-10, "rgb(255,255,255)")
+          screen.setAlpha(1)
+          screen.setFont("Squarewave")
+          if a.unlocked then
+            colour = "rgb(140,255,140)"
+          else
+            colour = "rgb(220,220,220)"
+          end
+          screen.drawText(status + " " + a.name, -70, iy, 11, colour)
+          screen.drawText(prog + suffix + "/" + a.goal + suffix, 50, iy, 10, "rgb(180,180,220)")
+          screen.drawText("+" + a.reward + "c", 120, iy, 10, "rgb(255,255,140)")
+        end
       else
-        screen.drawText(getText("best_streak") + "0s", 0, -75, 12, "rgb(100,255,150)")
+        // ---- MAIN MENU ----
+        screen.setFont("Edunline")
+        screen.drawText("Night Drive",0,75,18,"rgb(255,198,255)")
+        screen.setFont("Zepto")
+        screen.drawText(getText("start"),0,0,16,"rgb(0,255,255)")
+        
+        screen.setFont("Squarewave")
+        screen.drawText(current_language, screen.width/2-40, screen.height/2-30, 20, "rgb(100,255,255)")
+        
+        // Stats
+        screen.drawText(getText("current_high_score") + highscore, 0, -16, 11, "rgb(200,200,255)")
+        screen.drawText(getText("total_coins") + total_coins_collected, 0, -27, 11, "rgb(255,255,100)")
+        if longest_streak_time > 0 then
+          screen.drawText(getText("best_streak") + formatTime(longest_streak_time), 0, -38, 11, "rgb(100,255,150)")
+        else
+          screen.drawText(getText("best_streak") + "0s", 0, -38, 11, "rgb(100,255,150)")
+        end
+        // Daily challenge
+        daily_label = getText("daily") + ": "
+        if daily_type == 0 then
+          if current_language == "PL" then
+            suffix = " monet"
+          else
+            suffix = " coins"
+          end
+          daily_label += "" + daily_progress + "/" + daily_goal + suffix
+        else
+          daily_label += "" + daily_progress + "s/" + daily_goal + "s"
+        end
+        if daily_completed then
+          daily_label += " - " + getText("daily_done")
+        end
+        screen.drawText(daily_label, 0, -49, 10, "rgb(180,220,255)")
+        // Daily streak
+        screen.drawText(getText("streak_days") + daily_streak + getText("days"), 0, -60, 10, "rgb(255,180,80)")
+        
+        // Right side buttons: Shop + Achievements
+        screen.drawText(getText("shop"), screen.width/2-60, -screen.height/2+55, 13, "rgb(255,220,120)")
+        screen.drawText(getText("achievements"), screen.width/2-75, -screen.height/2+30, 11, "rgb(200,240,255)")
       end
-    end
-    
-    if not show_reset_confirmation then
-      screen.setFont("Squarewave")
-      screen.drawText(getText("reset_score"), -screen.width/2+80, -screen.height/2+35, 15, "rgb(255,200,200)")
+      
+      if not shop_open and not achievements_open then
+        screen.setFont("Squarewave")
+        screen.drawText(getText("reset_score"), -screen.width/2+80, -screen.height/2+35, 15, "rgb(255,200,200)")
+      end
     else
       screen.setAlpha(0.95)
       screen.fillRect(0, 0, screen.width, screen.height, "rgba(0,0,0,0.9)")
@@ -865,6 +1504,22 @@ draw = function()
   if scene==1 then
   screen.setFont("Squarewave")
   screen.drawText(score,-screen.width/2+20,90,20,"rgb(255,198,255)")
+  screen.drawText(getText("combo")+": x"+getComboMultiplier(),-screen.width/2+95,70,11,"rgb(120,255,120)")
+  if shield_charges>0 then
+    screen.drawText("SH "+shield_charges,-screen.width/2+95,55,11,"rgb(0,220,255)")
+  end
+  if double_score_active then
+    rem = max(0,floor((double_score_timer - system.time())/1000))
+    screen.drawText("X2 "+rem+"s",-screen.width/2+180,70,10,"rgb(120,255,120)")
+  end
+  if magnet_active then
+    rem = max(0,floor((magnet_timer - system.time())/1000))
+    screen.drawText("MG "+rem+"s",-screen.width/2+180,55,10,"rgb(255,180,0)")
+  end
+  if slowmo_active then
+    rem = max(0,floor((slowmo_timer - system.time())/1000))
+    screen.drawText("SL "+rem+"s",-screen.width/2+240,70,10,"rgb(140,160,255)")
+  end
   
   if not paused then
     screen.setAlpha(1)
@@ -885,6 +1540,10 @@ draw = function()
     
     screen.setFont("Squarewave")
     screen.drawText(getText("pause_instruction"), 0, -60, 12, "rgb(200,200,200)")
+  end
+  if achievement_toast != "" and achievement_timer>system.time() then
+    screen.setFont("Squarewave")
+    screen.drawText(achievement_toast,0,screen.height/2-50,12,"rgb(255,230,120)")
   end
   end
   
@@ -909,7 +1568,7 @@ draw = function()
   end
   
   
-  if scene==1 and system.inputs.touch then
+  if scene==1 then
   u_x=-screen.width/2+screen.width/8
   u_y=-screen.height/2+screen.height/3.5
   s=19
