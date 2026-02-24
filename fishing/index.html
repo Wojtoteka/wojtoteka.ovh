@@ -416,9 +416,13 @@ draw = function()
   end
   if status == "lost" then
     screen.fillRect(0,0,screen.width,screen.height,"rgba(0,0,0,.5)")
-    screen.drawText("GAME OVER",0,30,30,"#FFF")
-    screen.drawText("LEVEL "+(level+1),0,-40,20,"#FFF")
-    screen.drawText("SCORE "+score,0,-20,20,"#FFF")
+    screen.drawText("GAME OVER",0,50,30,"#FFF")
+    screen.drawText("SCORE "+score,0,15,20,"#FFF")
+    screen.drawText("LEVEL "+(level+1),0,-5,20,"#FFF")
+    screen.drawSprite("fishscore",-38,-30,12,12)
+    screen.drawText("BEST "+best_score,5,-30,16,"rgb(255,215,0)")
+    screen.drawSprite("fishscore",-38,-50,12,12)
+    screen.drawText("TOTAL "+total_fish,5,-50,16,"rgb(150,220,255)")
   end
   drawMessage()
   if show_controls then drawControls() end
@@ -768,9 +772,17 @@ gameOver = function()
   show_controls = 0
   lostSound()
   closeDoor()
+  total_fish += score
+  Android.saveTotalFish(total_fish)
+  if score > best_score then
+    best_score = score
+    Android.saveScore(score)
+  end
 end
 
 init = function()
+  best_score = Android.getHighScore()
+  total_fish = Android.getTotalFish()
   startMusic()
 end
 
