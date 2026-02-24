@@ -45,10 +45,50 @@ window.ms_use_server = false ;
 //   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
 //
 
+// --- Cookie helpers for persisting scores ---
+window.Android = (function() {
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var d = new Date();
+      d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + d.toUTCString();
+    }
+    document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/; SameSite=Lax";
+  }
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+    }
+    return null;
+  }
+  return {
+    getHighScore: function() {
+      var v = getCookie("fp_best_score");
+      return v !== null ? parseInt(v, 10) : 0;
+    },
+    saveScore: function(score) {
+      setCookie("fp_best_score", score, 365);
+    },
+    getTotalFish: function() {
+      var v = getCookie("fp_total_fish");
+      return v !== null ? parseInt(v, 10) : 0;
+    },
+    saveTotalFish: function(total) {
+      setCookie("fp_total_fish", total, 365);
+    }
+  };
+})();
+
 window.addEventListener("load",function() {
   window.player = new Player(function(event) {
     if (event.name == "started") {
-      // signal that the game is started
+      // Inject cookie-based Android object into microScript runtime
+      window.player.setGlobal("Android", window.Android);
     }
     else if (event.name == "log") {
       // console.info(event.data) ;

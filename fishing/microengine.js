@@ -844,7 +844,8 @@ this.Runtime = class Runtime {
       Sound: Sound.createSoundClass(this.audio),
       Image: msImage,
       Sprite: Sprite,
-      Map: MicroMap
+      Map: MicroMap,
+      Android: window.Android || null
     };
     if (window.graphics === "M3D") {
       global.M3D = M3D;
