@@ -6057,7 +6057,6 @@ this.Sound = class Sound {
     var request;
     this.audio = audio;
     this.url = url;
-    this.fallback = null;
     if (typeof MicroSound !== "undefined" && MicroSound !== null) {
       this.class = MicroSound;
     }
@@ -6066,87 +6065,21 @@ this.Sound = class Sound {
       this.ready = 1;
     } else {
       this.ready = 0;
-      this._loadWithFetch(url);
-    }
-  }
-
-  _loadWithFetch(url) {
-    var _this = this;
-    // Try fetch first (works better cross-origin and with file://)
-    if (typeof fetch === "function") {
-      fetch(url).then(function(response) {
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        return response.arrayBuffer();
-      }).then(function(arrayBuffer) {
-        return _this.audio.getContext().decodeAudioData(arrayBuffer);
-      }).then(function(buffer) {
-        _this.buffer = buffer;
-        _this.ready = 1;
-        console.log("Sound loaded (fetch):", url);
-      }).catch(function(e) {
-        console.warn("Sound fetch failed for " + url + ", trying XHR:", e);
-        _this._loadWithXHR(url);
-      });
-    } else {
-      this._loadWithXHR(url);
-    }
-  }
-
-  _loadWithXHR(url) {
-    var _this = this;
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.responseType = 'arraybuffer';
-    request.onload = function() {
-      if (request.status === 200 || request.status === 0) {
-        _this.audio.getContext().decodeAudioData(request.response, function(buffer1) {
-          _this.buffer = buffer1;
-          _this.ready = 1;
-          console.log("Sound loaded (XHR):", url);
-        }, function(err) {
-          console.warn("decodeAudioData failed for " + url + ", using HTML5 Audio fallback:", err);
-          _this._loadFallback(url);
+      request = new XMLHttpRequest();
+      request.open('GET', this.url, true);
+      request.responseType = 'arraybuffer';
+      request.onload = () => {
+        return this.audio.getContext().decodeAudioData(request.response, (buffer1) => {
+          this.buffer = buffer1;
+          return this.ready = 1;
         });
-      } else {
-        console.warn("XHR failed for " + url + " (status " + request.status + "), using HTML5 Audio fallback");
-        _this._loadFallback(url);
-      }
-    };
-    request.onerror = function() {
-      console.warn("XHR error for " + url + ", using HTML5 Audio fallback");
-      _this._loadFallback(url);
-    };
-    request.send();
-  }
-
-  _loadFallback(url) {
-    // HTML5 Audio fallback (same approach as Music class)
-    this.fallback = new Audio(url);
-    this.fallback.preload = "auto";
-    this.ready = 1;
-    console.log("Sound using HTML5 Audio fallback:", url);
+      };
+      request.send();
+    }
   }
 
   play(volume = 1, pitch = 1, pan = 0, loopit = false) {
     var gain, panner, playing, res, source;
-
-    // HTML5 Audio fallback path
-    if (this.fallback != null) {
-      var snd = this.fallback.cloneNode();
-      snd.volume = Math.max(0, Math.min(1, volume));
-      snd.loop = loopit ? true : false;
-      snd.playbackRate = Math.max(0.25, Math.min(4, pitch));
-      snd.play().catch(function(){});
-      return {
-        stop: function() { snd.pause(); snd.currentTime = 0; return 1; },
-        setVolume: function(v) { snd.volume = Math.max(0, Math.min(1, v)); },
-        setPitch: function(p) { snd.playbackRate = Math.max(0.25, Math.min(4, p)); },
-        setPan: function() {},
-        getDuration: function() { return snd.duration || 0; },
-        finished: false
-      };
-    }
-
     if (this.buffer == null) {
       return;
     }

@@ -16,7 +16,7 @@
 #canvaswrapper {
   text-align: center ;
 }
-</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}}],"music":[{"file":"music.mp3","version":1,"size":0,"properties":{}}]};
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><style>@font-face { font-family: "Edunline" ; src: url("fonts/Edunline.ttf") format("truetype"); }</style><style>@font-face { font-family: "Squarewave" ; src: url("fonts/Squarewave.ttf") format("truetype"); }</style><style>@font-face { font-family: "Zepto" ; src: url("fonts/Zepto.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell","Edunline","Squarewave","Zepto"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":90,"size":1263586,"properties":{"frames":1,"fps":5}},{"file":"obraz.png","version":1,"size":167625,"properties":{}},{"file":"poster.png","version":3,"size":89028,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[{"file":"coins.wav","version":1,"size":71068,"properties":{}},{"file":"defeat.wav","version":1,"size":614444,"properties":{}},{"file":"explosion.wav","version":1,"size":41498,"properties":{}},{"file":"point.wav","version":1,"size":10000,"properties":{}}],"music":[{"file":"music.mp3","version":1,"size":0,"properties":{}}]};
 var graphics = "M1";
 
 </script><script type="text/javascript">var orientation = 'landscape' ;
@@ -73,11 +73,38 @@ window.highscoreManager = {
 window.gameReady = false;
 window.pendingHighscore = null;
 
+// === HTML5 Audio SFX System (bypasses Web Audio API for Android WebView reliability) ===
+window.sfxSounds = {};
+(function() {
+  var names = ['coins', 'defeat', 'explosion', 'point'];
+  for (var i = 0; i < names.length; i++) {
+    var a = new Audio('sounds/' + names[i] + '.wav');
+    a.preload = 'auto';
+    a.load();
+    window.sfxSounds[names[i]] = a;
+  }
+})();
+window.playSfx = function(name, volume) {
+  try {
+    var src = window.sfxSounds[name];
+    if (src) {
+      var a = src.cloneNode();
+      a.volume = Math.max(0, Math.min(1, volume || 1));
+      a.play().catch(function(e) { console.warn('SFX play error:', e); });
+    }
+  } catch(e) { console.error('SFX error:', e); }
+};
+
 window.addEventListener("load",function() {
   window.player = new Player(function(event) {
     if (event.name == "started") {
       console.log('Gra wystartowała!');
       window.gameReady = true;
+
+      // Inject playSfx into microScript global scope
+      window.player.setGlobal("playSfx", function(name, vol) {
+        window.playSfx(name, vol);
+      });
       
       // Wczytaj najwyższy wynik przy starcie gry
       window.player.setGlobal("loadHighscore", function() {
@@ -151,27 +178,6 @@ window.addEventListener("load",function() {
       // console.info(event.data) ;
     }
   }) ;
-  
-  // Fix AudioContext autoplay policy - Web Audio API wymaga user gesture
-  // Dodajemy persistentny handler który resumuje kontekst przy każdej interakcji
-  function resumeAudioContext() {
-    var runtime = window.player && window.player.runtime;
-    if (!runtime) return;
-    var ctx = runtime.audio && runtime.audio.context;
-    if (!ctx) return;
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(function() {
-        console.log('AudioContext resumed, state:', ctx.state);
-      }).catch(function(e) {
-        console.warn('AudioContext resume failed:', e);
-      });
-    }
-  }
-  
-  ['mousedown', 'mouseup', 'touchstart', 'touchend', 'keydown'].forEach(function(evt) {
-    document.addEventListener(evt, resumeAudioContext, { passive: true, capture: true });
-  });
-  
   document.body.focus() ;
 }) ;
 
@@ -371,6 +377,7 @@ powerup = class
       if px-hitbox<=player_x+player_hitbox and px+hitbox>=player_x-player_hitbox then
         if py+hitbox>=player_y-player_hitbox/4-10 and py-hitbox<=player_y+player_hitbox/4-10 then
           collected = true
+          playSfx("point",0.8)
           applyPowerup(p_type)
         end
       end
@@ -521,12 +528,12 @@ end
 // Achievement helpers
 loadAchievements = function()
   achievements = [
-    object id="coins100" name="100 Coins" goal=100 type="total_coins" reward=15 unlocked=false end,
-    object id="score50" name="Score 50" goal=50 type="score" reward=15 unlocked=false end,
-    object id="streak5" name="Combo x5" goal=5 type="streak" reward=10 unlocked=false end,
-    object id="survive60" name="Survive 60s" goal=60 type="time" reward=20 unlocked=false end,
-    object id="daily30" name="30 Days" goal=30 type="daily_streak" reward=50 unlocked=false end,
-    object id="daily100" name="100 Days" goal=100 type="daily_streak" reward=150 unlocked=false end
+    object id="coins100" name="100 Coins" goal=100 kind="total_coins" reward=15 unlocked=false end,
+    object id="score50" name="Score 50" goal=50 kind="score" reward=15 unlocked=false end,
+    object id="streak5" name="Combo x5" goal=5 kind="streak" reward=10 unlocked=false end,
+    object id="survive60" name="Survive 60s" goal=60 kind="time" reward=20 unlocked=false end,
+    object id="daily30" name="30 Days" goal=30 kind="daily_streak" reward=50 unlocked=false end,
+    object id="daily100" name="100 Days" goal=100 kind="daily_streak" reward=150 unlocked=false end
   ]
   stored = storage.get("achievements")
   if stored != null then
@@ -562,15 +569,15 @@ end
 checkAchievements = function(current_score, survival_time)
   for a in achievements
     if not a.unlocked then
-      if a.type == "total_coins" and total_coins_collected >= a.goal then
+      if a.kind == "total_coins" and total_coins_collected >= a.goal then
         unlockAchievement(a.id)
-      elsif a.type == "score" and current_score >= a.goal then
+      elsif a.kind == "score" and current_score >= a.goal then
         unlockAchievement(a.id)
-      elsif a.type == "streak" and current_streak >= a.goal then
+      elsif a.kind == "streak" and current_streak >= a.goal then
         unlockAchievement(a.id)
-      elsif a.type == "time" and survival_time >= a.goal then
+      elsif a.kind == "time" and survival_time >= a.goal then
         unlockAchievement(a.id)
-      elsif a.type == "daily_streak" and best_daily_streak >= a.goal then
+      elsif a.kind == "daily_streak" and best_daily_streak >= a.goal then
         unlockAchievement(a.id)
       end
     end
@@ -586,15 +593,15 @@ countUnlocked = function()
 end
 
 achievementProgress = function(a)
-  if a.type == "total_coins" then
+  if a.kind == "total_coins" then
     return total_coins_collected
-  elsif a.type == "score" then
+  elsif a.kind == "score" then
     return highscore
-  elsif a.type == "streak" then
+  elsif a.kind == "streak" then
     return longest_streak
-  elsif a.type == "time" then
+  elsif a.kind == "time" then
     return longest_streak_time
-  elsif a.type == "daily_streak" then
+  elsif a.kind == "daily_streak" then
     return best_daily_streak
   else
     return 0
@@ -638,8 +645,8 @@ init = function()
   powerup_messages = []
   powerup_durations = object shield=0 magnet=8000 slowmo=5000 double=10000 end
   powerups = []
-  powerup_spawn_min = 1200
-  powerup_spawn_max = 4800
+  powerup_spawn_min = 2000
+  powerup_spawn_max = 7000
   powerup_spawn_delay = random.intInRange(powerup_spawn_min, powerup_spawn_max)
   
   highscore = storage.get("highscore")
@@ -675,9 +682,9 @@ init = function()
   selected_skin = storage.get("selected_skin")
   shop_items = [
     object id="classic" name="Classic" price=0 colour="#FFFFFF" end,
-    object id="neon" name="Neon Aqua" price=40 colour="rgb(0,255,255)" end,
-    object id="rose" name="Hot Pink" price=80 colour="rgb(255,120,180)" end,
-    object id="gold" name="Gold" price=120 colour="rgb(255,215,0)" end
+    object id="neon" name="Neon Aqua" price=50 colour="rgb(0,255,255)" end,
+    object id="rose" name="Hot Pink" price=100 colour="rgb(255,120,180)" end,
+    object id="gold" name="Gold" price=150 colour="rgb(255,215,0)" end
   ]
   shop_open = false
   shop_message = ""
@@ -720,7 +727,7 @@ init = function()
   paused = false
   pause_time = 0
   stored_bounce = 0
-  music_handle = null
+  music_handle = 0
   
   show_reset_confirmation = false
   
@@ -835,13 +842,11 @@ update = function()
         paused = not paused
         if paused then
           pause_time = system.time()
-          if music_handle != null then music_handle.stop() end
           print("Gra spauzowana")
         else
           local pause_duration = system.time() - pause_time
           ini_time += pause_duration
           ini_time2 += pause_duration
-          if music_handle != null then music_handle.play() end
           print("Gra wznowiona")
         end
       end
@@ -854,7 +859,6 @@ update = function()
           local pause_duration = system.time() - pause_time
           ini_time += pause_duration
           ini_time2 += pause_duration
-          if music_handle != null then music_handle.play() end
           print("Gra wznowiona przez przycisk")
         end
       end
@@ -1019,10 +1023,12 @@ update = function()
       storage.set("total_coins", total_coins_collected)
       
       scene = 2
-      if music_handle != null then music_handle.stop() end
-      music_handle = null
-      audio.playSound("explosion",0.5,1,0,0)
-      audio.playSound("defeat",0.9,1,0,0)
+      if music_handle != 0 then
+        music_handle.stop()
+        music_handle = 0
+      end
+      playSfx("explosion",0.5)
+      playSfx("defeat",0.9)
       end
     end
    end
@@ -1075,7 +1081,7 @@ update = function()
         end
         saveDaily()
       end
-      audio.playSound("coins",1,1,0,0)
+      playSfx("coins",1)
       coins.removeElement(c)
     end
    end
@@ -1135,9 +1141,11 @@ update = function()
      if mouse.x<start_hw and mouse.x>-start_hw and mouse.y<start_y+start_hh and mouse.y>start_y-start_hh then
        if mouse.press then
          scene = 0.5
+         music_handle = audio.playMusic("music",0.5,1)
        end
      elsif gamepad.release.A then
        scene = 0.5
+       music_handle = audio.playMusic("music",0.5,1)
      end
    end
    
@@ -1265,7 +1273,6 @@ update = function()
     elsif player_x>=-90 then
       scene = 1
       streak_start_time = system.time()
-      music_handle = audio.playMusic("music", 0.7, true)
     end
   end
 
@@ -1420,8 +1427,8 @@ draw = function()
           if a.unlocked then status = "[X]" end
           prog = achievementProgress(a)
           suffix = ""
-          if a.type == "time" then suffix = "s" end
-          if a.type == "daily_streak" then
+          if a.kind == "time" then suffix = "s" end
+          if a.kind == "daily_streak" then
             suffix = getText("days")
           end
           screen.setAlpha(0.12)
